@@ -1,17 +1,15 @@
+from fileinput import filename
 import img2pdf
 import requests
 from io import BytesIO
 
-url = [
-    'http://d.e.ecust.edu.cn/doc/bc/9213e804a416702a7e814060301016a2/thumb/',
-    'http://d.e.ecust.edu.cn/doc/ea/4d20ebe2cc3c049cfc49487b2e1a4432/thumb/',
-    'http://d.e.ecust.edu.cn/doc/53/cd059bc1ea7d043879768e7aeb84a02d/thumb/',
-    ]
+url = 'http://d.e.ecust.edu.cn/doc/e9/507c9cfa6629829b1c9f72c065880476/thumb/'
 
-ans = url[2]    # 选用哪一个url
-pagesnum = 7    # 答案页数
+ans = url    # 选用哪一个url
+pagesnum = 53    # 答案页数
+filenme = '第9章 静电场中的导体和电介质.pdf'  # 导出文件名
 
-with open('第三册答案.pdf', "wb") as f:
+with open(filenme, "wb") as f:
     temp = []
     for i in range(1,pagesnum + 1):
         response = requests.get(ans + str(i) + '.png')
