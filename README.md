@@ -1,6 +1,7 @@
 # my college files
 记录我（和大家？）大学生涯中的一些文件。
 
+本校学生若需要其他更全面的文件，请移步[ecust-CourseShare](https://github.com/tianyilt/ecust-CourseShare)。
 ## 仓库构成
 1. 作业|作业答案、实验报告、论文。**不保证全对**，但可以当成自己的交。
 2. 少量小体积课件。
