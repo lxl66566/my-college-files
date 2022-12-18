@@ -3,11 +3,11 @@ import img2pdf
 import requests
 from io import BytesIO
 
-url = 'http://d.e.ecust.edu.cn/doc/e9/507c9cfa6629829b1c9f72c065880476/thumb/'
+url = 'https://d.e.ecust.edu.cn/doc/e6/8ee8c4d143c78c9bc06112c1ad16e484/thumb/'
 
 ans = url    # 选用哪一个url
-pagesnum = 53    # 答案页数
-filenme = '第9章 静电场中的导体和电介质.pdf'  # 导出文件名
+pagesnum = 8    # 答案页数
+filenme = '8.pdf'  # 导出文件名
 
 with open(filenme, "wb") as f:
     temp = []
