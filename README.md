@@ -18,6 +18,7 @@
 3. 考虑隐私，提交的文件需要除名化。
 4. 对于能直接在 Github 上打开查看的文件（pdf，文本），请不要上传压缩包。
 5. 一般地，ppt 文件应导出为 pdf 后再进行上传。（以 office 为例：文件 - 导出 - 创建 PDF/XPS - 优化：最小文件大小(联机发布)）
+6. 电子书等大文件上传请移步 [Release](https://github.com/lxl66566/my-college-files/releases) & [Issues](https://github.com/lxl66566/my-college-files/issues?q=) 寻找对应板块。若不存在，可提出新 issue or 联系管理员。
 
 ## 不足之处
 * 部分课件/答案为学习通爬取的图片，体积较大，若有文字版的欢迎替换并 pr。（当时不懂超星 objectID 接口，因此只能爬了）
