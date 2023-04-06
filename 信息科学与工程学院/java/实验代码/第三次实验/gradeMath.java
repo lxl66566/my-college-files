@@ -66,7 +66,7 @@ public class gradeMath {
     }
 	void run() throws IOException{
 		var id = -1;
-        while(id >= 6)
+        while(id < 6)
         {
             System.out.println("1.求最高分 2.求最低分 3.求平均成绩 4.查询 5.输出排序 6. exit");
             id = KB.scanint();
