@@ -9,4 +9,4 @@ Java 代码文件不能随意重命名，因此制作索引。
 |实验 4：子类|文件夹 4|
 |实验 5：java+接口+常用类|文件夹 5|
 |实验 6：基于GUI的算术测试小软件|calc_test.java|
-|实验 7：综合实验|bank_gui.java(uncompleted)|
+|实验 7：综合实验|bank_gui.java|
