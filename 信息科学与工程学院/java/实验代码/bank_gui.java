@@ -78,6 +78,8 @@ class Bank {
         var to_opt = get_account(to);
         if (to_opt.isEmpty())
             throw new NameNotFoundException("没有此用户");
+        if (to_opt.get() == me)
+            throw new AccessDeniedException("不能转账给自己");
         var to_account = to_opt.get();
         withdraw_money(me, money);
         add_money(to_account, money);
@@ -160,7 +162,7 @@ public class bank_gui extends JFrame {
                 account_name.setText("");
                 pwd.setText("");
                 northPanel.remove(loginPanel);
-                northPanel.add(logoutpanel, BorderLayout.NORTH);
+                northPanel.add(logoutpanel);
                 northPanel.revalidate();
                 northPanel.repaint();
             } else {
@@ -172,7 +174,7 @@ public class bank_gui extends JFrame {
             result.setText("");
             now_account = Optional.empty();
             northPanel.remove(logoutpanel);
-            northPanel.add(loginPanel, BorderLayout.NORTH);
+            northPanel.add(loginPanel);
             northPanel.revalidate();
             northPanel.repaint();
             result.setText("退出成功");
@@ -244,7 +246,6 @@ public class bank_gui extends JFrame {
             } catch (Exception e1) {
                 result.setText(e1.getMessage());
             }
-
         });
 
         try {
