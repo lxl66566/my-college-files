@@ -60,7 +60,6 @@ class account implements Serializable {
 
     @Override
     public String toString() {
-
         return String.format("{id: %d, name: %s, money: %f, pwd: %s}", id, name, money, pwd);
     }
 }
