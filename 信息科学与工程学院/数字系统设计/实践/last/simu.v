@@ -21,12 +21,18 @@ initial begin
     weight = 4'b0000;
 
     // Test the top_module for different weights
-    #100 rst = 1'b0;  // Apply reset
+    #20 rst = 1'b0;  // Apply reset
     #100 weight = 4'b0001;  // Test light weight
+    #1800 rst = 1'b1;
+    #20 rst = 1'b0;
     #100 weight = 4'b0100;  // Test medium weight
+    #1800 rst = 1'b1;
+    #20 rst = 1'b0;
     #100 weight = 4'b0111;  // Test heavy weight
-    #100 weight = 4'b1011;  // Test another heavy weight
-    #100 $finish;
+    #1800 rst = 1'b1;
+    #20 rst = 1'b0;
+    #100 weight = 4'b0010;  // Test another light weight
+    #2000 $finish;
 end
 
 always #5 clk = ~clk;  // Clock generation with a period of 10 time units

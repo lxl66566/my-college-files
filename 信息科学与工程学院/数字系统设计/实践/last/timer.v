@@ -13,7 +13,8 @@ reg [4:0] elapsed_seconds; // 计时开始后已过去的秒数
 reg enable_count;          // 启动计数
 
 // 计算1秒对应的时钟周期数（假设时钟频率为100MHz）
-localparam CLK_CYCLES_PER_SECOND = 100_000_000;
+localparam CLK_CYCLES_PER_SECOND = 10;
+// localparam CLK_CYCLES_PER_SECOND = 100_000_000;
 
 always @(posedge clk) begin
     if (rst) begin
@@ -21,28 +22,28 @@ always @(posedge clk) begin
         out_sig <= 1'b0;          // 复位时清除输出信号
         elapsed_seconds <= 5'b0;  // 复位时清零已过去的秒数
         enable_count <= 1'b0;     // 复位时禁止计数
-    end else begin
-        if (start && rising_edge) begin
-            elapsed_seconds <= delay; // 当开始信号为高电平并检测到上升沿时，将延迟值赋给已过去的秒数
-            enable_count <= 1'b1;     // 启动计数
-            counter <= 32'b0;         // 清零计数器
-            out_sig <= 1'b1;          // 设置输出信号
-        end
+    end
+    else if (enable_count) begin
+        counter <= counter + 32'b1; // 增加计数器值
 
-        if (enable_count) begin
-            counter <= counter + 32'b1; // 增加计数器值
-
-            if (counter == CLK_CYCLES_PER_SECOND - 1) begin
-                counter <= 32'b0;         // 计数器达到1秒，重置为0
-                if (elapsed_seconds > 5'b0) begin
-                    elapsed_seconds <= elapsed_seconds - 5'b1; // 已过去的秒数递减1秒
-                end else begin
-                    out_sig <= 1'b0;      // 计时完成，清除输出信号
-                    enable_count <= 1'b0; // 禁止计数
-                end
+        if (counter == CLK_CYCLES_PER_SECOND - 1) begin
+            counter <= 32'b0;         // 计数器达到1秒，重置为0
+            if (elapsed_seconds > 5'b0) begin
+                elapsed_seconds <= elapsed_seconds - 5'b1; // 已过去的秒数递减1秒
+            end else begin
+                out_sig <= 1'b0;      // 计时完成，清除输出信号
+                enable_count <= 1'b0; // 禁止计数
             end
         end
     end
 end
-
+always@(posedge start) begin
+    if (rst) disable;
+    if (!enable_count) begin
+        elapsed_seconds <= delay; // 当开始信号为高电平并检测到上升沿时，将延迟值赋给已过去的秒数
+        enable_count <= 1'b1;     // 启动计数
+        counter <= 32'b0;         // 清零计数器
+        out_sig <= 1'b1;          // 设置输出信号
+    end
+end
 endmodule

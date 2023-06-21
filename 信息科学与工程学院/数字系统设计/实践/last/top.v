@@ -20,7 +20,7 @@ timer tm_light (
     .clk(clk),
     .rst(rst),
     .start(light),
-    .delay(5'd6),
+    .delay(5'd3),
     .out_sig(light_out)
 );
 
@@ -28,7 +28,7 @@ timer tm_medium (
     .clk(clk),
     .rst(rst),
     .start(medium_),
-    .delay(5'd6),
+    .delay(5'd4),
     .out_sig(medium_out)
 );
 
