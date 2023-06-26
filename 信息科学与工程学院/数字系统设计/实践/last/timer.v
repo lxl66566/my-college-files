@@ -1,49 +1,54 @@
-// æ•´ä¸ª Verilog ä»£ç è®¾è®¡äº†ä¸€ä¸ªå®šæ—¶å™¨æ¨¡å—ï¼Œå¯ä»¥æŒ‰ç…§è®¾å®šçš„å»¶è¿Ÿæ—¶é—´ï¼ˆdelayï¼‰è¾“å‡ºä¸€ä¸ªä¿¡å·ï¼ˆout_sigï¼‰ã€‚å†…éƒ¨ä½¿ç”¨äº†ä¸€ä¸ª 32 ä½è®¡æ•°å™¨ç”¨äºè®¡ç®—æ—¶é’Ÿå‘¨æœŸï¼Œå½“è®¡æ•°å™¨ç´¯ç§¯åˆ° 1 ç§’æ—¶ï¼Œä¼šå‡å» 1 ç§’çš„æ—¶é—´ï¼Œç›´åˆ°å…¨éƒ¨å»¶è¿Ÿæ—¶é—´è€—å°½ã€‚å½“è®¡æ—¶ç»“æŸåï¼Œè¾“å‡ºä¿¡å·ä¼šè¢«æ¸…é›¶ã€‚
+// Õû¸ö Verilog ´úÂëÉè¼ÆÁËÒ»¸ö¶¨Ê±Æ÷Ä£¿é£¬¿ÉÒÔ°´ÕÕÉè¶¨µÄÑÓ³ÙÊ±¼ä£¨delay£©Êä³öÒ»¸öĞÅºÅ£¨out_sig£©¡£ÄÚ²¿Ê¹ÓÃÁËÒ»¸ö 32 Î»¼ÆÊıÆ÷ÓÃÓÚ¼ÆËãÊ±ÖÓÖÜÆÚ£¬µ±¼ÆÊıÆ÷ÀÛ»ıµ½ 1 ÃëÊ±£¬»á¼õÈ¥ 1 ÃëµÄÊ±¼ä£¬Ö±µ½È«²¿ÑÓ³ÙÊ±¼äºÄ¾¡¡£µ±¼ÆÊ±½áÊøºó£¬Êä³öĞÅºÅ»á±»ÇåÁã¡£
 
 module timer (
-    input wire clk,         // æ—¶é’Ÿä¿¡å·
-    input wire rst,         // å¤ä½ä¿¡å·
-    input wire start,       // å¼€å§‹ä¿¡å·
-    input wire [4:0] delay, // 5ä½å»¶è¿Ÿï¼ˆå•ä½ï¼šç§’ï¼‰
-    output reg out_sig      // è¾“å‡ºä¿¡å·
+    input wire clk,         // Ê±ÖÓĞÅºÅ
+    input wire rst,         // ¸´Î»ĞÅºÅ
+    input wire start,       // ¿ªÊ¼ĞÅºÅ
+    input wire [4:0] delay, // 5Î»ÑÓ³Ù£¨µ¥Î»£ºÃë£©
+    output reg out_sig      // Êä³öĞÅºÅ
 );
 
-reg [31:0] counter;        // 32ä½è®¡æ•°å™¨ï¼Œç”¨äºè®¡ç®—æ—¶é’Ÿå‘¨æœŸæ•°
-reg [4:0] elapsed_seconds; // è®¡æ—¶å¼€å§‹åå·²è¿‡å»çš„ç§’æ•°
-reg enable_count;          // å¯åŠ¨è®¡æ•°
+reg [31:0] counter;        // 32Î»¼ÆÊıÆ÷£¬ÓÃÓÚ¼ÆËãÊ±ÖÓÖÜÆÚÊı
+reg [4:0] elapsed_seconds; // ¼ÆÊ±¿ªÊ¼ºóÒÑ¹ıÈ¥µÄÃëÊı
+reg enable_count;          // Æô¶¯¼ÆÊı
 
-// è®¡ç®—1ç§’å¯¹åº”çš„æ—¶é’Ÿå‘¨æœŸæ•°ï¼ˆå‡è®¾æ—¶é’Ÿé¢‘ç‡ä¸º100MHzï¼‰
+// ¼ÆËã1Ãë¶ÔÓ¦µÄÊ±ÖÓÖÜÆÚÊı£¨¼ÙÉèÊ±ÖÓÆµÂÊÎª100MHz£©
 localparam CLK_CYCLES_PER_SECOND = 10;
 // localparam CLK_CYCLES_PER_SECOND = 100_000_000;
 
 always @(posedge clk) begin
     if (rst) begin
-        counter <= 32'b0;         // å¤ä½æ—¶æ¸…é›¶è®¡æ•°å™¨
-        out_sig <= 1'b0;          // å¤ä½æ—¶æ¸…é™¤è¾“å‡ºä¿¡å·
-        elapsed_seconds <= 5'b0;  // å¤ä½æ—¶æ¸…é›¶å·²è¿‡å»çš„ç§’æ•°
-        enable_count <= 1'b0;     // å¤ä½æ—¶ç¦æ­¢è®¡æ•°
+        counter <= 32'b0;         // ¸´Î»Ê±ÇåÁã¼ÆÊıÆ÷
+        out_sig <= 1'b0;          // ¸´Î»Ê±Çå³ıÊä³öĞÅºÅ
+        elapsed_seconds <= 5'b0;  // ¸´Î»Ê±ÇåÁãÒÑ¹ıÈ¥µÄÃëÊı
+        enable_count <= 1'b0;     // ¸´Î»Ê±½ûÖ¹¼ÆÊı
     end
     else if (enable_count) begin
-        counter <= counter + 32'b1; // å¢åŠ è®¡æ•°å™¨å€¼
+        counter <= counter + 32'b1; // Ôö¼Ó¼ÆÊıÆ÷Öµ
 
         if (counter == CLK_CYCLES_PER_SECOND - 1) begin
-            counter <= 32'b0;         // è®¡æ•°å™¨è¾¾åˆ°1ç§’ï¼Œé‡ç½®ä¸º0
+            counter <= 32'b0;         // ¼ÆÊıÆ÷´ïµ½1Ãë£¬ÖØÖÃÎª0
             if (elapsed_seconds > 5'b0) begin
-                elapsed_seconds <= elapsed_seconds - 5'b1; // å·²è¿‡å»çš„ç§’æ•°é€’å‡1ç§’
+                elapsed_seconds <= elapsed_seconds - 5'b1; // ÒÑ¹ıÈ¥µÄÃëÊıµİ¼õ1Ãë
             end else begin
-                out_sig <= 1'b0;      // è®¡æ—¶å®Œæˆï¼Œæ¸…é™¤è¾“å‡ºä¿¡å·
-                enable_count <= 1'b0; // ç¦æ­¢è®¡æ•°
+                out_sig <= 1'b0;      // ¼ÆÊ±Íê³É£¬Çå³ıÊä³öĞÅºÅ
+                enable_count <= 1'b0; // ½ûÖ¹¼ÆÊı
             end
         end
     end
+	//  else if (start) begin
+	// 	  elapsed_seconds <= delay; // µ±¿ªÊ¼ĞÅºÅÎª¸ßµçÆ½²¢¼ì²âµ½ÉÏÉıÑØÊ±£¬½«ÑÓ³ÙÖµ¸³¸øÒÑ¹ıÈ¥µÄÃëÊı
+    //     enable_count <= 1'b1;     // Æô¶¯¼ÆÊı
+    //     counter <= 32'b0;         // ÇåÁã¼ÆÊıÆ÷
+    //     out_sig <= 1'b1;          // ÉèÖÃÊä³öĞÅºÅ
+	//  end
 end
 always@(posedge start) begin
-    if (rst) disable;
-    if (!enable_count) begin
-        elapsed_seconds <= delay; // å½“å¼€å§‹ä¿¡å·ä¸ºé«˜ç”µå¹³å¹¶æ£€æµ‹åˆ°ä¸Šå‡æ²¿æ—¶ï¼Œå°†å»¶è¿Ÿå€¼èµ‹ç»™å·²è¿‡å»çš„ç§’æ•°
-        enable_count <= 1'b1;     // å¯åŠ¨è®¡æ•°
-        counter <= 32'b0;         // æ¸…é›¶è®¡æ•°å™¨
-        out_sig <= 1'b1;          // è®¾ç½®è¾“å‡ºä¿¡å·
+    if (!rst && !enable_count) begin
+        elapsed_seconds <= delay; // µ±¿ªÊ¼ĞÅºÅÎª¸ßµçÆ½²¢¼ì²âµ½ÉÏÉıÑØÊ±£¬½«ÑÓ³ÙÖµ¸³¸øÒÑ¹ıÈ¥µÄÃëÊı
+        enable_count <= 1'b1;     // Æô¶¯¼ÆÊı
+        counter <= 32'b0;         // ÇåÁã¼ÆÊıÆ÷
+        out_sig <= 1'b1;          // ÉèÖÃÊä³öĞÅºÅ
     end
 end
 endmodule
