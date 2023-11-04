@@ -72,7 +72,7 @@
 // 引用
 #let references(path) = {
   set heading(level: 1, numbering: none)
-  bibliography(path, title:"参考文献")
+  bibliography(path, title:"参考文献", style: "gb-7114-2015-numeric")
 }
 
 
@@ -115,9 +115,15 @@
     }
   }
 
+  // figure(image)
+  show figure: it => block(width: 100%)[#align(center)[
+    #it.body
+    #text(font: 字体.宋体, size: 字号.五号, weight: "bold", it.caption)
+  ]]
+
   // Title
   align(center)[
-    #block(text(font: 字体.黑体, size: 字号.小二, weight: "bold", title))
+    #block(text(font: 字体.黑体, size: 字号.二号, weight: "bold", title))
   ]
 
   // 摘要
@@ -129,5 +135,5 @@
   body
 
   // 参考文献
-  references("./ref.yml")
+  references("./ref.bib")
 }
