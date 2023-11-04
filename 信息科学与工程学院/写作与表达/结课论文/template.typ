@@ -92,8 +92,9 @@
   set par(justify: true,first-line-indent: 2em)
   show heading: it =>  {
     it
-    par()[#text()[#h(0.0em)]]
+    par()[#text(size:0.5em)[#h(0.0em)]]
   }
+
 
   // 正文
   set text(font: 字体.宋体, size: 字号.小四, lang: "zh")
