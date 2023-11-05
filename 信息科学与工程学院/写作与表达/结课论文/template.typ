@@ -1,3 +1,5 @@
+#import "functions/numbering.typ": *
+
 #let 字号 = (
   初号: 42pt,
   小初: 36pt,
@@ -117,10 +119,26 @@
   }
 
   // figure(image)
-  show figure: it => block(width: 100%)[#align(center)[
-    #it.body
-    #text(font: 字体.宋体, size: 字号.五号, weight: "bold", it.caption)
-  ]]
+  show figure: it => [
+    #set align(center)
+    #if not it.has("kind") {
+      it
+    } else if it.kind == image {
+      it.body
+      [
+        #set text(font: 字体.宋体, size: 字号.五号, weight: "extrabold")
+        #h(1em)
+        #it.caption
+      ]
+    } else if it.kind == table or it.kind == code {
+      [
+        #set text(font: 字体.宋体, size: 字号.五号, weight: "bold")
+        #h(1em)
+        #it.caption
+      ]
+      it.body
+    }
+  ]
 
   // Title
   align(center)[
