@@ -6,13 +6,17 @@
     "absolutex",
   ),
   abstract_zh: [
-  先帝创业未半而中道崩殂
+  拥塞控制是计算机网络中的重要组成部分，并随着互联网的发展而不断显现其重要性。近代互联网的复杂度、联系紧密度都远超之前人们的想象，想管理好如此这样一个庞大系统，拥塞控制是必不可少的技术。拥塞控制确保了当网络出现拥塞时，网络仍然能够以较低的利用率运转，且各用户尽可能公平地利用剩余带宽，避免网络瘫痪。
+  
+  本文通过拥塞控制的历史与简单的计算机通信模型，引入了拥塞控制原理与算法分析，并着重介绍了其中 BBR 算法的具体实现，分析其优劣与发展潜力。
   ],
   abstract_en: [
-  The founding emperor passed away before his endeavor was half completed, and now the empire is divided into three parts. Yizhou is exhausted and in decline, and this is truly a critical moment of survival or destruction. Ho
+  Congestion control is an important part of computer networks and continues to show its importance with the development of the Internet. The complexity and tightness of the modern Internet is far beyond what was previously imagined, and congestion control is an essential technique for managing such a large system. Congestion control ensures that when the network is congested, the network can still operate at a low utilization rate, and each user can utilize the remaining bandwidth as fairly as possible to avoid network paralysis.
+  
+  This paper introduces the analysis of congestion control principles and algorithms through the history of congestion control and a simple computer communication model, and focuses on the implementation of the BBR algorithm and analyzes its advantages and disadvantages as well as its development potential.
   ],
-  keywords_zh: ("关键词1", "关键词2", "关键词3"),
-  keywords_en: ("Keyword 1", "Keyword 2", "Keyword 3"),
+  keywords_zh: ("拥塞控制", "BBR 算法"),
+  keywords_en: ("congestion control", "BBR algorithm"),
 )
 
 = 绪论
@@ -36,7 +40,7 @@ TCP 作为一种可靠传输协议，通过在数据传输中引入确认和重�
   caption: [网络抽象模型],
 )
 
-每个路由器具有一个缓存池，用于缓存路由器接收到的分组。若将链路当成水管，每个数据包分组作为水流，则缓存相当于水池，具有积蓄作用。当某个路由器的输入速率大于输出速率时，多余的分组将在缓存中排队。若分组到达路由器，而缓存已满，该分组将会被丢弃。
+数据被划分成一个个分组在网络上传播。每个路由器具有一个缓存池，用于缓存路由器接收到的分组。若将链路当成水管，每个数据包分组作为水流，则缓存相当于水池，具有积蓄作用。当某个路由器的输入速率大于输出速率时，多余的分组将在缓存中排队。若分组到达路由器，而缓存已满，该分组将会被丢弃。
 
 在点对点数据传输中所能达到的最高速率取决于瓶颈链路的带宽，也就是传输能力最弱的链路的带宽。
 
@@ -59,7 +63,7 @@ TCP 作为一种可靠传输协议，通过在数据传输中引入确认和重�
 
 == 拥塞模型
 
-从 TCP 的角度来看，任意复杂的路径都表现为具有相同 RTT（Round-trip time，往返时间）和瓶颈速率的单个链路。RTprop（Round-trip propagation time，往返传播时间）和 BtlBw（Bottleneck Bandwidth，瓶颈带宽）这两个物理约束限制了传输性能。如果网络路径是物理管道，则 RTprop 将是其长度，BtlBw 将是其最小直径。@NealCardwell:2016
+从 TCP 的角度来看，任意复杂的路径都表现为具有相同 RTT（Round-trip time，往返时间）和瓶颈速率的单个链路。RTprop（Round-trip propagation time，往返传播时间）和 BtlBw（Bottleneck Bandwidth，瓶颈带宽）这两个物理约束限制了传输性能。如果网络路径是物理管道，则 RTprop 将是其长度，BtlBw 将是其最小直径@NealCardwell:2016。
 
 #figure(
   image("DRandRTT.jpg", width: 70%),
@@ -84,13 +88,17 @@ TCP 作为一种可靠传输协议，通过在数据传输中引入确认和重�
 
 基于延迟的拥塞控制算法（Grey box algorithms）通过主动探测 RTT 来感知拥塞。常见的有 Vegas 算法、BBR 算法等。
 
-基于延迟的拥塞控制算法能够在网络运行的第二个阶段感知到拥塞并及时反馈，解决了经典拥塞控制算法的最大痛点。
+基于延迟的拥塞控制算法能够在网络运行的第二个阶段感知到拥塞并及时反馈，解决了经典拥塞控制算法的最大痛点。由于其探知拥塞的时机较早，可以很好地适应网络的动态变化。
+
+基于延迟的拥塞控制算法在丢包率高时具有极佳的表现。其中，Vegas 算法过于温和，在面对经典拥塞控制算法时难以取得足够的带宽。而 BBR 算法则具有不逊色于 CUBIC 算法的竞争力，因此成为最具有潜力的拥塞控制算法。
 
 = BBR 算法
 
 == 算法概述
 
 BBR（Bottleneck Bandwidth and Round-trip propagation time）拥塞控制算法由 Google 在 2016 年提出，其通过实时测量网络瓶颈带宽和最小延迟，计算带宽延时积（Bandwidth-Delay Product, BDP）来调整发送速率，实现了高吞吐量和低延时。因此，BBR 算法被认为开创了拥塞控制的新纪元。
+
+BBR 算法现已大规模应用于 Google B4 网络与服务器设施。
 
 == 原理解析
 
@@ -119,7 +127,7 @@ BBR由“初始”，“排空”，“探测带宽”与“探测RTT”四个�
 
 == 参考代码
 
-BBR 算法核心代码由两部分组成@NealCardwell:2016。
+BBR 算法核心伪代码由两部分组成@NealCardwell:2016。
 
 === 接收 ACK
 
@@ -140,25 +148,25 @@ function onAck(packet)
 
 === 发送数据
 
-对每个数据包进行调整，使数据包到达速率与瓶颈链路的出发速率相匹配。
+对每个数据包发送速率进行调整，使数据包到达速率与瓶颈链路的出发速率相匹配。
 
 ```js
 function send(packet)
   bdp = BtlBwFilter.currentMax × RTpropFilter.currentMin
   if (inflight >= cwnd_gain × bdp)
-     // wait for ack or retransmission timeout
-     return
+    // wait for ack or retransmission timeout
+    return
   if (now >= nextSendTime)
-     packet = nextPacketToSend()
-     if (! packet)
-        app_limited_until = inflight
-        return
-     packet.app_limited = (app_limited_until > 0)
-     packet.sendtime = now
-     packet.delivered = delivered
-     packet.delivered_time = delivered_time
-     ship(packet)
-     nextSendTime = now + packet.size / (pacing_gain × BtlBwFilter.currentMax)
+    packet = nextPacketToSend()
+    if (! packet)
+      app_limited_until = inflight
+      return
+    packet.app_limited = (app_limited_until > 0)
+    packet.sendtime = now
+    packet.delivered = delivered
+    packet.delivered_time = delivered_time
+    ship(packet)
+    nextSendTime = now + packet.size / (pacing_gain × BtlBwFilter.currentMax)
   timerCallbackAt(send, nextSendTime)
 ```
 
@@ -181,4 +189,6 @@ BBR 算法不将丢包视为拥塞，所以在丢包率较高的网络中，BBR 
 
 = 总结
 
-计算机网络依赖于数量庞大的基础设施与传统协议，在给定框架内提出新的思路，是拥塞控制算法的长远任务。BBR 算法由于其优越性倍受青睐，正在取代传统的 TCP 拥塞控制算法，例如 Linux 内核从 4.9 版本开始支持 BBR 算法。BBR 算法已大规模应用于 Google B4 网络，并且与 QUIC 协议相互配合，实现了更好的传输性能和使用体验，具有巨大的发展潜力。但是对于其存在的具体缺陷，还需要进一步研究和改进。
+计算机网络依赖于数量庞大的基础设施与传统协议，在给定框架内提出新的思路，是拥塞控制算法的长远任务。BBR 算法由于其优越性倍受青睐，正在取代传统的 TCP 拥塞控制算法，例如 Linux 内核从 4.9 版本开始支持 BBR 算法。
+
+BBR 算法（v2，v3）已大规模应用于 Google B4 网络，并且与新传输协议 QUIC 协议相互配合，实现了更好的传输性能和使用体验，具有巨大的发展潜力。但是对于其存在的具体缺陷，还需要进一步研究和改进，这也是 BBR 尚未在家用设备上普及的一个原因。
