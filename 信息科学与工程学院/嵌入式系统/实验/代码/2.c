@@ -1,10 +1,8 @@
+// 与 1.c 相同效果，不过是库函数版本
 #include "delay.h"
 #include "led.h"
 #include "sys.h"
 #include "usart.h"
-
-// 与 1.c 相同效果，不过是库函数版本
-
 int main(void) {
   HAL_Init();                      // 初始化HAL库
   Stm32_Clock_Init(360, 25, 2, 8); // 设置时钟,180Mhz

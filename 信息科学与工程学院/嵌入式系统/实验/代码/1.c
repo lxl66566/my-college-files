@@ -1,11 +1,7 @@
 // 寄存器版本
-
 #include "delay.h"
 #include "led.h"
 #include "sys.h"
-
-// 使 LED 闪烁
-
 int main(void) {
   Stm32_Clock_Init(360, 25, 2, 8);
   delay_init(180);

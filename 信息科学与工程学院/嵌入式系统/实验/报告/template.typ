@@ -26,6 +26,39 @@
   代码: ("New Computer Modern Mono", "Times New Roman", "SimSun"),
 )
 
+#let frame(title: none, body) = {
+  let stroke = black + 1pt
+  let radius = 5pt
+  let font = (font: "Fira Code", size: 10pt)
+  let name = block(
+                breakable: false,
+                fill: color.linear-rgb(0, 0, 0, 10),
+                stroke: stroke,
+                inset: 0.5em,
+                below: -1.5em,
+                radius: (top-right: radius, bottom-left: radius),
+                title,
+              )
+  set text(..font)
+  show raw: set text(..font)
+  box(stroke: stroke, radius: radius)[
+    #if title != none {
+      align(top + right, name)
+    }
+    #block(
+      width: 100%,
+      inset: (rest: 0.5em),
+      body,
+    )
+  ]
+}
+
+#let include_code_file(file_path, name, lang) = {
+  frame(title: name)[
+    #raw(read(file_path), lang: lang)
+  ]
+}
+
 #let project(
   title: "", 
   authors: (),
@@ -79,6 +112,5 @@
       it.body
     }
   ]
-
   body
 }

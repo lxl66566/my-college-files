@@ -3,7 +3,6 @@
 #include "led.h"
 #include "sys.h"
 #include "usart.h"
-
 // 调整占空比，即工作时间与总时间的比值。函数需要放在循环中才可用。
 void space_ratio(u8 delayms, float rate) {
   LED1 = 0;
@@ -11,9 +10,7 @@ void space_ratio(u8 delayms, float rate) {
   LED1 = 1;
   delay_ms((u8)(delayms * (1 - rate)));
 }
-
 // 根据不同按键，让 LED 灯显示不同亮度。
-
 int main(void) {
   u8 key;
   HAL_Init();                      // 初始化HAL库
