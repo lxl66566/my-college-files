@@ -1,13 +1,4 @@
-#include "ap3216c.h"
-#include "delay.h"
-#include "key.h"
-#include "lcd.h"
-#include "led.h"
 #include "math.h"
-#include "sdram.h"
-#include "sys.h"
-#include "usart.h"
-
 int main(void) {
   u16 ir, als, ps;
   HAL_Init();                      // 初始化HAL库
@@ -18,41 +9,25 @@ int main(void) {
   KEY_Init();                      // 初始化按键
   SDRAM_Init();                    // 初始化SDRAM
   LCD_Init();                      // 初始化LCD
-  POINT_COLOR = RED;
-  while (AP3216C_Init()) // 检测不到AP3216C
-  {
-    LCD_ShowString(30, 130, 200, 16, 16, "AP3216C Check Failed!");
-    delay_ms(500);
-    LCD_ShowString(30, 130, 200, 16, 16, "Please Check!        ");
-    delay_ms(500);
-    LED0 = !LED0; // DS0闪烁
-  }
-  LCD_ShowString(30, 130, 200, 16, 16, "AP3216C Ready!");
-  LCD_ShowString(30, 160, 200, 16, 16, " IR:");
-  LCD_ShowString(30, 180, 200, 16, 16, " PS:");
-  LCD_ShowString(30, 200, 200, 16, 16, "ALS:");
-  POINT_COLOR = BLUE; // 设置字体为蓝色
-  const int center[] = {230, 400};
+  POINT_COLOR = BLUE;              // 设置字体为蓝色
+  const int center[] = {230, 400}; // 圆圈的中心点
   u8 key;
-  _Bool mode = 0;
+  _Bool mode = 0; // 模式，0 为距离模式，1 为光照模式
   while (1) {
-    key = KEY_Scan(0);
-    switch (key) {
-    case WKUP_PRES:
+    key = KEY_Scan(0); // 监测按键，改变工作模式
+    if (key == WKUP_PRES)
       mode = !mode;
-      break;
-    default:;
-    }
     AP3216C_ReadData(&ir, &ps, &als); // 读取数据
-    LCD_Clear(99999);
+    LCD_Clear(99999); // 每个循环清屏，让圆形能动态显示
     LCD_ShowString(30, 130, 200, 16, 16,
-                   !mode ? "mode: distance" : "mode: brightness");
-    const float temp = !mode ? (float)ps / 10 : sqrt(als) * 1.5;
+                   !mode ? "mode: distance"
+                         : "mode: brightness"); // 在显示屏上显示工作模式
+    const float temp =
+        !mode ? (float)ps / 10 : sqrt(als) * 1.5; // 预处理距离/亮度，坐标变换
     LCD_Draw_Circle(center[0], center[1], temp);
     LCD_Draw_Circle(center[0], center[1], temp + 1);
     LCD_Draw_Circle(center[0], center[1], temp + 2);
-    LED0 = !LED0;
-    ; // 提示系统正在运行
+    // 画圆。LCD_Draw_Circle 函数没有调节粗细的功能，因此画三个圆来加粗。
     delay_ms(90);
   }
 }

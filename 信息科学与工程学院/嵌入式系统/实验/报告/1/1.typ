@@ -1,4 +1,4 @@
-#import "template.typ": *
+#import "../template.typ": *
 
 #show: project.with(
   title: "实验报告 1",

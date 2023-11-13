@@ -23,13 +23,13 @@
   宋体: ("Times New Roman", "SimSun"),
   黑体: ("Times New Roman", "SimHei"),
   楷体: ("Times New Roman", "KaiTi"),
-  代码: ("New Computer Modern Mono", "Times New Roman", "SimSun"),
+  代码: ("Fira Code", "Times New Roman", "SimSun"),
 )
 
 #let frame(title: none, body) = {
   let stroke = black + 1pt
   let radius = 5pt
-  let font = (font: "Fira Code", size: 10pt)
+  let font = (font: 字体.代码, size: 10pt)
   let name = block(
                 breakable: false,
                 fill: color.linear-rgb(0, 0, 0, 10),
@@ -103,7 +103,7 @@
         #h(1em)
         #it.caption
       ]
-    } else if it.kind == code {
+    } else if it.kind == "code" {
       [
         #set text(font: 字体.宋体, size: 字号.五号, weight: "bold")
         #h(1em)
