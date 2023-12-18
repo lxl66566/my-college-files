@@ -28,12 +28,10 @@
   代码: ("Fira Code", "Times New Roman", "SimSun"),
 )
 
-// 有边线，在右上角显示名字的代码区域
-// 如果跨页，则会另起一页
-#let frame_with_name(title: none, body) = {
+// 带边框代码块
+#let frame(title: none, body) = {
   let stroke = black + 1pt
   let radius = 5pt
-  let font = (font: 字体.代码, size: 10pt)
   let name = block(
                 breakable: false,
                 fill: color.linear-rgb(0, 0, 0, 10),
@@ -43,39 +41,27 @@
                 radius: (top-right: radius, bottom-left: radius),
                 title,
               )
-  set text(..font)
-  show raw: set text(..font)
-  box(stroke: stroke, radius: radius)[
-    #if title != none {
-      align(top + right, name)
-    }
-    #block(
-      width: 100%,
-      inset: (rest: 0.5em),
-      body,
-    )
-  ]
-}
-
-// 引入代码块
-#let include_code_file(file_path, name, lang) = {
-  frame_with_name(title: name)[
-    #raw(read(file_path), lang: lang)
-  ]
-}
-
-// 只有边框，没有标题提示
-#let frame(body) = {
-  let stroke = black + 1pt
-  let font = (font: 字体.代码)
-  set text(..font)
+  set text(font: 字体.代码)
   block(
     stroke: stroke,
     width: 100%,
     inset: (rest: 0.5em),
-    radius: 7pt,
-    body,
-  )
+    radius: radius,
+  )[
+    #if title != none {
+      align(top + right, name)
+    }
+    #body
+  ]
+}
+
+// 引入外部代码块
+#let include_code(file_path) = {
+  let name = file_path.split("/").at(-1)
+  let lang = name.split(".").at(-1)
+  frame(title: name)[
+    #raw(read(file_path), lang: lang)
+  ]
 }
 
 #let project(
