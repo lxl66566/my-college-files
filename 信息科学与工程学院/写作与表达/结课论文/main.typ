@@ -1,5 +1,6 @@
 #import "template.typ": *
 
+// 需要 typst 0.10.0
 #show: project.with(
   title: "初探拥塞控制与 BBR 算法",
   authors: (

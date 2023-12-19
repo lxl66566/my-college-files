@@ -12,7 +12,7 @@
     {
       "label": "upload",
       "type": "shell",
-      "command": "./backup.sh",
+      "command": "./upload.sh",
       "detail": "upload",
       "problemMatcher": []
     }

@@ -74,7 +74,7 @@
 // 引用
 #let references(path) = {
   set heading(level: 1, numbering: none)
-  bibliography(path, title:"参考文献", style: "gb-7114-2015-numeric")
+  bibliography(path, title:"参考文献", style: "gb-7714-2015-numeric")
 }
 
 

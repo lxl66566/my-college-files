@@ -63,6 +63,11 @@
     #raw(read(file_path), lang: lang)
   ]
 }
+// 设置缩进
+#let par2(body) = {
+  set par(justify: true,first-line-indent: 2em)
+  body
+}
 
 #let project(
   title: "", 
