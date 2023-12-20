@@ -16,9 +16,12 @@
 
 ```python
 #! /usr/bin/env python3
-sum(map(ord,"Internet"))
-# = 841
+s = sum(map(ord, "Internet"))  # =841
+s = int(s / (1 << 8)) + s % (1 << 8)  # 进位 =76, 01001100
+s = ~s  # 补码 =-77, 10110100
 ```
+
+`checksum = 10110100`
 
 == P5 考虑5比特生成多项式，G=10011，并且假设D的值为101010101010。R的值是什么?
 

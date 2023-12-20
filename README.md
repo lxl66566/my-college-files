@@ -4,16 +4,19 @@
 
 本校学生若需要其他更全面的文件，请移步 [ecust-CourseShare](https://github.com/tianyilt/ecust-CourseShare)。
 
-当然，比起此处的课件，也不妨看看[我的学习笔记](https://absx.pages.dev/farraginous/learning/)，我认为还是有一定价值的。
+> 当然，除了此处的课件，我也写了一点没啥用的[学习笔记](https://absx.pages.dev/farraginous/learning/)。
+
+将 url 中的 `github` 改为 `gitee` 即为镜像，方便国内访问。镜像有可能落后几个 commit。
 
 ## 仓库构成
 
-1. 作业 | 答案、实验报告、论文。我的作业**不保证正确率**，~~但可以打印后当成自己的交~~。
+1. 作业 | 答案、实验报告、论文。我的作业**不保证正确率**，~~但可以打印后当成自己的交~~。（我自己就是打印交，很难看出非手写）
 2. 少量小体积课件。
-3. 含有足够信息量的军机文件。（重要隐私文件已作出 >20 位符号混合加密）
-4. 本人的私人文件。
+3. 部分考试原题。
+4. 含有足够信息量的军机文件。（重要隐私文件已作出 >20 位符号混合加密）
+5. 本人的私人文件。（也进行了加密）
 
-部分作业/论文由 [typst](https://github.com/typst/typst) 写成（`*.typ`），在仓库中可能只有源码，不会放出成品 pdf，有需要的可以自己编译。（非常简单）
+大三开始部分作业/论文由 [typst](https://github.com/typst/typst) 写成（`*.typ`），在仓库中可能只有源码，不会放出成品 pdf，有需要的可以自己编译。（非常简单，注意 include 的文件）
 
 1. 下载最新版本的 [typst 可执行文件](https://github.com/typst/typst/releases)（windows 可以放到 `C:\Windows\System32`）
 2. 下载 typ 文件，一般还需要下载 `template.typ`，不同课程使用的 template 可能不同，需要看清楚 include 的是哪个。
@@ -30,11 +33,12 @@
 2. 对于提交内的所有图片，请移步 [imagestool - compress](https://imagestool.com/compress-images.html) 压缩后再上传。（网站支持 select folder，若图片过多可以上传文件夹压缩，下载 zip 并解压后直接合并替换原先的图片）
 3. 考虑隐私，提交的文件需要除名化。
 4. 对于能直接在 Github 上打开查看的文件（pdf，文本），请不要上传压缩包。
-5. 一般地，ppt 文件应导出为 pdf 后再进行上传。（以 office 为例：文件 - 导出 - 创建 PDF/XPS - 优化：最小文件大小 (联机发布)）
-6. 电子书等大文件上传请移步 [Release](https://github.com/lxl66566/my-college-files/releases) & [Issues](https://github.com/lxl66566/my-college-files/issues?q=) 寻找对应板块。若不存在，可提出新 issue or 联系管理员。
+5. 一般地，ppt 文件应导出为 pdf 后再进行上传。（以 office 为例：_文件 - 导出 - 创建 PDF/XPS - 优化：最小文件大小 (联机发布)_）
+6. 电子书等大文件上传请移步 [Release](https://github.com/lxl66566/my-college-files/releases) & [Issues](https://github.com/lxl66566/my-college-files/issues) 寻找对应板块。若不存在，可提出新 issue or 联系管理员。
 7. 超星学习通文件请使用接口下载体积较小的文字版。具体的：
    - 在显示文件的界面按 `F12`，打开控制台，在元素中按 `Ctrl+F` 搜索 `objectid`，复制此 32 位字符串
    - 将其填入 `http://cs.e.ecust.edu.cn/download/[objectID]` 接口下载。（记得去除 `[]`）
+8. 对于清晰的打印文字，可以考虑 [OCR](https://absx.pages.dev/articles/ocr.html) 以后放在 markdown 中。
 
 ## TODO
 
