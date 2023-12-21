@@ -11,7 +11,7 @@
 
 == 编程实现ICMPping
 
-#include_code_file("互联网原理与技术/作业/实践5/ICMPping.py","ICMPping.py","python")
+#include_code("互联网原理与技术/作业/实践5/ICMPping.py")
 
 输出：
 ```

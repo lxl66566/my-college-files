@@ -99,22 +99,21 @@
     else if it.level == 3 {
       text(size: 字号.小四, it)
     }
+    else{
+      text(size: 字号.五号, it)
+    }
   }
 
   // figure(image)
-  show figure.where(kind: image): it => [
-    #set align(center)
-    #if not it.has("kind") {
-      it
-    } else {
-      it.body
-      [
-        #set text(font: 字体.宋体, size: 字号.五号, weight: "extrabold")
-        #h(1em)
-        #it.caption
-      ]
+  show figure.where(kind: image): it => {
+    set align(center)
+    it.body
+    {
+      set text(font: 字体.宋体, size: 字号.五号, weight: "extrabold")
+      h(1em)
+      it.caption
     }
-  ]
+  }
 
   // raw
   show raw.where(block: true): it => frame()[#it]
