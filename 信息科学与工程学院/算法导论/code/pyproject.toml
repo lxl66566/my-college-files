@@ -6,7 +6,7 @@ authors = ["lxl66566 <lxl66566@gmail.com>"]
 readme = "readme.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 matplotlib = "^3.8.2"
 networkx = "^3.2.1"
 pandas = "^2.1.4"

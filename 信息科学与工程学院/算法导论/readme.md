@@ -2,4 +2,4 @@
 
 没有考试，最后是考核。分数全靠作业。
 
-typst version >= 0.10.0；不能单独编译，`.typ` 文件依赖的 `template.typ` 在上级目录。
+typst version >= 0.10.0

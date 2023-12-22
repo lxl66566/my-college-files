@@ -2,8 +2,6 @@
 #import "@preview/algorithmic:0.1.0"
 #import algorithmic: algorithm
 
-// 需要注意，这里使用了 algorithmic:0.1.0，实际上该版本存在 bug，若想要编译本文至少需要 0.1.1。（我 PR 了 0.1.1 版本）
-
 #show: project.with(
   title: "2",
   authors: (
@@ -45,7 +43,7 @@
 
 #algorithm({
   import algorithmic: *
-  Function("PreorderTraversal", args: "root", {
+  Function("PreorderTraversal", args: ("root",), {
     Cmt[Perform pre-order traversal of the tree]
     If(cond: "root is null", {
       Return[]
@@ -58,7 +56,7 @@
 
   State[]
 
-  Function("PostorderTraversal", args:"root", {
+  Function("PostorderTraversal", args:("root",), {
     Cmt[Perform post-order traversal of the tree]
     If(cond: "root is null", {
       Return[]
@@ -74,7 +72,7 @@
 
 #algorithm({
   import algorithmic: *
-  Function("FindMin", args: ("root"), {
+  Function("FindMin", args: ("root",), {
     Cmt[Find the minimum value in a BST]
     If(cond: "root is null", {
       Return[*null*]
@@ -87,7 +85,7 @@
 
   State[]
 
-  Function("FindMax", args: ("root"), {
+  Function("FindMax", args: ("root",), {
     Cmt[Find the maximum value in a BST]
     If(cond: "root is null", {
       Return[*null*]

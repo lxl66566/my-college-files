@@ -22,11 +22,12 @@
 
 #let 字体 = (
   仿宋: ("Times New Roman", "FangSong"),
-  宋体: ("Times New Roman", "SimSun"),
+  宋体: ("Times New Roman", "Songti SC", "Songti TC", "SimSun"),
   黑体: ("Times New Roman", "SimHei"),
   楷体: ("Times New Roman", "KaiTi"),
-  代码: ("Fira Code", "Times New Roman", "SimSun"),
+  代码: ("Fira Code", "Consolas", "monospace", "FangSong"),
 )
+
 
 // 带边框代码块
 #let frame(title: none, body) = {
@@ -63,6 +64,7 @@
     #raw(read(file_path), lang: lang)
   ]
 }
+
 // 设置缩进
 #let par2(body) = {
   set par(justify: true,first-line-indent: 2em)
@@ -76,13 +78,19 @@
 ) = {
   set document(author: authors, title: title)
   set page(numbering: "1", number-align: center, margin: 0.7in)
+  // 水印
+  // set page(background: rotate(24deg,text(80pt, fill: rgb("FFCBC4"))[*SAMPLE*]))
 
   // 正文，两端对齐，段前缩进2字符
   set text(font: 字体.宋体, size: 字号.小四, lang: "zh")
-  set par(justify: true,first-line-indent: 2em)
-  show heading: it =>  {
+  set par(first-line-indent: 2em)
+  show heading: it => {
+    let fake_par = {
+      v(-1em)
+      box()
+    }
     it
-    par()[#text(size:0.5em)[#h(0.0em)]]
+    fake_par
   }
 
   // heading，一级标题换页且不显示数字，首行居中
@@ -115,8 +123,11 @@
     }
   }
 
-  // raw
+  // raw with frame
+  show raw: set text(font: 字体.代码)
   show raw.where(block: true): it => frame()[#it]
+
+
 
   body
 }

@@ -1,17 +1,11 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class point:
-    def __init__(self, x, y, w):
-        self.x = x
-        self.y = y
-        self.w = w
-
-    def __str__(self):
-        return "(x:{}, y:{}, w:{})".format(self.x, self.y, self.w)
-
-    def __add__(self, other):
-        return point(self.x + other.x, self.y + other.y)
-
-    def __sub__(self, other):
-        return point(self.x - other.x, self.y - other.y)
+    x: int
+    y: int
+    w: float
 
     def manhattan(self, other) -> int:
         return abs(self.x - other.x) + abs(self.y - other.y)
@@ -40,4 +34,4 @@ calc(
     ]
 )
 
-# (x:1, y:2, w:0.3)
+# point(x=1, y=2, w=0.3)
