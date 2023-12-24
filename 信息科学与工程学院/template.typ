@@ -25,7 +25,7 @@
   宋体: ("Times New Roman", "Songti SC", "Songti TC", "SimSun"),
   黑体: ("Times New Roman", "SimHei"),
   楷体: ("Times New Roman", "KaiTi"),
-  代码: ("Fira Code", "Consolas", "monospace", "FangSong"),
+  代码: ("Fira Code", "Consolas", "monospace", "WenQuanYi Zen Hei Mono", "FangSong"),
 )
 
 #let 中文数字(num) = {
@@ -36,6 +36,8 @@
 #let frame(title: none, body) = {
   let stroke = black + 1pt
   let radius = 5pt
+  let txt = (font: 字体.代码)
+  set text(..txt)
   let name = block(
                 breakable: false,
                 fill: color.linear-rgb(0, 0, 0, 10),
@@ -45,7 +47,6 @@
                 radius: (top-right: radius, bottom-left: radius),
                 title,
               )
-  set text(font: 字体.代码)
   block(
     stroke: stroke,
     width: 100%,
@@ -130,8 +131,6 @@
   // raw with frame
   show raw: set text(font: 字体.代码)
   show raw.where(block: true): it => frame()[#it]
-
-
 
   body
 }
