@@ -34,7 +34,7 @@
   align: center + horizon,
   auto-vlines: false,
   map-cells: cell => {
-    if (cell.x == 11 and cell.y <= 9) or (cell.y == 10 and cell.x == 7) {
+    if get_text(cell.content) == "11" {
       cell.content = {
         set text(red.lighten(30%))
         strong(cell.content)

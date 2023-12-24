@@ -28,6 +28,9 @@
   代码: ("Fira Code", "Consolas", "monospace", "FangSong"),
 )
 
+#let 中文数字(num) = {
+  ("零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十").at(int(num))
+}
 
 // 带边框代码块
 #let frame(title: none, body) = {
@@ -50,7 +53,7 @@
     radius: radius,
   )[
     #if title != none {
-      align(top + right, name)
+      place(top + right, dx: radius + stroke.thickness, dy: -(radius + stroke.thickness), name)
     }
     #body
   ]
@@ -65,10 +68,15 @@
   ]
 }
 
-// 设置缩进
-#let par2(body) = {
-  set par(justify: true,first-line-indent: 2em)
-  body
+// 设置假缩进
+#let fake_par = {
+  v(-1em)
+  box()
+}
+
+// 提取 text
+#let get_text(knt) = {
+  knt.at("body", default: knt.at("text", default: "anything"))
 }
 
 #let project(
@@ -85,12 +93,8 @@
   set text(font: 字体.宋体, size: 字号.小四, lang: "zh")
   set par(first-line-indent: 2em)
   show heading: it => {
-    let fake_par = {
-      v(-1em)
-      box()
-    }
     it
-    fake_par
+    par()[#text(size:0.5em)[#h(0.0em)]]
   }
 
   // heading，一级标题换页且不显示数字，首行居中
