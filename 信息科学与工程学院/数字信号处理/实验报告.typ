@@ -3,8 +3,7 @@
 #import "@preview/mitex:0.1.0": *
 
 #let 手写字体=(
-  "德彪钢笔行书字库",
-  "LiDeBiao-Xing3", // 德彪钢笔行书 https://freefonts.top/font/60a68009f694d7302081e78b
+  "德彪钢笔行书字库", "LiDeBiao-Xing3", // 德彪钢笔行书 https://freefonts.top/font/60a68009f694d7302081e78b
   "田英章楷书", // https://eng.m.fontke.com/font/13069604/download/
   "ChenDaiMing", // 陈代明硬笔体 https://freefonts.top/font/60bef156aa520e302b8e8922
   "FZQiTi-S14S", // 方正启功简体
@@ -284,7 +283,7 @@
     )
 
     - 实验分析与讨论（请手写）：请写出该滤波器的技术指标，说明设计的输入信号以及实验获得的滤波结果。请预测一下，如果该滤波器用椭圆滤波器来设计，所得到的滤波器阶数应该会变多还是变少？为什么？
-      #answer[$Omega_s=2pi f_s=3k pi "rad/s", Omega_p=2pi f_p=4k pi "rad/s", N>=(lg k_("sp"))/(lg lambda_("sp"))=16.02$，取$H=17$。实验结果是成功率除了$X_n 1$的频率成分。如果换成椭圆滤波器，阶数会减少。]
+      #answer[$Omega_s=2pi f_s=3k pi "rad/s", Omega_p=2pi f_p=4k pi "rad/s", N>= (lg k_("sp"))/(lg lambda_("sp"))=16.02$，取$H=17$。实验结果是成功滤除了$X_(n 1)$的频率成分。如果换成椭圆滤波器，阶数会减少。]
 
   + 已知某系统如图所示
     #figure(image("static/q1.png", width:50%))
@@ -311,7 +310,7 @@
     )
 
     - 实验分析与讨论（请手写）：请写出必要的系统分析步骤，分析该滤波器的滤波特性，并解释滤波结果。
-      #answer[$x(t)=R*i(t)+y(t)=R C(d y(t))/(d(t))+y(t), X(s)=S Y(s)+X(s), H(s)=(Y(s))/(X(s))=1/(s+1)$。低通，$Omega_(s t)=100 "rad/s", f_(s t)=16 "Hz"$。滤波器确实滤除了低频成分，但过渡带较宽，效果不佳。]
+      #answer[$x(t)=R dot i(t)+y(t)=R C(d y(t))/(d(t))+y(t), X(s)=S Y(s)+X(s), H(s)=(Y(s))/(X(s))=1/(s+1)$。低通，$Omega_(s t)=100 "rad/s", f_(s t)=16 "Hz"$。滤波器确实滤除了低频成分，但过渡带较宽，效果不佳。]
 
 = FIR数字滤波器的设计
 + 实验目的
