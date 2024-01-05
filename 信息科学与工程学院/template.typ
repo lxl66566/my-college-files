@@ -91,7 +91,7 @@
   // set page(background: rotate(24deg,text(80pt, fill: rgb("FFCBC4"))[*SAMPLE*]))
 
   // 正文，两端对齐，段前缩进2字符
-  set text(font: 字体.宋体, size: 字号.小四, lang: "zh")
+  set text(font: 字体.宋体, size: 字号.小四, lang: "zh", region: "cn")
   set par(first-line-indent: 2em)
   show heading: it => {
     it
