@@ -71,7 +71,7 @@
 
 // 设置假缩进
 #let fake_par = {
-  v(-1em)
+  v(-0.5em)
   box()
 }
 
