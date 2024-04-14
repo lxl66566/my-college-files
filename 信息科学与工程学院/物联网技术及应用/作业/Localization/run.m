@@ -1,37 +1,35 @@
 clear;
 clc;
 close all;
-%~~~~~~~~~~~~~~~~~~~~~~~���ýڵ㣬���ڵ�ֲ�ͼ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~布置节点，画节点分布图~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 cd 'Deploy Nodes'
-square_random(1000, 300, 60); %���ýڵ�
-Distribution_Of_WSN; %���ڵ�ֲ�ͼ
+square_random(1000, 300, 60); %布置节点
+Distribution_Of_WSN; %画节点分布图
 cd ..;
-% ~~~~~~~~~~~~ ����ͨ�Ű뾶��ѡ��ͨ��ģ�ͣ������ھӹ�ϵ�����ھӹ�ϵͼ~~~~~~~~~~
+% ~~~~~~~~~~~~ 给定通信半径，选择通信模型，计算邻居关系，画邻居关系图~~~~~~~~~~
 cd 'Topology Of WSN';
-comm_r = 300; %����ͨ�Ű뾶
-%~~~~~~~~~~~~~~~~~~ѡ��ͨ��ģ��~~~~~~~~~~~~~~~~~
+comm_r = 300; %给定通信半径
+%~~~~~~~~~~~~~~~~~~选择通信模型~~~~~~~~~~~~~~~~~
 model='Regular Model';
-%~~~~~~~~~~~~~~~~~~�����ھӹ�ϵ~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~计算邻居关系~~~~~~~~~~~~~~~~~
 anchor_comm_r = 1;
-%anchor_comm_r����ֻ��APIT�и��ģ��������㷨ͳһ����Ϊ1��
-%����ʾê�ڵ�ͨ�Ű뾶��δ֪�ڵ�ͨ�Ű��ı�����
+%anchor_comm_r参数只在APIT中更改，其他的算法统一设置为1。
+%它表示锚节点通信半径是未知节点通信半斤的倍数。
 calculate_neighbor(comm_r, anchor_comm_r, model);
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Topology_Of_WSN; %���ھӹ�ϵͼ
+Topology_Of_WSN; %画邻居关系图
 cd ..;
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ѡ��λ�㷨~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cd Centroid; Centroid(20, 0.9); %Centroid_second(20,0.9);
-cd ..;
-cd RSSI; RSSI; %RSSI_second;
-cd ..;
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~选择定位算法~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%cd Centroid;Centroid(20,0.9);%Centroid_second(20,0.9);
+%cd RSSI;RSSI;%RSSI_second;
 %~~~~~~~~~~~~~~~~~~~~~~~~
-cd 'DV-hop'; DV_hop;
-cd Amorphous; Amorphous;
-cd APIT; APIT(0.1 * comm_r);
+%cd 'DV-hop';DV_hop;
+%cd Amorphous;Amorphous;
+%cd APIT;APIT(0.1*comm_r);
 dist_available = true;
 cd 'MDS-MAP'; MDS_MAP(dist_available);
 cd ..
-%~~~~~~~~~~~~~~~~~~~~~~~~~~~���㶨λ������λ���ͼ~~~~~~~~~~~~~~~~~~~~~~~
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~计算定位误差，画定位误差图~~~~~~~~~~~~~~~~~~~~~~~
 cd 'Localization Error'
 calculate_localization_error;
 cd ..;
