@@ -15,3 +15,7 @@
 http://cs.e.ecust.edu.cn/download/e13253a8fc06e84730100cc794cc9785
 http://cs.e.ecust.edu.cn/download/8fbb01b2325458a58bc5cd03dfcde997
 ```
+
+## 实验
+
+本课程有一次非常水的实验。代码直接给，1 小时搞定。

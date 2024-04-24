@@ -1,6 +1,6 @@
 // typst 0.10.0
 #import "../template.typ": *
-#import "@preview/mitex:0.1.0": *
+#import "@preview/mitex:0.2.2": *
 #import "@preview/tablem:0.1.0": tablem
 
 #let project(
@@ -37,7 +37,7 @@
       中文数字(nums.pos().first()) + "、"
     } 
     else {
-      nums.pos().slice(1,..).map(str).join(".") + "."
+      nums.pos().slice(1,).map(str).join(".") + "."
     }
   )
   show heading: it => {
@@ -135,7 +135,7 @@
 
 由于输入量是交流信号，因此首先必需将交流信号变为直流信号，图 2 电路可以实现上述要求。
 
-设：R1＝R3＝R4＝R7＝R8＝10K，R2＝R5＝5.1K，R6＝20K，R9＝100K。
+设：R1=R3=R4=R7=R8=10K，R2=R5=5.1K，R6=20K，R9=100K。
 当 $V_i>0$ 时，$D_2$ 导通，$D_1$反向偏置，$A 1$ 为同向放大器。
 
 此时，$V_(o 1)=(R_1+R_3)/(R_1)V_i=2V_i$，A2 则将反向输入端的 $V_(o 1)$ 及同向输入端的 $V_i$信号同时放大，#mi[`V_{o2}=-\frac{R_6}{R_4}V_{o1}+\frac{R_4+R_6}{R_4}V_i=-V_i`]。
