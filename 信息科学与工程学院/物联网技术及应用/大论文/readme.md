@@ -12,9 +12,9 @@
 
 以上命题大作业，以 word 文档形式在本课程平台内以附件形式提交。
 
-当然可以。以下是一篇关于“基于软件定义网络技术的物联网应用研究”的综述论文的大纲和字数分配：
-
 ## GPT
+
+以下是一篇关于“基于软件定义网络技术的物联网应用研究”的综述论文的大纲和字数分配：
 
 1. **引言** (600 字)
 
@@ -75,3 +75,13 @@
     - 相关研究的文献回顾
 
 https://www.redhat.com/zh/topics/hyperconverged-infrastructure/what-is-software-defined-networking
+
+(2) 软件定义物联网研究综述 - 百度学术. https://bing.com/search?q=%e5%9f%ba%e4%ba%8e%e8%bd%af%e4%bb%b6%e5%ae%9a%e4%b9%89%e7%bd%91%e7%bb%9c%e6%8a%80%e6%9c%af%e7%9a%84%e7%89%a9%e8%81%94%e7%bd%91%e5%ba%94%e7%94%a8%e7%a0%94%e7%a9%b6+%e7%89%a9%e8%81%94%e7%bd%91%e7%9a%84%e5%ae%9a%e4%b9%89%e4%b8%8e%e7%89%b9%e7%82%b9+%e7%89%a9%e8%81%94%e7%bd%91%e7%9a%84%e5%ba%94%e7%94%a8%e9%a2%86%e5%9f%9f+%e7%89%a9%e8%81%94%e7%bd%91%e7%9a%84%e5%8f%91%e5%b1%95%e7%8e%b0%e7%8a%b6%e4%b8%8e%e6%8c%91%e6%88%98.
+(3) 软件定义物联网研究综述 - 百度学术. https://xueshu.baidu.com/usercenter/paper/show?paperid=1g1m04e0vg6r0em0v9010vb0a0721210.
+(4) 软件定义物联网路由研究 - 百度学术. https://xueshu.baidu.com/usercenter/paper/show?paperid=a275e528a81e641c68adb94843928279.
+(5) 基于软件定义网络的物联网安全技术研究 - 百度学术. https://xueshu.baidu.com/usercenter/paper/show?paperid=1g3q02e04m5p0ty0cx4j08v048583882.
+(6) undefined. http://www.jos.org.cn/1000-9825/4701.html.
+(7) 物联网应用前景和发展展望 - 知乎. https://zhuanlan.zhihu.com/p/179300577.
+(8) 物联网技术定义*物联网技术的特点*物联网技术应用领域 - 与非网. https://www.eefocus.com/baike/528979.html.
+(9) 物联网（IoT）：国内现状和国家标准综述. http://ccj.pku.edu.cn/article/info?aid=336999396.
+(10) 物联网的发展与应用物联网将物理世界数字化,通过( )、( )与 .... https://blog.csdn.net/weixin_43272781/article/details/94891083.
