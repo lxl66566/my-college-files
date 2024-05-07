@@ -4,9 +4,9 @@
 #import "@preview/tablem:0.1.0": tablem
 
 #let project(
-  title: "电子认识实习", 
+  title: "电子认识实习",
   authors: ("absolutex"),
-  body
+  body,
 ) = {
   set document(author: authors, title: title)
 
@@ -16,13 +16,13 @@
     numbering: (..nums) => {
       "第" + str(nums.pos().at(0)) + "页，共" + str(nums.pos().at(-1)) + "页"
     },
-    number-align: center, 
+    number-align: center,
     margin: (top: 2.5cm, bottom: 2.5cm, left: 2.5cm, right: 1.5cm),
     header: [
       #set align(center)
       #set text(font: 字体.宋体, size: 字号.小五)
       《电子认识实习》报告
-    ]
+    ],
   )
 
   set par(first-line-indent: 2em)
@@ -32,25 +32,19 @@
   }
 
   // heading，一级标题换页且不显示数字，首行居中
-  set heading(numbering: (..nums) => 
-    if nums.pos().len() == 1 {
-      中文数字(nums.pos().first()) + "、"
-    } 
-    else {
-      nums.pos().slice(1,).map(str).join(".") + "."
-    }
-  )
+  set heading(numbering: (..nums) => if nums.pos().len() == 1 {
+    中文数字(nums.pos().first()) + "、"
+  } else {
+    nums.pos().slice(1).map(str).join(".") + "."
+  })
   show heading: it => {
     if it.level == 1 {
       text(size: 字号.小三, font: 字体.黑体, it)
-    }
-    else if it.level == 2 {
-      text(size: 字号.小四,  font: 字体.黑体, it)
-    }
-    else if it.level == 3 {
+    } else if it.level == 2 {
+      text(size: 字号.小四, font: 字体.黑体, it)
+    } else if it.level == 3 {
       text(size: 字号.小四, it)
-    }
-    else{
+    } else {
       text(size: 字号.五号, it)
     }
   }
@@ -99,11 +93,8 @@
 
 #show: project.with(
   title: "电子认识实习",
-  authors: (
-    "absolutex",
-  )
+  authors: ("absolutex",),
 )
-
 
 = 设计要求
 
