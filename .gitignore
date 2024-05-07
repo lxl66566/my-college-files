@@ -3,3 +3,5 @@
 *.*~
 template.pdf
 upload.sh
+*.vmdk
+*.qcow2
