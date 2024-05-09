@@ -45,3 +45,13 @@ https://mooc.s.ecust.edu.cn/ueditorupload/read?objectId=a3c7a9a81be9bcdffed66b32
 ```
 https://mooc.s.ecust.edu.cn/ueditorupload/read?objectId=d1f77869cf9b3638b39fdce15af91a32
 ```
+
+## Project 3
+
+基于 BP 神经网络的手写数字识别，针对资料中的 Mnist 手写数字识别数据集 `MNIST.train.csv`，进行训练和验证。Python：建立基于神经网络的识别模型。若用 SKLearn 库函数 MPLClassifier 使用说明见课件。试尝试 2 种以上模型参数并进行分析比较，如单隐层、3 隐层等、隐藏层数目、不同优化函数等不同网络参数的影响。并可以进行前若干个手写数据的图像的可视化，可以利用 `image=x.reshape(-1,28,28)` 进行维度转换。
+
+数据集：
+
+```
+https://cs.e.ecust.edu.cn/download/ec89ae407eef060a2f9bea8f0a5c58ad
+```
