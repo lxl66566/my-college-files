@@ -47,6 +47,16 @@
 
 = 前言
 
+== 使用体验
+
+- 直观感受：只需要知道名字，一行代码，安装并管理
+- 环境变量
+- 源，依赖
+- 查找表
+- ...
+
+== 地位
+
 Package managers are at the core of Linux distributions. —— #link("https://lwn.net/Articles/712318/", "Jonathan Corbet, LWN.net")
 
 #figure(image("static/status.svg", width: 70%))
@@ -70,12 +80,11 @@ Package managers are at the core of Linux distributions. —— #link("https://l
   - ...
 ][
   - Flatpak
-  - #strike[AppImage]
 ]
 
-== 数量统计
+=== 数量统计
 
-https://repology.org/repositories/statistics/newest
+- https://repology.org/repositories/statistics/newest
 
 = 包管理器是如何工作的？
 
@@ -178,22 +187,81 @@ ref: #link("https://wiki.freepascal.org/Debian_package_structure", "Debian packa
   sudo apt install caddy
   ```
 
+== snap
+
+- Ubuntu 的预装包管理器，/snap
+- 守护进程：snapd
+- 每个软件包里带有所有依赖
+- loop mount
+
+#figure(image("static/snap.png", width: 50%))
+
 == pacman
 
+- pacman（package manager）是 Arch Linux 的官方仓库包管理器。
+- 激进，滚动更新，不允许部分更新。
+
+#figure(image("static/pacman_partial.png", width: 60%))
+
+- 依赖的可用性由官方仓库保证。
+
+=== 缺点
+
+- 抽象的参数 (S, Sy, Syu, Syyu, Syyuu)
+- 过于严格的审查与缺陷
+  - error: xxx: signature from "xxx" is unknown trust
+  - 自 2023 年 12 月初 archlinux-keyring 中删除了一个退任的 master key (https://gitlab.archlinux.org/archlinux/archlinux-keyring/-/issues/246) 导致 farseerfc 的 key 的信任数不足，由 GnuPG 的 web of trust 推算为 marginal trust，从而不再能自动信任 archlinuxcn-keyring 包的签名。
+
+== AUR
+
+- AUR（Arch User Repository）是 Arch Linux 的用户仓库，由用户自由上传
+- 所有包使用 PKGBUILD 描述；AUR Helper 处理依赖并下载 PKGBUILD，交由 makepkg 构建安装。
+
 ```
-$ pacman --version
- .--.
-/ _.-' .-.  .-.  .-.
-\  '-. '-'  '-'  '-'
- '--'
-...
+# Maintainer: ab5_x <lxl66566@gmail.com>
+
+pkgname=tdl-bin
+pkgver=0.17.0
+pkgrel=1
+pkgdesc="A Telegram downloader/tools written in Golang"
+arch=("x86_64" "aarch64" "armv7h")
+url="https://github.com/iyear/tdl"
+license=("AGPL-3.0-or-later")
+depends=()
+provides=("tdl")
+
+source_x86_64=("$pkgname-x86_64::https://github.com/iyear/tdl/releases/download/v$pkgver/tdl_Linux_64bit.tar.gz")
+source_aarch64=("$pkgname-aarch64::https://github.com/iyear/tdl/releases/download/v$pkgver/tdl_Linux_arm64.tar.gz")
+source_armv7h=("$pkgname-armv7h::https://github.com/iyear/tdl/releases/download/v$pkgver/tdl_Linux_armv7.tar.gz")
+
+sha256sums_x86_64=('2d9ac6d36530ba08da44572447120691f5487443a1eb65be189850ddaa6d6c7d')
+sha256sums_aarch64=('2c34a9255ae7a79a6cac0c74dd72e79d539813f4f39c4f904f940b44b2b30bb5')
+sha256sums_armv7h=('ea7a126b120682e8130dbe87e07e790c2d9cc5bc41c8ba464cd27d3b5e5f7062')
+
+package() {
+        cd "$srcdir/"
+        install -Dm755 tdl -t "${pkgdir}/usr/bin/"
+        install -Dm644 LICENSE -t "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
+}
 ```
 
-- pacman（package manager）是 Arch Linux 的包管理器。
+=== 缺点
 
-- 激进，滚动更新，不允许部分更新。#figure(image("static/pacman_partial.png", width: 55%))
+- 安全问题
+- 没有通用提交 patch/PR 的办法，只能用户自行维护
+  - 可以标记过期
 
-=== AUR
+#figure(image("static/meme.jpg", width: 60%))
+
+== Nix
+
+- 通用包管理器
+- 函数式 Nix 语言
+- hash 存储，ex. /nix/store/l5rah62vpsr3ap63xmk197y0s1l6g2zx-simgrid-3.22.2
+  - 隔离
+  - 回滚
+
+= 包管理器实践
 
 == init-script
 
@@ -201,6 +269,8 @@ $ pacman --version
 
 - 服务器一键脚本
 - 安装列表：sudo, wget, curl, rsync, btop, lsof, ncdu, tldr, podman, fzf, make, paru, #text(fill: red, "trojan"), base, python-requests, python-pip, pipx, bpm, #text(fill: red, "trojan-go"), caddy, #text(fill: red, "hysteria2"), fd, mcfly, zoxide, fish, starship, cargo, sd, ripgrep, eza, yazi, neovim, fastfetch, zellij, bat, xh, #text(fill: red, "openppp2"), atuin
+
+#pagebreak()
 
 === 初代
 
@@ -219,6 +289,121 @@ def install_zoxide():
             else:
                 basic_install("zoxide")
 ```
+
+#pagebreak()
+
+=== V2
+
+```python
+class Package:
+    """
+    `pm_name`: 一个函数，根据当前架构与包管理器返回系统包名。
+    `level`: 优先级，数字越大优先级越高。0 默认不安装，1 在配置充足的系统上安装，2 必定安装。
+    `pre_install_fun`：自定义安装前函数，返回 None | bool。如果未设置或返回 False，使用 `pm_install` 安装，返回 None 不安装，否则使用 `install_fun` 安装。
+    `install_fun`: 自定义安装函数。如果返回 False，改为使用 pm_install 安装。
+    `post_install_fun`: 自定义安装后函数，主要进行一些配置。无论使用 pm_install 还是 install_fun 安装，都会执行这个函数。
+    """
+
+    @install_once(name="install")
+    def install(self):
+        # install dependencies
+        for i in self.depends:
+            p = packages_list.get(i)
+            assert p, f"找不到依赖包 {i}"
+            if not SetCache("package_installed").in_set(p.name):
+                p.install()
+            else:
+                log.debug(f"依赖 {p.name} 已经安装，跳过安装")
+
+        cut()
+        print(f"""开始安装 {colored(self.name, "green")}...""")
+
+        name = getattr(self, "pm_name", lambda: self.name)()
+        if not name:
+            name = self.name
+
+        """
+        调用函数，如果函数有且只有一个参数，则将 self 作为参数传入，否则不传。
+        """
+        pre_ret = self._call_with_param_0_or_1(
+            getattr(self, "pre_install_fun", lambda: False)
+        )
+
+        if pre_ret is None:
+            log.warning(f"""{colored(self.name, 'yellow')} 不满足安装条件，安装取消.""")
+            return
+
+        if not pre_ret and check_package_exists(name):
+            pm_install(name)
+        else:
+            assert hasattr(
+                self, "install_fun"
+            ), "跳过了系统包安装，并且找不到自定义安装函数。这可能是您的平台不受支持，或者包管理器版本过低，请开 issue 报告"
+            fun = getattr(self, "install_fun")
+            self._call_with_param_0_or_1(fun)
+
+        self._call_with_param_0_or_1(getattr(self, "post_install_fun", lambda: None))
+
+        SetCache("package_installed").append_set(self.name)
+        print(f"""{colored(self.name, "green")} 安装完成.""")
+```
+#pagebreak()
+
+=== 使用
+
+```python
+packages_list.add(
+    Package(
+        "zoxide",
+        2,
+        pre_install_fun=lambda: distro() == "d" and version() < 11,
+        install_fun=lambda: rc_sudo(
+            "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
+        ),
+        post_install_fun=lambda: fish_add_config("zoxide init fish | source"),
+        depends=["fish", "sudo"],
+    )
+)
+```
+
+== bpm
+
+#github("lxl66566/bpm")
+
+- 从 Github Release 中安装 binary
+  - 无需处理依赖
+- 无需打包，依照既定规则安装
+
+```
+install (i)         Install packages.
+remove (r)          Remove packages.
+update (u)          Update packages.
+info                Info package.
+alias               Alias package. (Windows only; Linux use shell alias instead.)
+```
+
+#figure(image("static/bpm.svg", width: 70%))
+
+// vars: {
+//   d2-config: {
+//     layout-engine: tala
+//   }
+// }
+// ***: {
+//   style.font-size: 25
+// }
+// net: {
+//   direction: down
+//   select repo -> assets: github api
+//   assets -> download link: filter
+// }
+// installer: {
+//   direction: down
+//   archive -> files: unpack
+//   files -> system: place rules
+// }
+// direction: right
+// net -> installer: download
 
 // direction: down
 // downloader: {
