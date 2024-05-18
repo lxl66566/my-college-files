@@ -149,7 +149,7 @@ Package managers are at the core of Linux distributions. —— #link("https://l
 - debian 系维护一个 .deb 包，能够直接使用 dpkg -i 安装。
 - apt 处理依赖并下载，交由 dpkg 安装。
 
-#pagebreak()
+#pagebreak(weak: true)
 
 === .deb 包结构
 
@@ -172,7 +172,7 @@ staging
 
 ref: #link("https://wiki.freepascal.org/Debian_package_structure", "Debian package structure")
 
-#pagebreak()
+#pagebreak(weak: true)
 
 === 打包上传
 
@@ -207,10 +207,11 @@ ref: #link("https://wiki.freepascal.org/Debian_package_structure", "Debian packa
 
 === 缺点
 
-- 抽象的参数 (S, Sy, Syu, Syyu, Syyuu)
+- 抽象的参数 (S, Sy, Syu, Syyu, Syyuu; Qtdq, Qtdm; Rns, Rsc)
 - 过于严格的审查与缺陷
   - error: xxx: signature from "xxx" is unknown trust
   - 自 2023 年 12 月初 archlinux-keyring 中删除了一个退任的 master key (https://gitlab.archlinux.org/archlinux/archlinux-keyring/-/issues/246) 导致 farseerfc 的 key 的信任数不足，由 GnuPG 的 web of trust 推算为 marginal trust，从而不再能自动信任 archlinuxcn-keyring 包的签名。
+- do not support search name only (pacman -Ss '^vim-')
 
 == AUR
 
@@ -244,6 +245,7 @@ package() {
         install -Dm644 LICENSE -t "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }
 ```
+#pagebreak(weak: true)
 
 === 缺点
 
@@ -256,10 +258,26 @@ package() {
 == Nix
 
 - 通用包管理器
-- 函数式 Nix 语言
+- 包描述：函数式 Nix 语言
 - hash 存储，ex. /nix/store/l5rah62vpsr3ap63xmk197y0s1l6g2zx-simgrid-3.22.2
   - 隔离
   - 回滚
+  - 可复现
+- cache
+
+#pagebreak(weak: true)
+
+=== 使用
+
+```sh
+❯ sudo nix-channel --add https://nixos.org/channels/nixpkgs-unstable
+❯ sudo nix-channel --update
+❯ sudo nix-env -i fish
+❯ which fish
+/nix/var/nix/profiles/default/bin/fish
+❯ nix-shell -p cowsay
+[nix-shell:~]# cowsay 456
+```
 
 = 包管理器实践
 
@@ -270,7 +288,7 @@ package() {
 - 服务器一键脚本
 - 安装列表：sudo, wget, curl, rsync, btop, lsof, ncdu, tldr, podman, fzf, make, paru, #text(fill: red, "trojan"), base, python-requests, python-pip, pipx, bpm, #text(fill: red, "trojan-go"), caddy, #text(fill: red, "hysteria2"), fd, mcfly, zoxide, fish, starship, cargo, sd, ripgrep, eza, yazi, neovim, fastfetch, zellij, bat, xh, #text(fill: red, "openppp2"), atuin
 
-#pagebreak()
+#pagebreak(weak: true)
 
 === 初代
 
@@ -290,7 +308,7 @@ def install_zoxide():
                 basic_install("zoxide")
 ```
 
-#pagebreak()
+#pagebreak(weak: true)
 
 === V2
 
@@ -347,7 +365,7 @@ class Package:
         SetCache("package_installed").append_set(self.name)
         print(f"""{colored(self.name, "green")} 安装完成.""")
 ```
-#pagebreak()
+#pagebreak(weak: true)
 
 === 使用
 
@@ -365,6 +383,9 @@ packages_list.add(
     )
 )
 ```
+- 不用 nix 的原因？
+  - 当时不知道
+  - nix 安装后需要手动重启 shell
 
 == bpm
 
