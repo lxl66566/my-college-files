@@ -49,6 +49,7 @@
 
 == 使用体验
 
+- Makefile 有多难用
 - 直观感受：只需要知道名字，一行代码，安装并管理
 - 环境变量
 - 源，依赖
@@ -192,7 +193,7 @@ ref: #link("https://wiki.freepascal.org/Debian_package_structure", "Debian packa
 - Ubuntu 的预装包管理器，/snap
 - 守护进程：snapd
 - 每个软件包里带有所有依赖
-- loop mount
+- loop mount，#strike[btrfs-convert]
 
 #figure(image("static/snap.png", width: 50%))
 
@@ -263,7 +264,8 @@ package() {
   - 隔离
   - 回滚
   - 可复现
-- cache
+- cache：不需要再分 -bin, -git
+- NixOS：基于 Nix 的操作系统
 
 #pagebreak(weak: true)
 
@@ -278,6 +280,16 @@ package() {
 ❯ nix-shell -p cowsay
 [nix-shell:~]# cowsay 456
 ```
+
+== 总结
+
++ 打包：开发者编写 manifest 并测试，集中上传
++ 构建：根据 manifest 构建为 package（服务端构建 / 客户端构建）
+  - 依赖、源
++ 安装：交给安装器
++ 卸载（补充）：
+  - 移除整个目录
+  - 追踪表
 
 = 包管理器实践
 
@@ -384,7 +396,7 @@ packages_list.add(
 )
 ```
 - 不用 nix 的原因？
-  - 当时不知道
+  - 当时不知道，#strike[现在不会用]
   - nix 安装后需要手动重启 shell
 
 == bpm
@@ -426,6 +438,7 @@ alias               Alias package. (Windows only; Linux use shell alias instead.
 // direction: right
 // net -> installer: download
 
+// 未使用：
 // direction: down
 // downloader: {
 //   direction: right
