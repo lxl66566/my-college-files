@@ -16,12 +16,7 @@
 4. 含有足够信息量的军机文件。（重要隐私文件已作出 >20 位符号混合加密）
 5. 本人的私人文件。（也进行了加密）
 
-大三开始部分作业/论文由 [typst](https://github.com/typst/typst) 写成（`*.typ`），在仓库中可能只有源码，不会放出成品 pdf，有需要的可以自己编译。（非常简单，注意 include 的文件）
-
-1. 下载最新版本的 [typst 可执行文件](https://github.com/typst/typst/releases)（windows 可以放到 `C:\Windows\System32`）
-2. 下载 typ 文件，一般还需要下载 `template.typ`，不同课程使用的 template 可能不同，需要看清楚 include 的是哪个。
-   - 有的可能还需要下载目录下的图片，代码文件等。
-3. `typst compile xxx.typ`
+所有 `.typ` 文件均为 [typst](https://github.com/typst/typst) 文件。typst 是一个对标 latex 的排版工具，可以将 `.typ` 编译导出为 pdf。仓库中可能只有源码而没有成品 pdf，有需要的可以[自己编译](https://absx.pages.dev/farraginous/learning/typst.html#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE)（非常简单）。编译可能需要下载 `.typ` 文件中 include 的其他文件，例如图片，代码，模板等。建议直接 clone 此仓库，可以省去很多麻烦。
 
 ## 贡献规则
 

@@ -20,12 +20,25 @@ calculate_neighbor(comm_r, anchor_comm_r, model);
 Topology_Of_WSN; %画邻居关系图
 cd ..;
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~选择定位算法~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-%cd Centroid;Centroid(20,0.9);%Centroid_second(20,0.9);
-%cd RSSI;RSSI;%RSSI_second;
+cd Centroid;
+Centroid(20, 0.9);
+Centroid_second(20, 0.9);
+cd ..
+cd RSSI;
+RSSI;
+RSSI_second;
+cd ..
 %~~~~~~~~~~~~~~~~~~~~~~~~
-%cd 'DV-hop';DV_hop;
-%cd Amorphous;Amorphous;
-%cd APIT;APIT(0.1*comm_r);
+% cd 'DV-hop';
+% DV_hop;
+% cd ..
+% cd Amorphous;
+% Amorphous;
+% cd ..
+% cd APIT;
+% APIT(0.1 * comm_r);
+% cd ..
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dist_available = true;
 cd 'MDS-MAP'; MDS_MAP(dist_available);
 cd ..
