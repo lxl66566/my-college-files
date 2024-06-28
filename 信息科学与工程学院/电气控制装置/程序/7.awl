@@ -1,0 +1,108 @@
+ORGANIZATION_BLOCK 主程序:OB1
+TITLE=程序注释
+BEGIN
+Network 1 
+LD     SM0.1
+R      M1.0, 8
+R      M2.0, 5
+Network 2 // 网络标题
+// 网络注释
+LD     M1.1
+=      Q0.1
+Network 3 
+LD     M1.2
+=      Q0.2
+Network 4 
+LD     M1.3
+=      Q0.3
+Network 5 
+LD     M1.4
+=      Q0.4
+Network 6 
+LD     M1.5
+=      Q0.5
+Network 7 
+LD     M1.6
+=      Q0.6
+Network 8 
+LD     M1.7
+=      Q0.7
+Network 9 
+LD     I0.0
+S      M2.2, 1
+Network 10 
+LDN    I0.5
+R      M2.2, 1
+R      M1.0, 8
+R      M2.0, 5
+Network 11 
+LD     M2.2
+=      Q0.6
+Network 12 
+LD     I0.6
+S      M1.2, 1
+R      M2.2, 1
+Network 13 
+LD     I0.2
+S      M1.5, 1
+R      M1.2, 1
+S      M2.0, 1
+Network 14 
+LD     M2.0
+TON    T37, 20
+A      T37
+R      M2.0, 1
+S      M2.3, 1
+Network 15 
+LD     T37
+S      M1.1, 1
+Network 16 
+LDN    M2.4
+A      I0.1
+S      M1.3, 1
+R      M1.1, 1
+Network 17 
+LD     I0.3
+S      M1.2, 1
+R      M1.3, 1
+Network 18 
+LD     M2.3
+A      I0.2
+R      M1.5, 1
+S      M2.1, 1
+Network 19 
+LD     M2.1
+TON    T38, 20
+A      T38
+R      M2.1, 1
+R      M2.3, 1
+Network 20 
+LD     T38
+S      M1.1, 1
+S      M2.4, 1
+Network 21 
+LDN    M1.5
+A      M2.4
+A      I0.1
+S      M1.7, 1
+S      M1.4, 1
+R      M1.1, 1
+Network 22 
+LD     I0.4
+R      M1.7, 1
+R      M1.4, 1
+S      M2.2, 1
+R      M2.4, 1
+END_ORGANIZATION_BLOCK
+SUBROUTINE_BLOCK SBR_0:SBR0
+TITLE=子程序注释
+BEGIN
+Network 1 // 网络标题
+// 网络注释
+END_SUBROUTINE_BLOCK
+INTERRUPT_BLOCK INT_0:INT0
+TITLE=中断程序注释
+BEGIN
+Network 1 // 网络标题
+// 网络注释
+END_INTERRUPT_BLOCK

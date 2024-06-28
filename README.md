@@ -18,6 +18,8 @@
 
 所有 `.typ` 文件均为 [typst](https://github.com/typst/typst) 文件。typst 是一个对标 latex 的排版工具，可以将 `.typ` 编译导出为 pdf。仓库中可能只有源码而没有成品 pdf，有需要的可以[自己编译](https://absx.pages.dev/farraginous/learning/typst.html#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE)（非常简单）。编译可能需要下载 `.typ` 文件中 include 的其他文件，例如图片，代码，模板等。建议直接 clone 此仓库，可以省去很多麻烦。
 
+所有 `.enc`, `.zst.enc` 文件均为加密文件，使用 [git-simple-encrypt](https://github.com/lxl66566/git-simple-encrypt)（本人写的加密软件）进行加密。
+
 ## 贡献规则
 
 ~~会不会有人来贡献呢，会不会呢？不会吧~~
@@ -36,7 +38,8 @@
    - 在显示文件的界面按 `F12`，打开控制台，在元素中按 `Ctrl+F` 搜索 `objectid`，复制此 32 位字符串
    - 将其填入 `http://cs.e.ecust.edu.cn/download/[objectID]` 接口下载。（记得去除 `[]`）
 8. 对于清晰的打印文字，可以考虑 [OCR](https://absx.pages.dev/articles/ocr.html) 以后放在 markdown 中。
-9. 仔细衡量传入的文件价值。
+9. 对于代码文件，尽可能使用 utf-8 编码。
+10. 仔细衡量传入的文件价值。
 
 ## TODO
 

@@ -1,0 +1,37 @@
+ORGANIZATION_BLOCK 主程序:OB1
+TITLE=程序注释
+BEGIN
+Network 1 
+LD     SM0.1
+R      Q1.0, 1
+S      Q0.0, 1
+R      M0.0, 1
+Network 2 // 网络标题
+// 网络注释
+LD     I0.0
+O      M0.0
+A      I0.1
+=      M0.0
+Network 3 
+LD     M0.0
+AN     T37
+TON    T37, 10
+Network 4 
+LD     T37
+SHRB   Q1.0, Q0.0, 8
+Network 5 
+LD     SM1.1
+S      Q0.0, 1
+END_ORGANIZATION_BLOCK
+SUBROUTINE_BLOCK SBR_0:SBR0
+TITLE=子程序注释
+BEGIN
+Network 1 // 网络标题
+// 网络注释
+END_SUBROUTINE_BLOCK
+INTERRUPT_BLOCK INT_0:INT0
+TITLE=中断程序注释
+BEGIN
+Network 1 // 网络标题
+// 网络注释
+END_INTERRUPT_BLOCK

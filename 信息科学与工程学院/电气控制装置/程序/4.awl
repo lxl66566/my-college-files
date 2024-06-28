@@ -1,0 +1,79 @@
+ORGANIZATION_BLOCK 主程序:OB1
+TITLE=程序注释
+BEGIN
+Network 1 
+LD     SM0.1
+R      M0.0, 3
+R      Q0.0, 8
+R      I0.0, 1
+Network 2 // 网络标题
+// 网络注释
+LD     I0.0
+O      M0.0
+=      M0.0
+Network 3 
+LDN    T44
+A      M0.0
+TON    T37, 10
+TON    T38, 200
+TON    T39, 230
+TON    T40, 250
+TON    T41, 260
+TON    T42, 450
+TON    T43, 480
+TON    T44, 500
+Network 4 
+// 南北红灯、东西绿灯
+LD     M0.0
+A      SM0.0
+AN     T39
+A      M0.1
+=      Q0.0
+=      Q0.5
+Network 5 
+// 灯闪烁
+LDN    T39
+A      T38
+O      T42
+A      SM0.5
+NOT
+=      M0.1
+Network 6 
+// 南北、东西黄灯
+LD     T39
+AN     T40
+LD     T43
+AN     T44
+OLD
+=      Q0.1
+=      Q0.4
+Network 7 
+// 南北绿灯、东西红灯
+LD     T40
+AN     T43
+A      M0.1
+=      Q0.2
+=      Q0.3
+Network 8 
+// A车
+LD     T37
+AN     T40
+=      Q0.7
+Network 9 
+// B车
+LD     T41
+AN     T44
+=      Q0.6
+END_ORGANIZATION_BLOCK
+SUBROUTINE_BLOCK SBR_0:SBR0
+TITLE=子程序注释
+BEGIN
+Network 1 // 网络标题
+// 网络注释
+END_SUBROUTINE_BLOCK
+INTERRUPT_BLOCK INT_0:INT0
+TITLE=中断程序注释
+BEGIN
+Network 1 // 网络标题
+// 网络注释
+END_INTERRUPT_BLOCK

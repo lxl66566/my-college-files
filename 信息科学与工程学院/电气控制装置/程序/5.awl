@@ -1,0 +1,159 @@
+ORGANIZATION_BLOCK Ö÷³ÌÐò:OB1
+TITLE=³ÌÐò×¢ÊÍ
+BEGIN
+Network 1 // ÍøÂç±êÌâ
+// ÍøÂç×¢ÊÍ
+LD     I0.0
+O      M0.0
+A      I0.1
+=      M0.0
+Network 2 
+LD     M0.0
+AN     T55
+TON    T37, 10
+TON    T38, 20
+TON    T39, 30
+TON    T40, 40
+TON    T41, 50
+TON    T42, 60
+Network 3 
+LD     M0.0
+A      T42
+AN     T55
+TON    T43, 10
+TON    T44, 20
+TON    T45, 30
+TON    T46, 40
+TON    T47, 50
+TON    T48, 60
+Network 4 
+LD     M0.0
+A      T48
+AN     T55
+TON    T49, 10
+TON    T50, 20
+TON    T51, 30
+TON    T52, 40
+TON    T53, 50
+TON    T54, 60
+TON    T55, 70
+Network 5 
+LD     M0.0
+LD     T37
+AN     T38
+LD     T45
+AN     T46
+OLD
+LD     T47
+AN     T49
+OLD
+LD     T50
+AN     T55
+OLD
+ALD
+=      Q0.0
+Network 6 
+LD     M0.0
+LD     T38
+AN     T39
+LD     T45
+AN     T50
+OLD
+LD     T52
+AN     T55
+OLD
+ALD
+=      Q0.1
+Network 7 
+LD     M0.0
+LD     T39
+AN     T40
+LD     T45
+AN     T47
+OLD
+LD     T48
+AN     T55
+OLD
+ALD
+=      Q0.2
+Network 8 
+LD     M0.0
+LD     T40
+AN     T41
+LD     T45
+AN     T46
+OLD
+LD     T47
+AN     T49
+OLD
+LD     T50
+AN     T52
+OLD
+LD     T53
+AN     T55
+OLD
+ALD
+=      Q0.3
+Network 9 
+LD     M0.0
+LD     T41
+AN     T42
+LD     T47
+AN     T48
+OLD
+LD     T51
+AN     T52
+OLD
+LD     T53
+AN     T54
+OLD
+LD     T45
+AN     T46
+OLD
+ALD
+=      Q0.4
+Network 10 
+LD     M0.0
+LD     T42
+AN     T43
+LD     T45
+AN     T46
+OLD
+LD     T49
+AN     T52
+OLD
+LD     T53
+AN     T55
+OLD
+ALD
+=      Q0.5
+Network 11 
+LD     M0.0
+LD     T43
+AN     T44
+LD     T47
+AN     T52
+OLD
+LD     T53
+AN     T55
+OLD
+ALD
+=      Q0.6
+Network 12 
+LD     M0.0
+A      T44
+AN     T45
+=      Q0.7
+END_ORGANIZATION_BLOCK
+SUBROUTINE_BLOCK SBR_0:SBR0
+TITLE=×Ó³ÌÐò×¢ÊÍ
+BEGIN
+Network 1 // ÍøÂç±êÌâ
+// ÍøÂç×¢ÊÍ
+END_SUBROUTINE_BLOCK
+INTERRUPT_BLOCK INT_0:INT0
+TITLE=ÖÐ¶Ï³ÌÐò×¢ÊÍ
+BEGIN
+Network 1 // ÍøÂç±êÌâ
+// ÍøÂç×¢ÊÍ
+END_INTERRUPT_BLOCK

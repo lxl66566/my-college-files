@@ -1,0 +1,173 @@
+ORGANIZATION_BLOCK Ö÷³ÌÐò:OB1
+TITLE=³ÌÐò×¢ÊÍ
+BEGIN
+Network 1 
+LD     SM0.1
+R      M0.0, 8
+R      M1.0, 8
+Network 2 
+// Æô¶¯
+LD     I0.0
+O      M0.1
+AN     T40
+=      M0.1
+Network 3 
+// Í£Ö¹
+LDN    I0.5
+O      M0.2
+AN     T40
+=      M0.2
+Network 4 
+// ¹ÊÕÏ
+LD     I0.1
+O      M0.3
+AN     T40
+=      M0.3
+=      M2.0
+Network 5 
+// ¹ÊÕÏ
+LD     I0.2
+O      M0.4
+AN     T40
+=      M0.4
+=      M2.0
+Network 6 
+// ¹ÊÕÏ
+LD     I0.3
+O      M0.5
+AN     T40
+=      M0.5
+=      M2.0
+Network 7 
+// ¹ÊÕÏ
+LD     I0.4
+O      M0.6
+AN     T40
+=      M0.6
+=      M2.0
+Network 8 
+// ËÄ´Î¼ÆÊ±Æ÷
+LD     M0.1
+O      M0.2
+O      M0.3
+O      M0.4
+O      M0.5
+O      M0.6
+O      M2.0
+LPS
+TON    T37, 10
+A      T37
+TON    T38, 10
+LRD
+A      T38
+TON    T39, 10
+LPP
+A      T39
+TON    T40, 10
+Network 9 
+Network 10 
+LD     M1.6
+O      Q0.1
+AN     M1.1
+=      Q0.1
+Network 11 
+LD     M1.4
+O      Q0.2
+AN     M1.3
+=      Q0.2
+Network 12 
+LD     M1.2
+O      Q0.3
+AN     M1.5
+=      Q0.3
+Network 13 
+LD     M1.0
+O      Q0.4
+AN     M1.7
+=      Q0.4
+Network 14 
+// ÁÁµÆ
+LD     M0.1
+S      M1.0, 1
+Network 15 
+LD     M0.1
+A      T37
+S      M1.2, 1
+Network 16 
+LD     M0.1
+A      T38
+S      M1.4, 1
+Network 17 
+LD     M0.1
+A      T39
+S      M1.6, 1
+Network 18 
+// ÃðµÆ
+LD     M0.2
+LD     T37
+A      M0.3
+OLD
+O      M0.4
+O      M0.5
+O      M0.6
+S      M1.1, 1
+Network 19 
+LD     M0.2
+A      T37
+LD     T38
+A      M0.3
+OLD
+LD     T37
+A      M0.4
+OLD
+O      M0.5
+O      M0.6
+S      M1.3, 1
+Network 20 
+LD     M0.2
+A      T38
+LD     T39
+A      M0.3
+OLD
+LD     T38
+A      M0.4
+OLD
+LD     T37
+A      M0.5
+OLD
+O      M0.6
+S      M1.5, 1
+Network 21 
+LD     M0.2
+A      T39
+LD     T40
+A      M0.3
+OLD
+LD     T39
+A      M0.4
+OLD
+LD     T38
+A      M0.5
+OLD
+LD     T37
+A      M0.6
+OLD
+S      M1.7, 1
+TON    T100, 1
+Network 22 
+LD     T100
+R      M1.0, 8
+R      M2.0, 1
+END_ORGANIZATION_BLOCK
+SUBROUTINE_BLOCK SBR_0:SBR0
+TITLE=×Ó³ÌÐò×¢ÊÍ
+BEGIN
+Network 1 // ÍøÂç±êÌâ
+// ÍøÂç×¢ÊÍ
+END_SUBROUTINE_BLOCK
+INTERRUPT_BLOCK INT_0:INT0
+TITLE=ÖÐ¶Ï³ÌÐò×¢ÊÍ
+BEGIN
+Network 1 // ÍøÂç±êÌâ
+// ÍøÂç×¢ÊÍ
+END_INTERRUPT_BLOCK
