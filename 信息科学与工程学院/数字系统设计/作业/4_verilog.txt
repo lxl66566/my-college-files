@@ -1,0 +1,22 @@
+module button_call (
+    input btn1, btn2, btn3, btn4;
+    output [3:0]led;
+);
+
+always @(*)
+begin
+    if (btn1) begin
+        led = 4'b1000;
+    end
+    else if (btn2 && !btn1) begin
+        led = 4'b0100;
+    end
+    else if (btn3 && !btn1 && !btn2) begin
+        led = 4'b0010;
+    end
+    else if (btn4 && !btn1 && !btn2 && !btn3) begin
+        led = 4'b0001;
+    end
+end
+
+endmodule

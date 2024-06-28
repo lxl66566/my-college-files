@@ -1,0 +1,5 @@
+*
+!.gitignore
+!start.m
+!run.m
+!encode.sh

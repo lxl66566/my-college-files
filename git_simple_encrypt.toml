@@ -1,0 +1,4 @@
+path = '.'
+use_zstd = true
+zstd_level = 15
+crypt_list = ["我的文件/申请表/**", "军机处/加密/**"]
