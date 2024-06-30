@@ -2,6 +2,6 @@
 *.class
 *.*~
 template.pdf
-upload.sh
+# upload.sh
 *.vmdk
 *.qcow2
