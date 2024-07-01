@@ -1,6 +1,8 @@
 # my college files
 
-记录我（和大家？）大学生涯中的一些文件。
+[Github 地址](https://github.com/lxl66566/my-college-files) | [Gitee 镜像](https://gitee.com/lxl66566/my-college-files)，如果能帮到您的话请到 Github 地址点个 Star，谢谢！
+
+记录我（和大家？）大学生涯中的一些文件（华东理工大学信息工程专业资料全收集）
 
 本校学生若需要其他更全面的文件，请移步 [ecust-CourseShare](https://github.com/tianyilt/ecust-CourseShare)。
 
