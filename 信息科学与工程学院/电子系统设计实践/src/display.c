@@ -55,7 +55,7 @@ const unsigned char SEGMENT_TABLE[36] = {
 
 // 定义
 
-unsigned char show_chars[8] = "12345678";
+unsigned char show_chars[8] = "\0";
 void clear_display() { send_byte(CMD_RESET); }
 
 // 显示字符串
@@ -69,8 +69,9 @@ void display_main_loop(void) {
   }
 }
 
-void display(unsigned char *_data) {
+void display(char *_data) {
   unsigned char i;
+  clear_display();
   for (i = 0; i < 8; ++i) {
     show_chars[i] = _data[i];
   }
@@ -79,14 +80,19 @@ void display(unsigned char *_data) {
 // 显示二进制地址，方便调试
 void display_address(unsigned char address) {
   unsigned char i;
+  clear_display();
   for (i = 0; i < 8; i++) {
     show_chars[i] = SEGMENT_TABLE[(address & (1 << i)) != 0 ? 1 : 0];
+    if (show_chars[i] == '\0') {
+      return;
+    }
   }
 }
 
 // 显示十六进制地址，方便调试
 void display_address_0x(unsigned char address) {
   unsigned char i;
+  clear_display();
   show_chars[0] = '0';
   show_chars[1] = 'x';
   show_chars[2] = ((address & 0xf0) >> 4) + '0';
@@ -97,7 +103,7 @@ void display_address_0x(unsigned char address) {
 
 // 显示单个字符，address 为 0-7，下方 LED 是 0-3，上方是 4-7；data
 // 为小写字母或数字
-void display_one_char(unsigned char address, unsigned char _data) {
+void display_one_char(unsigned char address, char _data) {
   if (_data == ' ') {
     return;
   }
@@ -113,10 +119,4 @@ void display_one_char(unsigned char address, unsigned char _data) {
 // 为共阴数码管显示代码
 void display_one(unsigned char address, unsigned char _data) {
   write_7279(UNDECODE + address, _data);
-}
-
-void display_init(void) {
-  CS = 0;
-  clear_display();
-  CS = 1;
 }

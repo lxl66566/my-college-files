@@ -11,11 +11,13 @@ unsigned char read_key(void) {
   return (readkey);
 }
 
-unsigned char key_changed() {
+// 任何 key 被按下时，返回 1，否则返回 0。注意松开时返回 0.
+bit key_pressed() {
   unsigned char temp = read_key();
   if (temp != last_key) {
     last_key = temp;
-    return 1;
+    if (last_key != KEY_NONE)
+      return 1;
   }
   return 0;
 }

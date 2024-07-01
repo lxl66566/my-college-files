@@ -12,7 +12,7 @@
 extern unsigned char last_key;
 
 void key_init();
-unsigned char key_changed();
 unsigned char read_key();
+bit key_pressed();
 
 #endif
