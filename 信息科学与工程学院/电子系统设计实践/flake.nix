@@ -23,7 +23,7 @@
             pkgs.mkShell.override
               {
                 # Override stdenv in order to change compiler:
-                # stdenv = pkgs.clangStdenv;
+                stdenv = pkgs.clangStdenv;
               }
               {
                 packages =

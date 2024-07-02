@@ -368,6 +368,26 @@
               <FileType>1</FileType>
               <FilePath>.\src\main.c</FilePath>
             </File>
+            <File>
+              <FileName>display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\display.c</FilePath>
+            </File>
+            <File>
+              <FileName>utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\utils.c</FilePath>
+            </File>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\key.c</FilePath>
+            </File>
+            <File>
+              <FileName>hd7279.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\hd7279.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

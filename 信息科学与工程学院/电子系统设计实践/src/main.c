@@ -2,6 +2,7 @@
 #include "hd7279.h"
 #include "key.h"
 #include "led.h"
+#include "temperature.h"
 #include "utils.h"
 #include <REG52.H>
 #include <intrins.h>
@@ -21,22 +22,25 @@ const unsigned char MENU_ITEMS_NUM = 4;
 
 int main(void) {
   hd7279_init();
-  display_menu();
+  temperature_init();
+  // display_menu();
   while (1) {
     display_main_loop();
-    if (key_pressed()) {
-      switch (last_key) {
-      case KEY_DOWN:
-        overflow_add1(&menu, MENU_ITEMS_NUM);
-        break;
-      case KEY_UP:
-        overflow_sub1(&menu, MENU_ITEMS_NUM);
-        break;
-      default:
-        display("err");
-      }
-      display_menu();
-    }
+    // if (key_pressed()) {
+    //   switch (last_key) {
+    //   case KEY_DOWN:
+    //     overflow_add1(&menu, MENU_ITEMS_NUM);
+    //     break;
+    //   case KEY_UP:
+    //     overflow_sub1(&menu, MENU_ITEMS_NUM);
+    //     break;
+    //   default:
+    //     display("err");
+    //   }
+    //   display_menu();
+    // }
+    display_temperature();
+    delay_ms(1000);
   }
 }
 
