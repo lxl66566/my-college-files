@@ -3,7 +3,8 @@
     "Suppress": [
       "pp_file_not_found",
       "unknown_typename",
-      "undeclared_var_use"
+      "undeclared_var_use",
+      "expected_fn_body"
     ]
   }
 }

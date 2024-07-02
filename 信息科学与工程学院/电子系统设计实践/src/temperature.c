@@ -23,8 +23,8 @@ void deal_with_returned_data(U8 *temperature) {
       temperature[1] = ~temperature[1];
     }
   }
-  temp_data = temperature[1] << 4;
-  // 取高字节低 4 位(温度读数高 4 位),注意此时是 12 位精度
+  temp_data = temperature[1]
+              << 4; // 取高字节低 4 位(温度读数高 4 位),注意此时是 12 位精度
   temp_data_2 = temperature[0] >>
                 4; // 取低字节高 4 位(温度读数低 4 位),注意此时是 12 位精度
   temp_data = temp_data | temp_data_2;          // 组合成完整数据
@@ -51,6 +51,9 @@ void display_temperature() {
     temperature[i] = DS1820_ReadData();
   }
   DS1820_Reset(); // 复位,结束读数据
+  // 调试原始数据
+  // display_address_0x(0, temperature[0]);
+  // display_address_0x(1, temperature[1]);
   deal_with_returned_data(temperature);
 }
 

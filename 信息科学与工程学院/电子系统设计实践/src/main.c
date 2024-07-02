@@ -2,14 +2,13 @@
 #include "hd7279.h"
 #include "key.h"
 #include "led.h"
+#include "motor.h"
 #include "temperature.h"
+#include "timer.h"
 #include "utils.h"
 #include <REG52.H>
 #include <intrins.h>
-#include <math.h>
-#include <stdio.h>
 
-sbit Motor = P1 ^ 2;
 void display_menu();
 
 // 其他 不在 main menu 中
@@ -21,10 +20,12 @@ unsigned char menu = 0;
 const unsigned char MENU_ITEMS_NUM = 4;
 
 int main(void) {
+  U8 i;
+  timer_init(6000000);
   hd7279_init();
   temperature_init();
   // display_menu();
-  while (1) {
+  do {
     display_main_loop();
     // if (key_pressed()) {
     //   switch (last_key) {
@@ -39,9 +40,11 @@ int main(void) {
     //   }
     //   display_menu();
     // }
-    display_temperature();
-    delay_ms(1000);
-  }
+    set_duty_cycle(i);
+    overflow_add1(&i, 100);
+    display_number(i);
+    delay_ms(2000);
+  } while (1);
 }
 
 void display_menu() {

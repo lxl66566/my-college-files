@@ -91,6 +91,17 @@ void display(char *_data) {
   }
 }
 
+// 显示十进制数字，方便调试
+void display_number(U8 num) {
+  unsigned char i = 7;
+  while (num) {
+    show_chars[i] = num % 10 + '0';
+    num /= 10;
+    --i;
+  }
+  show_chars[i] = ' ';
+}
+
 // 显示二进制地址，方便调试
 void display_address(unsigned char address) {
   unsigned char i;
