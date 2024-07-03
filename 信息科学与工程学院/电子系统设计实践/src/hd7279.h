@@ -1,7 +1,7 @@
 #ifndef __HD7279_H__
 #define __HD7279_H__
 
-#include <REG52.H>
+#include <reg52.h>
 
 #define CMD_RESET 0xa4
 #define CMD_TEST 0xbf
@@ -17,11 +17,6 @@
 #define SEGON 0xe0
 #define SEGOFF 0xc0
 #define BLINKCTL 0x88
-
-sbit CS = P1 ^ 4;
-sbit DAT = P1 ^ 7;
-sbit CLK = P1 ^ 5;
-sbit KEY = P1 ^ 6;
 
 void hd7279_init(void);
 void long_delay(void);

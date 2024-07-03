@@ -3,65 +3,75 @@
 #include "key.h"
 #include "led.h"
 #include "motor.h"
+#include "storage.h"
 #include "temperature.h"
 #include "timer.h"
 #include "utils.h"
-#include <REG52.H>
-#include <intrins.h>
+#include <reg52.h>
 
-void display_menu();
+void display_menu(void);
 
-// 其他 不在 main menu 中
 // 0 - tp 温度检测
 // 1 - run 电机测试
 // 2 - Con 电机调速
 // 3 - PA 参数设置
-unsigned char menu = 0;
+U8 menu = 0;
 const unsigned char MENU_ITEMS_NUM = 4;
 
+// 0: 菜单选择界面
+// 1: 一级子菜单
+U8 layer = 0;
+
+U8 i = 0;
+
 int main(void) {
-  U8 i;
-  timer_init(6000000);
+  timer_init();
   hd7279_init();
   temperature_init();
+  DISABLE_MOTOR;
+  ENABLE_INTERRUPT;
   // display_menu();
   do {
-    display_main_loop();
-    // if (key_pressed()) {
-    //   switch (last_key) {
-    //   case KEY_DOWN:
-    //     overflow_add1(&menu, MENU_ITEMS_NUM);
-    //     break;
-    //   case KEY_UP:
-    //     overflow_sub1(&menu, MENU_ITEMS_NUM);
-    //     break;
-    //   default:
-    //     display("err");
-    //   }
+    // display_main_loop();
     //   display_menu();
-    // }
-    set_duty_cycle(i);
-    overflow_add1(&i, 100);
-    display_number(i);
-    delay_ms(2000);
+    //   if (key_pressed()) {
+    //     switch (last_key) {
+    //     case KEY_DOWN:
+    //       overflow_add1(&menu, MENU_ITEMS_NUM);
+    //       break;
+    //     case KEY_UP:
+    //       overflow_sub1(&menu, MENU_ITEMS_NUM);
+    //       break;
+    //     default:
+    //       display(1, "err");
+    //     }
+    //     display_address_0x(1, readbyte(0x10));
+    //   }
+    // read_and_display_temperature();
+    // overflow_add1(&i, 100);
+    // display_number(1, i);
+    // set_duty_cycle(i);
+    // delay_ms(5000);
+
+    display_main_loop();
   } while (1);
 }
 
-void display_menu() {
+void display_menu(void) {
   switch (menu) {
   case 0:
-    display("tp");
+    display(0, "tp-");
     break;
   case 1:
-    display("run");
+    display(0, "run-");
     break;
   case 2:
-    display("Con");
+    display(0, "Con-");
     break;
   case 3:
-    display("PA");
+    display(0, "PA-");
     break;
   default:
-    return;
+    display(1, "err0");
   }
 }

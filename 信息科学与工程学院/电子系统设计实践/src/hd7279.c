@@ -1,6 +1,11 @@
 #include "hd7279.h"
 #include "utils.h"
 
+sbit CS = P1 ^ 4;
+sbit CLK = P1 ^ 5;
+sbit KEY = P1 ^ 6;
+sbit DAT = P1 ^ 7;
+
 void send_byte(unsigned char out_byte) {
   unsigned char i;
   CS = 0;
@@ -20,13 +25,13 @@ void send_byte(unsigned char out_byte) {
 }
 
 unsigned char receive_byte(void) {
-  unsigned char i, in_byte;
+  unsigned char i, in_byte = 0;
   DAT = 1;
   long_delay();
   for (i = 0; i < 8; i++) {
     CLK = 1;
     short_delay();
-    in_byte = in_byte * 2;
+    in_byte <<= 1;
     if (DAT) {
       in_byte = in_byte | 0x01;
     }
@@ -58,7 +63,7 @@ void short_delay(void) {
     ;
 }
 
-void hd7279_init() {
+void hd7279_init(void) {
   CS = 0;
   send_byte(CMD_RESET);
   CS = 1;

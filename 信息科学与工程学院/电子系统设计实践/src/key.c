@@ -12,7 +12,7 @@ unsigned char read_key(void) {
 }
 
 // 任何 key 被按下时，返回 1，否则返回 0。注意松开时返回 0.
-bit key_pressed() {
+bit key_pressed(void) {
   unsigned char temp = read_key();
   if (temp != last_key) {
     last_key = temp;

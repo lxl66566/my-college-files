@@ -1,4 +1,18 @@
 #include "utils.h"
+#include <intrins.h>
+
+void delay_1us(void) {
+  // __asm__("nop");
+  // __asm__("nop");
+  // __asm__("nop");
+  // __asm__("nop");
+  // __asm__("nop");
+  _nop_();
+  _nop_();
+  _nop_();
+  _nop_();
+  _nop_();
+}
 
 void empty_loop(unsigned int times) {
   while (times--)
@@ -11,7 +25,11 @@ void delay_ms(unsigned int ms) {
   ;
 }
 
-void delay_us(unsigned int us) { empty_loop(us / 10); }
+void delay_us(unsigned long us) {
+  while (us--) {
+    _nop_();
+  }
+}
 
 void overflow_add1(unsigned char *num, unsigned char limit) {
   (*num)++;

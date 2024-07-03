@@ -1,7 +1,7 @@
 #ifndef __KEY_H__
 #define __KEY_H__
 
-#include <REG52.H>
+#include <reg52.h>
 
 #define KEY_DOWN 0x3B
 #define KEY_UP 0x3A
@@ -11,8 +11,7 @@
 
 extern unsigned char last_key;
 
-void key_init();
-unsigned char read_key();
-bit key_pressed();
+unsigned char read_key(void);
+bit key_pressed(void);
 
 #endif

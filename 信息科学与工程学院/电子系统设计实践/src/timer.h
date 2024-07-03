@@ -4,7 +4,8 @@
 #include "utils.h"
 #include <reg52.h>
 
-void timer_init(unsigned int frequency);
-void timer0_isr(unsigned int frequency);
+// void timer_init(unsigned int frequency);
+void timer_init(void);
+void timer0_isr(void);
 
 #endif

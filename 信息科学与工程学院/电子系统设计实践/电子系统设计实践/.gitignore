@@ -1,12 +1,8 @@
 # Xmake cache
 .xmake/
 build/
-.cache
 
 # MacOS Cache
 .DS_Store
 
 
-/Listings
-/Objects
-main.uvgui.*

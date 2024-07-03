@@ -4,9 +4,8 @@
 #include "utils.h"
 #include <reg52.h>
 
-sbit DS1820_DQ = P1 ^ 3; // 单总线引脚
-void temperature_init();
-bit DS1820_Reset();
-void display_temperature();
+void temperature_init(void);
+bit DS18B20_Reset(void);
+void read_and_display_temperature(void);
 
 #endif

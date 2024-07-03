@@ -1,5 +1,5 @@
 {
-  description = "A Nix-flake-based C/C++ development environment";
+  description = "A Nix-flake-based C51 development environment";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs";
 
@@ -19,22 +19,22 @@
       devShells = forEachSupportedSystem (
         { pkgs }:
         {
-          default =
-            pkgs.mkShell.override
-              {
-                # Override stdenv in order to change compiler:
-                stdenv = pkgs.clangStdenv;
-              }
-              {
-                packages =
-                  with pkgs;
-                  [
-                    clang-tools
-                    python3
-                    poetry
-                  ]
-                  ++ (if system == "aarch64-darwin" then [ ] else [ gdb ]);
-              };
+          default = pkgs.mkShell {
+            name = "C51";
+            buildInputs = with pkgs; [
+              sdcc
+              xmake
+              clang-tools
+              python3
+              poetry
+            ];
+            shellHook = ''
+              xmake f -p mcs51 --toolchain=sdcc -a mcs51 --sdk=/nix/store/5jwp9pyvrrsk617qzlf9gld5ip489x4z-sdcc-4.4.0/
+              alias b="xmake && xmake dl"
+              echo "xmake sdcc sdk selected!"
+            '';
+            # shellAlias = '''';
+          };
         }
       );
     };

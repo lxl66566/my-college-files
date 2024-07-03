@@ -3,11 +3,15 @@
 #include "utils.h"
 #include <reg52.h>
 
-void DS1820_WriteData(U8 wData);
-U8 DS1820_ReadData();
-void deal_with_returned_data(U8 *temperature);
+sbit DS18B20_DQ = P1 ^ 3;
+U8 temperature[2];
 
-void deal_with_returned_data(U8 *temperature) {
+void DS18B20_WriteData(U8 wData);
+U8 DS18B20_ReadData(void);
+void display_temperature(U8 *temperature);
+U8 *read_temperature(void);
+
+void display_temperature(U8 *temperature) {
   U8 temp_data, temp_data_2;
   unsigned int TempDec; // 用来存放 4 位小数
   temp_data = temperature[1];
@@ -38,76 +42,82 @@ void deal_with_returned_data(U8 *temperature) {
   show_chars[7] = (TempDec % 1000) / 100 + '0'; // 取小数百分位转换为 ASCII 码
 }
 
-void display_temperature() {
+U8 *read_temperature(void) {
   U8 i;
-  U8 temperature[2];
-  DS1820_Reset();
-  DS1820_WriteData(0xcc); // 跳过 ROM 命令
-  DS1820_WriteData(0x44); // 温度转换命令
-  DS1820_Reset();
-  DS1820_WriteData(0xcc); // 跳过 ROM 命令
-  DS1820_WriteData(0xbe); // 读 DS1820 温度暂存器命令
+  DS18B20_Reset();
+  DS18B20_WriteData(0xcc); // 跳过 ROM 命令
+  DS18B20_WriteData(0x44); // 温度转换命令
+  DS18B20_Reset();
+  DS18B20_WriteData(0xcc); // 跳过 ROM 命令
+  DS18B20_WriteData(0xbe); // 读 DS18B20 温度暂存器命令
   for (i = 0; i < 2; i++) {
-    temperature[i] = DS1820_ReadData();
+    temperature[i] = DS18B20_ReadData();
   }
-  DS1820_Reset(); // 复位,结束读数据
+  DS18B20_Reset(); // 复位,结束读数据
+  return temperature;
+}
+
+void read_and_display_temperature(void) {
+  read_temperature();
   // 调试原始数据
   // display_address_0x(0, temperature[0]);
   // display_address_0x(1, temperature[1]);
-  deal_with_returned_data(temperature);
+  display_temperature(temperature);
 }
 
-void temperature_init() {
-  DS1820_Reset();
-  DS1820_WriteData(0xCC);
-  DS1820_WriteData(0x4E);
-  DS1820_WriteData(0x20);
-  DS1820_WriteData(0x00);
-  DS1820_WriteData(0x7F);
-  DS1820_Reset();
+void temperature_init(void) {
+  DS18B20_Reset();
+  DS18B20_WriteData(0xCC);
+  DS18B20_WriteData(0x4E);
+  DS18B20_WriteData(0x20);
+  DS18B20_WriteData(0x00);
+  DS18B20_WriteData(0x7F);
+  DS18B20_Reset();
+  // 初始化时读一次温度，消除默认值 85.00
+  read_temperature();
 }
 
 // 返回 1 为故障
-bit DS1820_Reset(void) {
+bit DS18B20_Reset(void) {
   bit flag;
-  DS1820_DQ = 0;
+  DS18B20_DQ = 0;
   empty_loop(240);
-  DS1820_DQ = 1;
+  DS18B20_DQ = 1;
   empty_loop(40);
-  flag = DS1820_DQ;
+  flag = DS18B20_DQ;
   empty_loop(200);
   return flag;
 }
 
-void DS1820_WriteData(U8 wData) {
+void DS18B20_WriteData(U8 wData) {
   U8 i, j;
   for (i = 8; i > 0; i--) {
-    DS1820_DQ = 0;
+    DS18B20_DQ = 0;
     for (j = 2; j > 0; j--)
       ;
-    DS1820_DQ = wData & 0x01;
+    DS18B20_DQ = wData & 0x01;
     for (j = 30; j > 0; j--)
       ;
-    DS1820_DQ = 1;
+    DS18B20_DQ = 1;
     wData >>= 1;
   }
 }
 
-U8 DS1820_ReadData() {
-  U8 i, j, s;
+U8 DS18B20_ReadData(void) {
+  U8 i, j, s = 0;
   for (i = 8; i > 0; i--) {
     s >>= 1;
-    DS1820_DQ = 0;
+    DS18B20_DQ = 0;
     for (j = 2; j > 0; j--)
       ;
-    DS1820_DQ = 1;
+    DS18B20_DQ = 1;
     for (j = 4; j > 0; j--)
       ;
-    if (DS1820_DQ == 1)
+    if (DS18B20_DQ == 1)
       s |= 0x80;
     for (j = 30; j > 0; j--)
       ;
-    DS1820_DQ = 1;
+    DS18B20_DQ = 1;
   }
   return s;
 }

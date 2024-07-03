@@ -4,7 +4,9 @@
       "pp_file_not_found",
       "unknown_typename",
       "undeclared_var_use",
-      "expected_fn_body"
+      "expected_fn_body",
+      "invalid_token_after_toplevel_declarator",
+      "-Wimplicit-function-declaration"
     ]
   }
 }

@@ -54,52 +54,70 @@ const unsigned char SEGMENT_TABLE[36] = {
     M_1 | M_3 | R_1 | L_2 | M_2 | DOT, // Z
 };
 
-// 定义
-
-// 要打印的字符串
-unsigned char show_chars[8] = "        ";
-// 是否打印 .，设为 1 则打印
-unsigned char dot[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-
-void clear_display() {
-  U8 i;
-  for (i = 0; i < 8; ++i) {
-    show_chars[i] = 0;
-    dot[i] = 0;
-  }
-}
 void display_one(unsigned char, unsigned char, unsigned char with_dot);
 void display_one_char(unsigned char address, char _data,
                       unsigned char with_dot);
 
-// 显示字符串
-void display_main_loop(void) {
-  unsigned char i;
-  for (i = 0; i < 8; i++) {
-    if (show_chars[i] == '\0')
-      break;
-    else
-      display_one_char(i, show_chars[i], dot[i]);
+// 定义
+
+// 要打印的字符串
+unsigned char show_chars[8] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+// 是否打印 .，设为 1 则打印
+unsigned char dot[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+void clear_display(void) {
+  U8 i;
+  for (i = 0; i < 8; ++i) {
+    show_chars[i] = ' ';
+    dot[i] = 0;
   }
 }
 
-void display(char *_data) {
+// position: 0 或 1, 0 为上面一行
+void clear_display_pos(U8 pos) {
+  U8 i;
+  for (i = 4 * (!pos); i < 4 * (!pos) + 4; ++i) {
+    show_chars[i] = ' ';
+    dot[i] = 0;
+  }
+}
+
+// 显示字符串
+void display_main_loop(void) {
+  U8 i, j;
+  for (j = 0; j < 2; ++j) {
+    for (i = j * 4; i < j * 4 + 4; ++i) {
+      display_one_char(i, show_chars[i], dot[i]);
+    }
+  }
+}
+
+// 显示字符串
+//
+// position: 0 或 1, 0 为显示在上面一行
+void display(unsigned char position, char *_data) {
   unsigned char i;
-  clear_display();
-  for (i = 0; i < 8; ++i) {
-    show_chars[i] = _data[i];
+  clear_display_pos(position);
+  for (i = 0; i < 4 && _data[i] != '\0'; ++i) {
+    show_chars[4 * !position + i] = _data[i];
   }
 }
 
 // 显示十进制数字，方便调试
-void display_number(U8 num) {
-  unsigned char i = 7;
+//
+// position: 0 或 1, 0 为显示在上面一行
+void display_number(unsigned char position, unsigned int num) {
+  U8 i;
+  if (num > 9999) {
+    display(position, "err");
+    return;
+  }
+  i = 7 - 4 * position;
   while (num) {
     show_chars[i] = num % 10 + '0';
     num /= 10;
     --i;
   }
-  show_chars[i] = ' ';
 }
 
 // 显示二进制地址，方便调试
@@ -112,6 +130,7 @@ void display_address(unsigned char address) {
 }
 
 // 显示十六进制地址，方便调试
+//
 // position: 0 或 1, 0 为显示在上面一行
 void display_address_0x(unsigned char position, unsigned char address) {
   unsigned char i;
@@ -127,7 +146,7 @@ void display_address_0x(unsigned char position, unsigned char address) {
 // 为字母、数字或特殊字符
 void display_one_char(unsigned char address, char _data,
                       unsigned char with_dot) {
-  if (_data == ' ') {
+  if (_data == ' ' || _data == '\0') {
     display_one(address, 0, with_dot);
   } else if (_data >= '0' && _data <= '9')
     display_one(address, SEGMENT_TABLE[_data - '0'], with_dot);
@@ -135,7 +154,9 @@ void display_one_char(unsigned char address, char _data,
     display_one(address, SEGMENT_TABLE[_data - 'a' + 10], with_dot);
   else if (_data >= 'A' && _data <= 'Z')
     display_one(address, SEGMENT_TABLE[_data - 'A' + 10], with_dot);
-  else if (_data == '.') {
+  else if (_data == '-') {
+    display_one(address, M_2, with_dot);
+  } else if (_data == '.') {
     display_one(address, DOT, with_dot);
   } else if (_data == '\'') {
     display_one(address, R_1, with_dot);
