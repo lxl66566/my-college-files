@@ -8,10 +8,11 @@ U8 temperature[2];
 
 void DS18B20_WriteData(U8 wData);
 U8 DS18B20_ReadData(void);
-void display_temperature(U8 *temperature);
+void display_temperature(U8 pos, U8 *temperature);
 U8 *read_temperature(void);
 
-void display_temperature(U8 *temperature) {
+// pos，0 为显示在上一排，1 为显示在下一排
+void display_temperature(U8 pos, U8 *temperature) {
   U8 temp_data, temp_data_2;
   unsigned int TempDec; // 用来存放 4 位小数
   temp_data = temperature[1];
@@ -31,15 +32,18 @@ void display_temperature(U8 *temperature) {
               << 4; // 取高字节低 4 位(温度读数高 4 位),注意此时是 12 位精度
   temp_data_2 = temperature[0] >>
                 4; // 取低字节高 4 位(温度读数低 4 位),注意此时是 12 位精度
-  temp_data = temp_data | temp_data_2;          // 组合成完整数据
-  show_chars[4] = (temp_data % 100) / 10 + '0'; // 取十位转换为 ASCII 码
-  show_chars[5] = (temp_data % 100) % 10 + '0'; // 取个位转换为 ASCII 码
-  dot[5] = 1;
+  temp_data = temp_data | temp_data_2; // 组合成完整数据
+  show_chars[4 - 4 * pos] =
+      (temp_data % 100) / 10 + '0'; // 取十位转换为 ASCII 码
+  show_chars[5 - 4 * pos] =
+      (temp_data % 100) % 10 + '0'; // 取个位转换为 ASCII 码
+  dot[5 - 4 * pos] = 1;
   temperature[0] &= 0x0f; // 取小数位转换为 ASCII 码
   TempDec = temperature[0] *
             625; // 625=0.0625*10000,表示小数部分,扩大 1 万倍 ,方便显示
-  show_chars[6] = TempDec / 1000 + '0'; // 取小数十分位转换为 ASCII 码
-  show_chars[7] = (TempDec % 1000) / 100 + '0'; // 取小数百分位转换为 ASCII 码
+  show_chars[6 - 4 * pos] = TempDec / 1000 + '0'; // 取小数十分位转换为 ASCII 码
+  show_chars[7 - 4 * pos] =
+      (TempDec % 1000) / 100 + '0'; // 取小数百分位转换为 ASCII 码
 }
 
 U8 *read_temperature(void) {
@@ -57,12 +61,12 @@ U8 *read_temperature(void) {
   return temperature;
 }
 
-void read_and_display_temperature(void) {
+void read_and_display_temperature(U8 pos) {
   read_temperature();
   // 调试原始数据
   // display_address_0x(0, temperature[0]);
   // display_address_0x(1, temperature[1]);
-  display_temperature(temperature);
+  display_temperature(pos, temperature);
 }
 
 void temperature_init(void) {

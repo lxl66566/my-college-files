@@ -4,7 +4,7 @@
 #include "utils.h"
 
 // 折算系数，越大占空比结果越不精确，但是定时器频率要求越低
-#define DUTY_RATE 1
+#define DUTY_RATE 4
 #define DUTY_LIMIT (100 / DUTY_RATE)
 // #define DUTY_LIMIT 100
 U8 dutyCycle = DUTY_LIMIT / 2; // 初始占空比为50%

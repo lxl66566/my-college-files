@@ -42,3 +42,13 @@ void overflow_sub1(unsigned char *num, unsigned char limit) {
   else
     (*num)--;
 }
+
+void saturate_add1(unsigned char *num, unsigned char limit) {
+  if (*num < limit)
+    ++(*num);
+}
+
+void saturate_sub1(unsigned char *num, unsigned char limit) {
+  if (*num > limit)
+    --(*num);
+}

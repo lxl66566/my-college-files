@@ -8,8 +8,8 @@ extern unsigned char show_chars[8];
 extern unsigned char dot[8];
 
 void display_main_loop(void);
-void display(unsigned char position, char *);
-void display_number(unsigned char position, unsigned int);
+void display(unsigned char position, char *str);
+void display_number(unsigned char position, unsigned int num);
 void display_address(unsigned char address);
 void display_address_0x(unsigned char position, unsigned char address);
 void clear_display(void);

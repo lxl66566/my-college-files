@@ -9,7 +9,6 @@ sbit MOTOR = P1 ^ 2;
 // sdcc
 // #define MOTOR P1_2
 
-#define ENABLE_INTERRUPT EA = 1
 #define ENABLE_MOTOR MOTOR = 1
 #define DISABLE_MOTOR MOTOR = 0
 

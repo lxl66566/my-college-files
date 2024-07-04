@@ -1,4 +1,6 @@
 #include "storage.h"
+#include "utils.h"
+#include <reg52.h>
 
 // #define SCL P1 ^ 1
 // #define SDA P1 ^ 0
@@ -94,7 +96,7 @@ unsigned char readbyte_I2C(void) {
   return rbyte;
 }
 
-void writebyte(unsigned char dat, unsigned char addr) {
+void write_byte(unsigned char dat, unsigned char addr) {
   init_24c16();
   I2C_start();
   writebyte_I2C(WriteDeviceAddress);
@@ -106,7 +108,7 @@ void writebyte(unsigned char dat, unsigned char addr) {
   I2C_stop();
 }
 
-unsigned char readbyte(unsigned char addr) {
+unsigned char read_byte(unsigned char addr) {
   unsigned char output;
   init_24c16();
   I2C_start();
@@ -125,28 +127,28 @@ unsigned char readbyte(unsigned char addr) {
 
 void save_all_data(void) {
   delay_us(150);
-  writebyte(10, 0);
+  write_byte(10, 0);
   delay_us(150);
-  writebyte(20, 1);
+  write_byte(20, 1);
   delay_us(150);
-  writebyte(30, 2);
+  write_byte(30, 2);
   delay_us(150);
-  writebyte(40, 3);
+  write_byte(40, 3);
   delay_us(150);
-  writebyte(50, 4);
+  write_byte(50, 4);
   delay_us(150);
-  writebyte(60, 5);
+  write_byte(60, 5);
   delay_us(150);
-  writebyte(70, 6);
+  write_byte(70, 6);
   delay_us(150);
-  writebyte(80, 7);
+  write_byte(80, 7);
   delay_us(150);
-  writebyte(90, 8);
+  write_byte(90, 8);
   delay_us(150);
-  writebyte(100, 9);
+  write_byte(100, 9);
   delay_us(150);
-  writebyte(23, 10); // t_down
+  write_byte(23, 10); // t_down
   delay_us(150);
-  writebyte(32, 11); // t_up
+  write_byte(32, 11); // t_up
   delay_us(150);
 }

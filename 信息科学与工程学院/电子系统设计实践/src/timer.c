@@ -1,6 +1,7 @@
 #include "timer.h"
 
-#define frequency 1000
+#define frequency 1000 // 实际上并不能跑到此频率。
+
 void timer_init(void) {
   // 定义 TH0 和 TL0 的值，以便达到所需的频率
   unsigned long reload_value;
@@ -14,20 +15,9 @@ void timer_init(void) {
 
   TR0 = 1; // 启动定时器
   ET0 = 1; // 使能 Timer 0 中断
-  EA = 1;  // 开启全局中断
+  // 暂时关闭全局中断，等到控制占空比时再打开；可以防止中断影响温度控制，缓解频闪
+  EA = 0;
 }
-
-// void timer_init(void) {
-//   TMOD = 0x01;
-//   TH0 = 0xee;
-//   TL0 = 0x00;
-//   IE0 = 1;
-//   ET0 = 1;
-//   TR0 = 1;
-//   //
-//   暂时关闭全局中断，等到控制占空比时再打开；可以防止中断影响温度控制，缓解频闪
-//   EA = 0;
-// }
 
 // #define FOSC 11059200L                  // 12 MHz
 // #define T1MS (65536 - FOSC / 12 / 1000) // 1 ms for timer0 in mode 1

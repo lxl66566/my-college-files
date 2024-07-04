@@ -66,11 +66,8 @@ unsigned char show_chars[8] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
 unsigned char dot[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 void clear_display(void) {
-  U8 i;
-  for (i = 0; i < 8; ++i) {
-    show_chars[i] = ' ';
-    dot[i] = 0;
-  }
+  clear_display_pos(0);
+  clear_display_pos(1);
 }
 
 // position: 0 或 1, 0 为上面一行
@@ -95,11 +92,11 @@ void display_main_loop(void) {
 // 显示字符串
 //
 // position: 0 或 1, 0 为显示在上面一行
-void display(unsigned char position, char *_data) {
+void display(unsigned char position, char *str) {
   unsigned char i;
   clear_display_pos(position);
-  for (i = 0; i < 4 && _data[i] != '\0'; ++i) {
-    show_chars[4 * !position + i] = _data[i];
+  for (i = 0; i < 4 && str[i] != '\0'; ++i) {
+    show_chars[4 * !position + i] = str[i];
   }
 }
 
