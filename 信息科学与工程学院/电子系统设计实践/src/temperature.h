@@ -6,6 +6,6 @@
 
 void temperature_init(void);
 bit DS18B20_Reset(void);
-void read_and_display_temperature(U8 pos);
+U8 read_and_display_temperature(U8 pos);
 
 #endif

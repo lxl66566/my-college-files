@@ -17,6 +17,8 @@ void deal_key_down(void);
 void deal_key_up(void);
 void deal_key_enter(void);
 void do_run(void);
+void calc_duty_by_temperature(void);
+void adjust_parameters(void);
 
 // 菜单
 #define MENU_TP 0  // 温度检测
@@ -34,6 +36,11 @@ U8 layer = 0;
 #define MOTOR_INDEX_LIMIT 10
 U8 motor_index = 0;
 
+// 参数调整子菜单
+#define ADJUST_RUN 0
+#define ADJUST_CON 1
+U8 adjust_menu = ADJUST_RUN;
+
 int main(void) {
   U8 i = 0;
   DISABLE_MOTOR;
@@ -45,16 +52,12 @@ int main(void) {
     display_main_loop();
     if (key_pressed()) {
       deal_with_key_pressed();
-      if (last_key == KEY_UP)
-        ++i;
-      else
-        --i;
-      display_number(0, i);
     }
-    // do_by_layer_and_menu();
+    do_by_layer_and_menu();
   } while (1);
 }
 
+// 根据当前的层和菜单，决定要做什么
 void do_by_layer_and_menu(void) {
   switch (layer) {
   case 0:
@@ -66,10 +69,18 @@ void do_by_layer_and_menu(void) {
       read_and_display_temperature(1);
       break;
     case MENU_RUN:
+      do_run();
+      break;
+    case MENU_CON:
+      calc_duty_by_temperature();
+      break;
+    case MENU_PA:
+      adjust_parameters();
       break;
     default:
       display(1, "err1");
     }
+    break;
   }
 }
 
@@ -87,6 +98,8 @@ void deal_key_down(void) {
     case MENU_RUN:
       overflow_sub1(&motor_index, MOTOR_INDEX_LIMIT);
       break;
+    default:
+      break;
     }
   }
 }
@@ -97,8 +110,35 @@ void deal_key_enter(void) {
     ++layer;
     break;
   default:
-    break;
+    if (menu != MENU_PA)
+      break;
+    if (layer < 3) {
+      ++layer;
+    } else
+      --layer;
   }
+}
+
+void adjust_parameters(void) {
+  switch (layer) {
+    case 1:
+    
+  }
+}
+
+// 根据环境温度与上下限，决定电机占空比
+void calc_duty_by_temperature(void) {
+  U8 pwnow, TEMPERATURE_UP = read_byte(TEMPERATURE_UP_LIMIT_ADR),
+            TEMPERATURE_DOWN = read_byte(TEMPERATURE_DOWN_LIMIT_ADR);
+  U8 temperature = read_and_display_temperature(0);
+  pwnow = temperature >= TEMPERATURE_UP ? 100
+          : temperature <= TEMPERATURE_DOWN
+              ? 0
+              : (temperature - TEMPERATURE_DOWN) * 50 /
+                        (TEMPERATURE_UP - temperature) +
+                    50;
+  display_number(1, pwnow);
+  set_duty_cycle(pwnow);
 }
 
 // 电机测试操作
@@ -106,6 +146,7 @@ void do_run(void) {
   char s[4] = {'r', '-', ' ', 'e'};
   s[3] = motor_index + '0';
   display(1, s);
+  // 电机预设转速的地址就设为它的 index
   set_duty_cycle(read_byte(motor_index));
 }
 
@@ -129,11 +170,14 @@ void display_layer_0(void) {
   }
 }
 
+// 有 key 按下了需要做什么
+// RETURN 是强制处理的，其他的定位到按键自己的函数
 void deal_with_key_pressed(void) {
   switch (last_key) {
   case KEY_RETURN:
     saturate_sub1(&layer, 0);
     DISABLE_INTERRUPT;
+    DISABLE_MOTOR;
     clear_display();
     return;
   case KEY_DOWN:

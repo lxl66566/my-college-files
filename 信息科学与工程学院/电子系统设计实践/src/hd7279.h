@@ -1,3 +1,5 @@
+// HD7279.h 是 display 和 key 的底层库。
+
 #ifndef __HD7279_H__
 #define __HD7279_H__
 
