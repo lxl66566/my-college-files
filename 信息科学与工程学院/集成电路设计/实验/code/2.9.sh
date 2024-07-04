@@ -4,3 +4,8 @@ cd ~/soclib_exp/HW
 make
 
 # 然后会报编译错误
+
+# 10.
+
+ln -s ../hello_world/APP.x
+./simulation.x
