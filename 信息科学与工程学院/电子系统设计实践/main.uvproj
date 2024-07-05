@@ -403,6 +403,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\motor.c</FilePath>
             </File>
+            <File>
+              <FileName>storage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\storage.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

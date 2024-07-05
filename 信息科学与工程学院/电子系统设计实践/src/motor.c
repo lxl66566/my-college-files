@@ -1,9 +1,11 @@
 #include "motor.h"
+#include "display.h"
 #include "led.h"
+#include "timer.h"
 #include "utils.h"
 
 // 折算系数，越大占空比结果越不精确，但是定时器频率要求越低
-#define DUTY_RATE 4
+#define DUTY_RATE 2
 #define DUTY_LIMIT (100 / DUTY_RATE)
 U8 dutyCycle = DUTY_LIMIT / 2; // 初始占空比为50%
 U8 counter = 0;
@@ -20,6 +22,7 @@ void Timer0_ISR(void) interrupt 1 {
 }
 
 void set_duty_cycle(unsigned char dc) {
+  ENABLE_INTERRUPT;
   dc /= DUTY_RATE;
   if (dc <= DUTY_LIMIT) {
     dutyCycle = dc;

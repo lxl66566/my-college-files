@@ -66,12 +66,15 @@ unsigned char show_chars[8] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
 unsigned char dot[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 void clear_display(void) {
-  clear_display_pos(0);
-  clear_display_pos(1);
+  U8 i;
+  for (i = 0; i < 8; ++i) {
+    show_chars[i] = ' ';
+    dot[i] = 0;
+  }
 }
 
 // position: 0 或 1, 0 为上面一行
-void clear_display_pos(U8 pos) {
+void clear_display_pos(bit pos) {
   U8 i;
   for (i = 4 * (!pos); i < 4 * (!pos) + 4; ++i) {
     show_chars[i] = ' ';
@@ -92,7 +95,7 @@ void display_main_loop(void) {
 // 显示字符串
 //
 // position: 0 或 1, 0 为显示在上面一行
-void display(unsigned char position, char *str) {
+void display(bit position, const char *str) {
   unsigned char i;
   clear_display_pos(position);
   for (i = 0; i < 4 && str[i] != '\0'; ++i) {
@@ -103,12 +106,16 @@ void display(unsigned char position, char *str) {
 // 显示十进制数字，方便调试
 //
 // position: 0 或 1, 0 为显示在上面一行
-void display_number(unsigned char position, unsigned int num) {
+void display_number(bit position, unsigned int num) {
   U8 i;
   if (num > 9999) {
-    display(position, "err");
+    display(position, "9999");
+    return;
+  } else if (num == 0) {
+    display(position, "   0");
     return;
   }
+  clear_display_pos(position);
   i = 7 - 4 * position;
   while (num) {
     show_chars[i] = num % 10 + '0';
@@ -129,7 +136,7 @@ void display_address(unsigned char address) {
 // 显示十六进制地址，方便调试
 //
 // position: 0 或 1, 0 为显示在上面一行
-void display_address_0x(unsigned char position, unsigned char address) {
+void display_address_0x(bit position, unsigned char address) {
   unsigned char i;
   show_chars[0 + (!position) * 4] = '0';
   show_chars[1 + (!position) * 4] = 'x';

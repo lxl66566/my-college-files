@@ -8,12 +8,12 @@ U8 raw_temperature[2];
 
 void DS18B20_WriteData(U8 wData);
 U8 DS18B20_ReadData(void);
-U8 display_temperature(U8 pos, U8 *raw_temperature);
+U8 display_temperature(bit pos);
 U8 *read_temperature(void);
 
 // pos: 0 为显示在上一排，1 为显示在下一排
 // return: 返回温度值，向下取整
-U8 display_temperature(U8 pos, U8 *raw_temperature) {
+U8 display_temperature(bit pos) {
   U8 temperature; // 用于返回的温度值，向下取整
   U8 temp_data, temp_data_2, temp;
   unsigned int TempDec; // 用来存放 4 位小数
@@ -66,12 +66,9 @@ U8 *read_temperature(void) {
   return raw_temperature;
 }
 
-U8 read_and_display_temperature(U8 pos) {
+U8 read_and_display_temperature(bit pos) {
   read_temperature();
-  // 调试原始数据
-  // display_address_0x(0, temperature[0]);
-  // display_address_0x(1, temperature[1]);
-  return display_temperature(pos, raw_temperature);
+  return display_temperature(pos);
 }
 
 void temperature_init(void) {

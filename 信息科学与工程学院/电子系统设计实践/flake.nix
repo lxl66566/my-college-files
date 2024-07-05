@@ -27,6 +27,7 @@
               clang-tools
               python3
               poetry
+              minicom
             ];
             shellHook = ''
               xmake f -p mcs51 --toolchain=sdcc -a mcs51 --sdk=/nix/store/5jwp9pyvrrsk617qzlf9gld5ip489x4z-sdcc-4.4.0/

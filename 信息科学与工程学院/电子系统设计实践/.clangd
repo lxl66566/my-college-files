@@ -6,7 +6,12 @@
       "undeclared_var_use",
       "expected_fn_body",
       "invalid_token_after_toplevel_declarator",
-      "-Wimplicit-function-declaration"
+      "-Wimplicit-function-declaration",
+      "expected_semi_declaration",
+      "redefinition_different_type",
+      "expected",
+      "typecheck_decl_incomplete_type",
+      "undeclared_var_use_suggest"
     ]
   }
 }

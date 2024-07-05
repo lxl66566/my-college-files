@@ -6,6 +6,6 @@
 #define TEMPERATURE_DOWN_LIMIT_ADR 0x66 // 电机温度下限地址
 
 unsigned char read_byte(unsigned char);
-void write_byte(unsigned char, unsigned char);
+void write_byte(unsigned char dat, unsigned char addr);
 
 #endif

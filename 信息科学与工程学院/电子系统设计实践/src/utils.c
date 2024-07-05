@@ -31,24 +31,26 @@ void delay_us(unsigned long us) {
   }
 }
 
+// 溢出加减 1：保证数字一定在 0..=num - 1 内
 void overflow_add1(unsigned char *num, unsigned char limit) {
   (*num)++;
-  *num %= limit;
+  (*num) %= limit;
 }
-
 void overflow_sub1(unsigned char *num, unsigned char limit) {
-  if (*num == 0)
-    *num = limit - 1;
+  if ((*num) == 0)
+    (*num) = limit - 1;
   else
     (*num)--;
 }
 
+// 饱和加：不大于上限
 void saturate_add1(unsigned char *num, unsigned char limit) {
-  if (*num < limit)
+  if ((*num) < limit)
     ++(*num);
 }
 
+// 饱和减：不小于下限，这个比较容易记错
 void saturate_sub1(unsigned char *num, unsigned char limit) {
-  if (*num > limit)
+  if ((*num) > limit)
     --(*num);
 }

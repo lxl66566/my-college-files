@@ -1,6 +1,8 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
+#include <reg52.h>
+
 #define U8 unsigned char
 
 void empty_loop(unsigned int times);
