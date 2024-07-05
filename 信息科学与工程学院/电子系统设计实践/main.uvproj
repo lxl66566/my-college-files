@@ -408,6 +408,16 @@
               <FileType>1</FileType>
               <FilePath>.\src\storage.c</FilePath>
             </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\led.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
