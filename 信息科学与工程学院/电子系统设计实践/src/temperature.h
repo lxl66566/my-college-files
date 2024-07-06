@@ -5,7 +5,6 @@
 #include <reg52.h>
 
 void temperature_init(void);
-bit DS18B20_Reset(void);
 U8 read_and_display_temperature(bit pos);
 
 #endif

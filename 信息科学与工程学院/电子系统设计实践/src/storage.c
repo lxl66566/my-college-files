@@ -16,7 +16,6 @@ void I2C_ack(void);
 void I2C_stop(void);
 void I2C_start(void);
 void init_24c16(void);
-void save_all_data(void);
 
 void init_24c16(void) {
   SDA = 1;
@@ -123,32 +122,4 @@ unsigned char read_byte(unsigned char addr) {
   I2C_noack();
   I2C_stop();
   return output;
-}
-
-void save_all_data(void) {
-  delay_us(150);
-  write_byte(10, 0);
-  delay_us(150);
-  write_byte(20, 1);
-  delay_us(150);
-  write_byte(30, 2);
-  delay_us(150);
-  write_byte(40, 3);
-  delay_us(150);
-  write_byte(50, 4);
-  delay_us(150);
-  write_byte(60, 5);
-  delay_us(150);
-  write_byte(70, 6);
-  delay_us(150);
-  write_byte(80, 7);
-  delay_us(150);
-  write_byte(90, 8);
-  delay_us(150);
-  write_byte(100, 9);
-  delay_us(150);
-  write_byte(23, 10); // t_down
-  delay_us(150);
-  write_byte(32, 11); // t_up
-  delay_us(150);
 }

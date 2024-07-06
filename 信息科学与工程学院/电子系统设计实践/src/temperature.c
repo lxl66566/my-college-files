@@ -10,6 +10,7 @@ void DS18B20_WriteData(U8 wData);
 U8 DS18B20_ReadData(void);
 U8 display_temperature(bit pos);
 U8 *read_temperature(void);
+bit DS18B20_Reset(void);
 
 // pos: 0 为显示在上一排，1 为显示在下一排
 // return: 返回温度值，向下取整
