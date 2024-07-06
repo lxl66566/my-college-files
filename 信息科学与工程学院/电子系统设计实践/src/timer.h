@@ -7,7 +7,6 @@
 #define ENABLE_INTERRUPT EA = 1
 #define DISABLE_INTERRUPT EA = 0
 
-// void timer_init(unsigned int frequency);
 void timer_init(void);
 void timer0_isr(void);
 

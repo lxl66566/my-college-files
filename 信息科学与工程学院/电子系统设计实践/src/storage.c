@@ -1,4 +1,7 @@
 #include "storage.h"
+#include "hd7279.h"
+#include "myfloat.h"
+#include "uart.h"
 #include "utils.h"
 #include <math.h>
 #include <reg52.h>
@@ -106,6 +109,7 @@ void write_byte(unsigned char dat, unsigned char addr) {
   writebyte_I2C(dat);
   I2C_ack();
   I2C_stop();
+  delay_us(300);
 }
 
 unsigned char read_byte(unsigned char addr) {
@@ -126,10 +130,17 @@ unsigned char read_byte(unsigned char addr) {
 }
 
 // 1 位小数精度的存取 float，需要占用两位地址。
-float read_float(unsigned char addr) {
-  return (float)read_byte(addr + 1) * 0.1 + (float)read_byte(addr);
+struct myfloat read_myfloat(unsigned char addr) {
+  struct myfloat temp;
+  temp.i = read_byte(addr);
+  temp.digit = read_byte(addr + 1);
+  send_number_com_myfloat(temp);
+  if (temp.digit > 9)
+    temp.digit = 9;
+  return temp;
 }
-void write_float(float dat, unsigned char addr) {
-  write_byte(floor(dat), addr);
-  write_byte((dat - floor(dat)) * 10, addr + 1);
+void write_myfloat(struct myfloat dat, unsigned char addr) {
+  write_byte(dat.i, addr);
+  write_byte(dat.digit, addr + 1);
+  send_number_com_myfloat(dat);
 }

@@ -128,14 +128,14 @@ void display_number(bit position, unsigned int num) {
 // 显示一位小数
 //
 // position: 0 或 1, 0 为显示在上面一行
-void display_number_float_1(bit position, float num) {
-  U8 i = 7 - 4 * position, num_no_digit;
-  show_chars[i] = (U8)(num * 10) % 10 + '0';
+void display_number_myfloat_1(bit position, struct myfloat num) {
+  U8 i = 7 - 4 * position, temp = num.i;
+  clear_display_pos(position);
+  show_chars[i] = num.digit + '0';
   dot[--i] = 1;
-  num_no_digit = (U8)num;
-  while (num_no_digit) {
-    show_chars[i] = num_no_digit % 10 + '0';
-    num_no_digit /= 10;
+  while (temp) {
+    show_chars[i] = temp % 10 + '0';
+    temp /= 10;
     --i;
   }
 }

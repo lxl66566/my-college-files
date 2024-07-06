@@ -1,5 +1,5 @@
-#ifndef __STACK__H_
-#define __STACK__H_
+#ifndef __STACK_H__
+#define __STACK_H__
 
 #include "utils.h"
 

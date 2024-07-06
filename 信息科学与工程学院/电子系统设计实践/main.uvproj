@@ -414,9 +414,9 @@
               <FilePath>.\src\uart.c</FilePath>
             </File>
             <File>
-              <FileName>led.c</FileName>
+              <FileName>myfloat.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\led.c</FilePath>
+              <FilePath>.\src\myfloat.c</FilePath>
             </File>
           </Files>
         </Group>

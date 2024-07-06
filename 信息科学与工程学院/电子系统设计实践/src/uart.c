@@ -42,8 +42,8 @@ void send_number_com(unsigned int num) {
   send_string_com(ptr); // 发送转换后的字符串
 }
 
-void send_number_com_float(float num) {
-  send_number_com((unsigned int)num);
+void send_number_com_myfloat(struct myfloat num) {
+  send_number_com(num.i);
   send_char('.');
-  send_number_com((U8)(num * 100) % 100);
+  send_number_com(num.digit);
 }

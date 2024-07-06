@@ -8,7 +8,4 @@
 #define ENABLE_LED LED_GREEN = 0
 #define DISABLE_LED LED_GREEN = 1
 
-void enable_led(void);
-void disable_led(void);
-
 #endif
