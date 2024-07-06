@@ -1,4 +1,5 @@
 #include "uart.h"
+#include "utils.h"
 #include <reg52.h>
 
 #define FOSC 11059200L // 晶振频率
@@ -39,4 +40,10 @@ void send_number_com(unsigned int num) {
   } while (num > 0);
 
   send_string_com(ptr); // 发送转换后的字符串
+}
+
+void send_number_com_float(float num) {
+  send_number_com((unsigned int)num);
+  send_char('.');
+  send_number_com((U8)(num * 100) % 100);
 }

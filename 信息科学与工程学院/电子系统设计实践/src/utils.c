@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "uart.h"
 #include <intrins.h>
 
 void delay_1us(void) {
@@ -43,14 +44,17 @@ void overflow_sub1(unsigned char *num, unsigned char limit) {
     (*num)--;
 }
 
-// 饱和加：不大于上限
+// 饱和加 1：不大于上限
 void saturate_add1(unsigned char *num, unsigned char limit) {
   if ((*num) < limit)
     ++(*num);
 }
 
-// 饱和减：不小于下限，这个比较容易记错
+// 饱和减 1：不小于下限，这个比较容易记错
 void saturate_sub1(unsigned char *num, unsigned char limit) {
   if ((*num) > limit)
     --(*num);
 }
+
+float max(float num1, float num2) { return num1 > num2 ? num1 : num2; }
+float min(float num1, float num2) { return num1 < num2 ? num1 : num2; }

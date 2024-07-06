@@ -1,5 +1,6 @@
 #include "display.h"
 #include "hd7279.h"
+#include "uart.h"
 #include "utils.h"
 
 #define L_1 0x80
@@ -12,7 +13,7 @@
 #define DOT 0x02
 
 // 傻逼数码管排布逼我手搓码表
-const unsigned char SEGMENT_TABLE[36] = {
+const unsigned char code SEGMENT_TABLE[36] = {
     // Digits 0-9
     L_1 | L_2 | M_1 | M_3 | R_1 | R_2,       // 0
     R_1 | R_2,                               // 1, 0b01000100
@@ -103,7 +104,7 @@ void display(bit position, const char *str) {
   }
 }
 
-// 显示十进制数字，方便调试
+// 显示十进制数字
 //
 // position: 0 或 1, 0 为显示在上面一行
 void display_number(bit position, unsigned int num) {
@@ -120,6 +121,21 @@ void display_number(bit position, unsigned int num) {
   while (num) {
     show_chars[i] = num % 10 + '0';
     num /= 10;
+    --i;
+  }
+}
+
+// 显示一位小数
+//
+// position: 0 或 1, 0 为显示在上面一行
+void display_number_float_1(bit position, float num) {
+  U8 i = 7 - 4 * position, num_no_digit;
+  show_chars[i] = (U8)(num * 10) % 10 + '0';
+  dot[--i] = 1;
+  num_no_digit = (U8)num;
+  while (num_no_digit) {
+    show_chars[i] = num_no_digit % 10 + '0';
+    num_no_digit /= 10;
     --i;
   }
 }

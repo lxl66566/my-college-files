@@ -5,6 +5,6 @@
 #include <reg52.h>
 
 void temperature_init(void);
-U8 read_and_display_temperature(bit pos);
+float read_and_display_temperature(bit pos);
 
 #endif

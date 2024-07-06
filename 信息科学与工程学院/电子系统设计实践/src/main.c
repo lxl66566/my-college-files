@@ -8,21 +8,24 @@
 #include "timer.h"
 #include "uart.h"
 #include "utils.h"
+#include <math.h>
 #include <reg52.h>
 
 // 函数声明
 void tp(void);     // 温度检测
 void run(void);    // 电机测试
 void con(void);    // 电机调速
+void pid(void);    // 恒温 pid
 void pa_run(void); // 参数设置 run
 void pa_con(void); // 参数设置 con
+void pa_pid(void); // 参数设置 pid
 void pa_con_display(const char *prefix);
 void calc_duty_by_temperature(void);
-// void menu_select(bit position, const char *menu_names[], void
-// (*func[])(void), U8 num);
+void calc_duty_by_pid(float expect);
 void menu_select_1(void);
 void menu_select_2(void);
 void menu_adjust(U8 *after, U8 write_adr, U8 limit);
+void test(U8 *, U8 *, bit op);
 
 // 降低代码重复率，~~喜欢我宏孩儿吗~~
 #define HANDLE_KEY_RETURN(on_exit)                                             \
@@ -67,15 +70,19 @@ bit con_mode = 0;
 #define TEMPERATURE_ADR                                                        \
   (con_mode ? TEMPERATURE_UP_LIMIT_ADR : TEMPERATURE_DOWN_LIMIT_ADR)
 
+// PID
+float previous_error = 0.0;
+float integral = 0.0;
+
 // 菜单
-#define MENU_ITEMS_NUM 4
-const char *code MENU_ITEMS[] = {"tp-", "run-", "con-", "pa-"};
+#define MENU_ITEMS_NUM 5
+const char *code MENU_ITEMS[] = {"tp-", "run-", "con-", "pa-", "pid-"};
 const void (*code func_array[MENU_ITEMS_NUM])(void) = {tp, run, con,
-                                                       menu_select_2};
+                                                       menu_select_2, pid};
 U8 menu_1 = 0;
-#define MENU_ITEMS_2_NUM 2
-const char *code MENU_ITEMS_2[] = {"run", "con"};
-void (*code func_array_2[MENU_ITEMS_2_NUM])(void) = {pa_run, pa_con};
+#define MENU_ITEMS_2_NUM 3
+const char *code MENU_ITEMS_2[] = {"run", "con", "pid"};
+void (*code func_array_2[MENU_ITEMS_2_NUM])(void) = {pa_run, pa_con, pa_pid};
 U8 menu_2 = 0;
 
 int main(void) {
@@ -126,7 +133,7 @@ void calc_duty_by_temperature(void) {
   U8 pwnow;
   U8 TEMPERATURE_UP = read_byte(TEMPERATURE_UP_LIMIT_ADR),
      TEMPERATURE_DOWN = read_byte(TEMPERATURE_DOWN_LIMIT_ADR);
-  U8 temperature = read_and_display_temperature(0);
+  float temperature = read_and_display_temperature(0);
   pwnow = temperature >= TEMPERATURE_UP ? 100
           : temperature <= TEMPERATURE_DOWN
               ? 0
@@ -135,6 +142,51 @@ void calc_duty_by_temperature(void) {
                     50;
   display_number(1, pwnow);
   set_duty_cycle(pwnow);
+}
+
+void pid(void) {
+  float temp;
+  temp = read_float(TEMPERATURE_PID_ADR);
+  LOOP_BEGIN(calc_duty_by_pid(temp))
+  HANDLE_KEY_RETURN()
+  LOOP_END()
+}
+
+// PID 调占空比
+void calc_duty_by_pid(float expect) {
+#define KP (0.8)
+#define KI (0.5)
+#define KD (0.3)
+#define DT 0.5 // 时间间隔，根据实际情况进行调整
+#define MAX_DUTY 100.0
+#define MIN_DUTY 0.0
+
+  float current_temperature, error, derivative, output;
+  current_temperature = read_and_display_temperature(0);
+  error = expect - current_temperature;
+  integral += error * DT; // 积分项累积，注意防止积分 wind-up
+  // 防止积分过饱和
+  if (integral > MAX_DUTY * KI / KP)
+    integral = MAX_DUTY * KI / KP;
+  else if (integral < MIN_DUTY * KI / KP)
+    integral = MIN_DUTY * KI / KP;
+
+  derivative = (error - previous_error) / DT;
+  // 调试
+  send_string_com("\nerr");
+  send_number_com_float(error);
+  send_string_com("\nint");
+  send_number_com_float(integral);
+  send_string_com("\nder");
+  send_number_com_float(derivative);
+
+  output = 100 - (KP * error + KI * integral + KD * derivative);
+
+  // 限幅操作确保输出在合理范围内
+  output = max(min(output, MAX_DUTY), MIN_DUTY);
+  set_duty_cycle(output);
+  display_number(1, output);
+  previous_error = error;
 }
 
 // run 参数调节
@@ -171,6 +223,38 @@ void pa_con(void) {
 void pa_con_display(const char *prefix) {
   KEY_ENTER, display(0, prefix);
   show_chars[7] = con_mode ? 'u' : 'd';
+}
+
+// PID 参数调节
+void pa_pid(void) {
+  U8 i, digit;
+  float temp = read_float(TEMPERATURE_PID_ADR);
+  i = floor(temp);
+  digit = (U8)(temp * 10) % 10;
+  clear_display();
+  LOOP_BEGIN(display(0, "a- p"); display_number(1, i * 10 + digit); dot[2] = 1)
+  HANDLE_KEY_RETURN()
+  HANDLE_KEY_CASE(
+      KEY_ENTER, write_float((float)i + (float)digit / 10, TEMPERATURE_PID_ADR);
+      return)
+  HANDLE_KEY_CASE(KEY_UP, test(&i, &digit, 1))
+  HANDLE_KEY_CASE(KEY_DOWN, test(&i, &digit, 0))
+  LOOP_END()
+}
+void test(U8 *i, U8 *digit, bit op) {
+  if (op) {
+    ++(*digit);
+    if (*digit > 9) {
+      ++(*i);
+      (*digit) -= 10;
+    }
+  } else {
+    --(*digit);
+    if (*digit > 9) {
+      --(*i);
+      (*digit) = 9;
+    }
+  }
 }
 
 // 该函数已废弃，有栈溢出的问题

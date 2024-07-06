@@ -1,5 +1,6 @@
 #include "storage.h"
 #include "utils.h"
+#include <math.h>
 #include <reg52.h>
 
 // #define SCL P1 ^ 1
@@ -122,4 +123,13 @@ unsigned char read_byte(unsigned char addr) {
   I2C_noack();
   I2C_stop();
   return output;
+}
+
+// 1 位小数精度的存取 float，需要占用两位地址。
+float read_float(unsigned char addr) {
+  return (float)read_byte(addr + 1) * 0.1 + (float)read_byte(addr);
+}
+void write_float(float dat, unsigned char addr) {
+  write_byte(floor(dat), addr);
+  write_byte((dat - floor(dat)) * 10, addr + 1);
 }
