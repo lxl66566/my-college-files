@@ -1,9 +1,11 @@
 # 直接在图像上绘制黑色痕迹并输出。
 
 from pathlib import Path
-from tkinter import Canvas, Tk, filedialog
+from tkinter import Canvas, filedialog
 
 from PIL import Image, ImageDraw, ImageTk
+
+from ..utils.draw_interface import draw_on_image
 
 
 class PaintApp:
@@ -37,15 +39,6 @@ class PaintApp:
         self.img.save(self.output_path)
 
 
-def draw_on_image(input_path: Path, output_path: Path):
-    root = Tk()
-    root.title("Paint on Image")
-    if input_path and output_path:
-        app = PaintApp(root, input_path, output_path)
-        root.protocol("WM_DELETE_WINDOW", lambda: [app.save_image(), root.destroy()])
-        root.mainloop()
-
-
 def main():
     input_path = filedialog.askopenfilename(
         title="Select input image", filetypes=[("Image files", "*.jpg;*.png")]
@@ -55,7 +48,7 @@ def main():
         defaultextension=".jpg",
         filetypes=[("Image files", "*.jpg;*.png")],
     )
-    draw_on_image(Path(input_path), Path(output_path))
+    draw_on_image(PaintApp, Path(input_path), Path(output_path))
 
 
 if __name__ == "__main__":

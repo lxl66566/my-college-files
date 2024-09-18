@@ -37,6 +37,5 @@ pkgs.mkShell {
     export PYTHONPATH="${pythonWithTk}/lib/python3.12/site-packages:$PYTHONPATH"
     export TCL_LIBRARY="${pkgs.tcl}/lib/tcl${pkgs.tcl.version}"
     export TK_LIBRARY="${pkgs.tk}/lib/tk${pkgs.tk.version}"
-    pip install --upgrade pyinpaint
   '';
 }

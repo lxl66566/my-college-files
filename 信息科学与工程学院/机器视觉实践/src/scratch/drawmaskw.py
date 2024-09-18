@@ -1,9 +1,11 @@
 # 在图像上绘制，但是输出白色痕迹和黑色底片。
 
 from pathlib import Path
-from tkinter import Canvas, Tk, filedialog
+from tkinter import Canvas, filedialog
 
 from PIL import Image, ImageDraw, ImageTk
+
+from ..utils.draw_interface import draw_on_image
 
 
 class PaintApp:
@@ -30,7 +32,7 @@ class PaintApp:
         if (
             self.last_x is not None
             and self.last_y is not None
-            and dist(x, y, self.last_x, self.last_y) < 10
+            and distance(x, y, self.last_x, self.last_y) < 10
         ):
             # 在画布上显示涂抹
             self.canvas.create_rectangle(
@@ -49,17 +51,8 @@ class PaintApp:
         self.mask.save(self.output_path)
 
 
-def dist(x1, y1, x2, y2):
+def distance(x1, y1, x2, y2):
     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
-
-
-def draw_on_image(input_path: Path, output_path: Path):
-    root = Tk()
-    root.title("Paint on Image")
-    if input_path and output_path:
-        app = PaintApp(root, input_path, output_path)
-        root.protocol("WM_DELETE_WINDOW", lambda: [app.save_image(), root.destroy()])
-        root.mainloop()
 
 
 def main():
@@ -71,7 +64,7 @@ def main():
         defaultextension=".jpg",
         filetypes=[("Image files", "*.jpg;*.png")],
     )
-    draw_on_image(Path(input_path), Path(output_path))
+    draw_on_image(PaintApp, Path(input_path), Path(output_path))
 
 
 if __name__ == "__main__":
