@@ -5,3 +5,5 @@ template.pdf
 # upload.sh
 *.vmdk
 *.qcow2
+__pycache__
+.venv
