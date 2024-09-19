@@ -8,10 +8,6 @@ let
       tkinter
       pip
       virtualenv
-      opencv4
-      scikit-image
-      numpy
-      pillow
     ];
     ignoreCollisions = true;
   };
@@ -20,7 +16,6 @@ pkgs.mkShell {
   buildInputs = with pkgs; [
     pythonWithTk
     git
-    tcl
     tk
   ];
 

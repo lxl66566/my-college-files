@@ -13,6 +13,10 @@ nix-shell
 steam-run .venv/bin/python -m src
 ```
 
+## 杂
+
+- 人脸可以去 [thispersondoesnotexist](https://thispersondoesnotexist.com/) 拿
+
 ## 1
 
 首日任务，划痕处理。
@@ -29,3 +33,7 @@ steam-run .venv/bin/python -m src
 马赛克，这也太简单了吧，脑子里已经能想象出原理了。而且也有上次使用 tkinter 的经验。
 
 反正我做了一个笔刷马赛克和一个矩形区域马赛克。取中心点颜色作为当前矩形的颜色。不能用左上角的颜色，否则会带来拖影问题。
+
+## 3
+
+人脸去痣。第一个肯定还是 inpaint，这玩意很好用，直接用以前代码就行。第二个是色块移动，tkinter 的代码可能得多写一会儿。
