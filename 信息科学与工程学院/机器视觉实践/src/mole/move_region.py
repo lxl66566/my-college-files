@@ -43,6 +43,8 @@ class ImageRegionFillApp(ImageTkApp):
             self.line.start = self.line_copy.start + affine
             self.line.end = self.line_copy.end + affine
             self.copy_circle(self.line.end, self.line.start, self.radius)
+
+            # 想要在之后仍然能看到 line，需要完全重绘，而不能只 update_line
             self.line_id = self.canvas.create_line(*self.line.tuple, fill="red")
 
     def mouse_up(self, p: Point):
@@ -68,6 +70,14 @@ class ImageRegionFillApp(ImageTkApp):
 
         # 合成并更新图像
         self.img = Image.alpha_composite(self.img.convert("RGBA"), cut)
+        self.update_canvas()
+
+    # 右键重新画线
+    def mouse_right_down(self, p: Point):
+        super().mouse_right_down(p)
+        self.line_id = None
+        self.line = None
+        self.line_drawing = False
         self.update_canvas()
 
 

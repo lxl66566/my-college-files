@@ -26,14 +26,21 @@ class ImageTkApp:
             "<ButtonRelease-1>", lambda e: self.mouse_up(Point(e.x, e.y))
         )
         # https://stackoverflow.com/questions/17355902/tkinter-binding-mousewheel-to-scrollbar
+        # 然后 windows 右键是 Button-3
         if platform.system() == "Windows":
             self.canvas.bind_all(
                 "<MouseWheel>", lambda e: self.wheel_event(e.delta > 0)
+            )
+            self.canvas.bind_all(
+                "<Button-3>", lambda e: self.mouse_right_down(Point(e.x, e.y))
             )
         elif platform.system() == "Linux":
             # X11
             self.canvas.bind_all("<Button-4>", lambda _: self.wheel_event(True))
             self.canvas.bind_all("<Button-5>", lambda _: self.wheel_event(False))
+            self.canvas.bind_all(
+                "<Button-2>", lambda e: self.mouse_right_down(Point(e.x, e.y))
+            )
 
         self.drag_start = None
 
@@ -63,6 +70,9 @@ class ImageTkApp:
     def mouse_move(self, p: Point):
         if self.is_pressing:
             self.mouse_drag(self.drag_start, p)  # type: ignore
+        pass
+
+    def mouse_right_down(self, p: Point):
         pass
 
     def wheel_event(self, up_or_down: bool):

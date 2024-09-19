@@ -2,14 +2,13 @@
 
 import logging
 import tempfile
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
 
 from PIL import Image
 
 
-def use_image(process: Callable, origin_image=None, output_image=None):
+def use_image(process: Callable[[Path, Path], None], origin_image="fruits.jpg"):
     """
     Call process with a temporary image and show the result image.
 
@@ -25,12 +24,8 @@ def use_image(process: Callable, origin_image=None, output_image=None):
         tmpdir = Path(tmpdir)
         thisfile = Path(__file__)
 
-        origin_image = (
-            origin_image or thisfile.parent.parent.parent / "assets" / "fruits.jpg"
-        )
-        output_image = output_image or (tmpdir / "result").with_suffix(
-            origin_image.suffix
-        )
+        origin_image = thisfile.parent.parent.parent / "assets" / origin_image
+        output_image = (tmpdir / "result").with_suffix(origin_image.suffix)
 
         logging.info(f"Origin image: {origin_image.absolute()}")
         logging.info(f"Output image: {output_image.absolute()}")
