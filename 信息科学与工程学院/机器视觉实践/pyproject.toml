@@ -5,9 +5,14 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "numpy>=2.1.1",
-    "opencv-python>=4.10.0.84",
-    "pillow>=10.4.0",
-    "scikit-image>=0.24.0",
-    "simple-term-menu>=1.6.4",
+
+  "numpy>=2.1.1",
+
+  "opencv-python>=4.10.0.84",
+
+  "pillow>=10.4.0",
+
+  "pyconsolemenu2>=1.1.0",
+
+  "scikit-image>=0.24.0",
 ]

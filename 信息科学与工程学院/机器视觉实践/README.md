@@ -4,7 +4,7 @@
 
 ## 运行代码
 
-正常情况下，`uv run python -m src` 即可，uv 会自动安装依赖。代码会进入一个 TUI 导航面板，可以自由选择运行的程序。
+正常情况下，`uv run python -m src` 即可，uv 会自动安装依赖。代码会进入一个 TUI 导航面板，可以自由选择运行的程序。顺带一提 [uv](https://github.com/astral-sh/uv) 是一个还不错的 python 包管理器。
 
 但是像我这种用 NixOS 的倒霉鬼无法 `import _tk`，于是只能自己写 `shell.nix` 了。
 

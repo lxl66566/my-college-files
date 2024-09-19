@@ -20,7 +20,7 @@ def use_image(process: Callable):
         the output image.
     """
 
-    with tempfile.TemporaryDirectory(delete=True) as tmpdir:
+    with tempfile.TemporaryDirectory(delete=False) as tmpdir:
         tmpdir = Path(tmpdir)
         thisfile = Path(__file__)
 

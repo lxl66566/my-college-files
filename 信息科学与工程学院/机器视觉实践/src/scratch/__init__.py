@@ -4,8 +4,9 @@ from pathlib import Path
 
 from PIL import Image
 
+from ..utils.draw_interface import draw_on_image
 from .add_scratch import add_scratches
-from .drawmaskw import PaintApp, draw_on_image
+from .drawmaskw import PaintApp
 from .gause import remove_scratch_gause
 from .myinpaint import ipt
 from .sc_detect import remove_scratches

@@ -1,11 +1,8 @@
 # 在图像上绘制，但是输出白色痕迹和黑色底片。
 
-from pathlib import Path
-from tkinter import Canvas, filedialog
+from tkinter import Canvas
 
 from PIL import Image, ImageDraw, ImageTk
-
-from ..utils.draw_interface import draw_on_image
 
 
 class PaintApp:
@@ -53,19 +50,3 @@ class PaintApp:
 
 def distance(x1, y1, x2, y2):
     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
-
-
-def main():
-    input_path = filedialog.askopenfilename(
-        title="Select input image", filetypes=[("Image files", "*.jpg;*.png")]
-    )
-    output_path = filedialog.asksaveasfilename(
-        title="Save as",
-        defaultextension=".jpg",
-        filetypes=[("Image files", "*.jpg;*.png")],
-    )
-    draw_on_image(PaintApp, Path(input_path), Path(output_path))
-
-
-if __name__ == "__main__":
-    main()
