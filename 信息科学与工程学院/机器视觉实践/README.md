@@ -2,6 +2,8 @@
 
 信工大四上课程，持续两周。我真的不知道为什么实践课要在秋招 + 实习最忙的时间展开。
 
+写完以后发现自己大部分时间都花在写前端和用户交互上了。。真正涉及图像处理的事情反而不算多。
+
 ## 运行代码
 
 正常情况下，`uv run python -m src` 即可，uv 会自动安装依赖。代码会进入一个 TUI 导航面板，可以自由选择运行的程序。顺带一提 [uv](https://github.com/astral-sh/uv) 是一个还不错的 python 包管理器。
@@ -37,3 +39,9 @@ steam-run .venv/bin/python -m src
 ## 3
 
 人脸去痣。第一个肯定还是 inpaint，这玩意很好用，直接用以前代码就行。第二个是色块移动，tkinter 的代码可能得多写一会儿。
+
+## 4
+
+图像补光与界面设计。我一开始做的是全局加亮度，直接调 PIL 库就行了。后来发现不太对，要求看起来还挺复杂的。至于那个 image compare 的玩意，我最后还是选择直接用前端。折腾 vue 折腾了一会儿不会用，只会写 SFC，碰到项目管理直接抓瞎。
+
+然后刚好刷到一个 [img-comparison-slider](https://github.com/sneas/img-comparison-slider)，支持 html `<script>` 标签引入，完美解决我的需求。

@@ -7,3 +7,4 @@ template.pdf
 *.qcow2
 __pycache__
 .venv
+node_modules

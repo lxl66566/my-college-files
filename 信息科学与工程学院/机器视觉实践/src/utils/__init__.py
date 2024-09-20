@@ -1,14 +1,35 @@
 #!/usr/bin/env python3
 
 import logging
+import shutil
 import tempfile
+import unittest
+from contextlib import suppress
+from enum import Enum
 from pathlib import Path
 from typing import Callable
 
 from PIL import Image
 
 
-def use_image(process: Callable[[Path, Path], None], origin_image="fruits.jpg"):
+class OpenOption(Enum):
+    """
+    Options for opening images.
+    """
+
+    NONE = 0
+    INPUT = 1
+    OUTPUT = 2
+    BOTH = 3
+
+
+def use_image(
+    process: Callable[[Path, Path], None],
+    input_image: str | Path = "fruits.jpg",
+    output_image: Path | None = None,
+    tmpdir: Path | None = None,
+    open_option=OpenOption.BOTH,
+):
     """
     Call process with a temporary image and show the result image.
 
@@ -18,19 +39,48 @@ def use_image(process: Callable[[Path, Path], None], origin_image="fruits.jpg"):
 
     :param process: A function that takes two arguments, the input image and
         the output image.
+    :param origin_image: The name of the image file in the assets directory.
+    :param open_option: The option for opening the input and output images.
     """
 
-    with tempfile.TemporaryDirectory(delete=False) as tmpdir:
-        tmpdir = Path(tmpdir)
-        thisfile = Path(__file__)
+    if tmpdir is None:
+        with tempfile.TemporaryDirectory(delete=False) as _tmpdir:
+            tmpdir = Path(_tmpdir)
+            return use_image(
+                process=process,
+                input_image=input_image,
+                output_image=output_image,
+                tmpdir=tmpdir,
+                open_option=open_option,
+            )
 
-        origin_image = thisfile.parent.parent.parent / "assets" / origin_image
-        output_image = (tmpdir / "result").with_suffix(origin_image.suffix)
+    assert tmpdir and tmpdir.is_dir()
 
-        logging.info(f"Origin image: {origin_image.absolute()}")
-        logging.info(f"Output image: {output_image.absolute()}")
+    thisfile = Path(__file__)
 
-        process(origin_image, output_image)
+    if isinstance(input_image, str):
+        input_image = thisfile.parent.parent.parent / "assets" / input_image
+    tmp_image = (tmpdir / "tmp_origin").with_suffix(input_image.suffix)
+    output_image = output_image or (tmpdir / "result").with_suffix(input_image.suffix)
 
-        Image.open(origin_image).show()
+    logging.info(f"Origin image: {input_image.absolute()}")
+    logging.info(f"Output image: {output_image.absolute()}")
+
+    # 为了防止 origin_image 的路径含有中文，在 windows 上可能会炸掉 cv2 的读取
+    with suppress(shutil.SameFileError):
+        shutil.copy2(input_image, tmp_image)
+
+    process(tmp_image, output_image)
+
+    if open_option.value & OpenOption.INPUT.value:
+        Image.open(tmp_image).show()
+
+    if open_option.value & OpenOption.OUTPUT.value:
         Image.open(output_image).show()
+
+
+class Test(unittest.TestCase):
+    def test_open_option(self):
+        assert OpenOption.BOTH.value & OpenOption.OUTPUT.value
+        assert OpenOption.BOTH.value & OpenOption.INPUT.value
+        assert not OpenOption.OUTPUT.value & OpenOption.INPUT.value

@@ -1,10 +1,11 @@
 from PyConsoleMenu2 import BaseMenu
 
+from .brightness import serve
 from .mole import remove_mole
 from .mosaic import draw_mosaic
 from .scratch import scratch
 
-options = ["图像划痕处理", "绘制马赛克", "人脸去痣"]
+options = ["图像划痕处理", "绘制马赛克", "人脸去痣", "亮度调整"]
 
 
 def main():
@@ -27,6 +28,8 @@ def main():
                 BaseMenu("选择方法").add_options(["inpaint", "色块移动"]).run()
             )
             remove_mole(menu_entry_index)
+        case 3:
+            serve()
 
 
 if __name__ == "__main__":
