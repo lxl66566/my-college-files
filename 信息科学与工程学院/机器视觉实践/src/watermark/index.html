@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图像水印添加与提取</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <style>
+      canvas {
+        border: 1px solid #ccc;
+        position: relative;
+        cursor: crosshair;
+        width: auto;
+        height: auto;
+      }
+      .watermark {
+        position: absolute;
+        cursor: move;
+        user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>图像水印添加与提取</h1>
+      <input type="file" @change="loadImage" accept="image/*" />
+      <br />
+      <input type="text" v-model="watermark" placeholder="输入水印" />
+      <button @click="addWatermark">添加水印</button>
+      <button @click="downloadImage">下载水印图像</button>
+      <button @click="extractWatermark">提取水印</button>
+      <button @click="downloadWatermark">下载提取水印图像</button>
+      <br />
+      <canvas id="canvas" ref="canvas"></canvas>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          image: null,
+          watermark: "",
+          watermarkedImage: null,
+          extractedImage: null,
+        },
+        methods: {
+          loadImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                this.image = new Image();
+                this.image.src = e.target.result;
+                this.image.onload = () => {
+                  const canvas = this.$refs.canvas;
+                  canvas.width = this.image.width;
+                  canvas.height = this.image.height;
+                  this.drawImage();
+                };
+              };
+              reader.readAsDataURL(file);
+            }
+          },
+          drawImage() {
+            const canvas = this.$refs.canvas;
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(this.watermarkedImage ?? this.image, 0, 0, canvas.width, canvas.height);
+          },
+          addWatermark() {
+            if (!this.watermark) {
+              alert("请输入水印");
+              return;
+            }
+            const canvas = this.$refs.canvas;
+            const ctx = canvas.getContext("2d");
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            ctx.fillText(this.watermark, 50, 50);
+            this.watermarkedImage = canvas.toDataURL(); // 更新水印图像
+          },
+          downloadImage() {
+            const link = document.createElement("a");
+            link.href = this.watermarkedImage;
+            link.download = "watermarked_image.png";
+            link.click();
+          },
+          extractWatermark() {
+            const canvas = this.$refs.canvas;
+            const ctx = canvas.getContext("2d");
+            // 假设直接提取出水印图像（这里可以放 DCT 变换的逻辑）
+            this.extractedImage = canvas.toDataURL();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          },
+          downloadWatermark() {
+            const link = document.createElement("a");
+            link.href = this.extractedImage;
+            link.download = "extracted_watermark.png";
+            link.click();
+          },
+        },
+        mounted() {
+          const canvas = this.$refs.canvas;
+          canvas.addEventListener("mousedown", (e) => {
+            if (this.watermark) {
+              const rect = canvas.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              this.addDraggableWatermark(x, y);
+            }
+          });
+        },
+      });
+    </script>
+  </body>
+</html>

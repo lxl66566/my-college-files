@@ -39,14 +39,14 @@
   let txt = (font: 字体.代码)
   set text(..txt)
   let name = block(
-                breakable: false,
-                fill: color.linear-rgb(0, 0, 0, 10),
-                stroke: stroke,
-                inset: 0.5em,
-                below: -1.5em,
-                radius: (top-right: radius, bottom-left: radius),
-                title,
-              )
+    breakable: false,
+    fill: color.linear-rgb(0, 0, 0, 10),
+    stroke: stroke,
+    inset: 0.5em,
+    below: -1.5em,
+    radius: (top-right: radius, bottom-left: radius),
+    title,
+  )
   block(
     stroke: stroke,
     width: 100%,
@@ -81,9 +81,9 @@
 }
 
 #let project(
-  title: "", 
+  title: "",
   authors: (),
-  body
+  body,
 ) = {
   set document(author: authors, title: title)
   set page(numbering: "1", number-align: center, margin: 0.7in)
@@ -95,7 +95,7 @@
   set par(first-line-indent: 2em)
   show heading: it => {
     it
-    par()[#text(size:0.5em)[#h(0.0em)]]
+    par()[#text(size: 0.5em)[#h(0.0em)]]
   }
 
   // heading，一级标题换页且不显示数字，首行居中
@@ -105,14 +105,11 @@
     if it.level == 1 {
       pagebreak(weak: true)
       align(center)[#text(size: 字号.小二, it.body)]
-    }
-    else if it.level == 2 {
+    } else if it.level == 2 {
       text(size: 字号.四号, it)
-    }
-    else if it.level == 3 {
+    } else if it.level == 3 {
       text(size: 字号.小四, it)
-    }
-    else{
+    } else {
       text(size: 字号.五号, it)
     }
   }

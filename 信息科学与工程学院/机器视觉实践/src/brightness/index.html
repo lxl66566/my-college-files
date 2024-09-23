@@ -18,8 +18,8 @@
     <div id="app">
       <div class="container">
         <img-comparison-slider>
-          <img slot="first" :src="processedImage" alt="1" />
-          <img slot="second" :src="originalImage" alt="2" />
+          <img slot="first" :src="originalImage" alt="1" />
+          <img slot="second" :src="processedImage" alt="2" />
         </img-comparison-slider>
       </div>
     </div>
@@ -66,14 +66,6 @@
 
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imageData.data;
-
-            // // 增强暗部亮度
-            // const factor = 2;
-            // for (let i = 0; i < data.length; i += 4) {
-            //   data[i] = Math.min(data[i] * factor, 255); // R
-            //   data[i + 1] = Math.min(data[i + 1] * factor, 255); // G
-            //   data[i + 2] = Math.min(data[i + 2] * factor, 255); // B
-            // }
 
             // 定义亮度增强的曲线因子
             const darkFactor = 3; // 增强暗部的因子

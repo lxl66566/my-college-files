@@ -4,8 +4,10 @@ from .brightness import serve
 from .mole import remove_mole
 from .mosaic import draw_mosaic
 from .scratch import scratch
+from .utils import use_image
+from .watermark import watermark_main
 
-options = ["图像划痕处理", "绘制马赛克", "人脸去痣", "亮度调整"]
+options = ["图像划痕处理", "绘制马赛克", "人脸去痣", "亮度调整", "水印添加与提取"]
 
 
 def main():
@@ -30,6 +32,8 @@ def main():
             remove_mole(menu_entry_index)
         case 3:
             serve()
+        case 4:
+            use_image(watermark_main)
 
 
 if __name__ == "__main__":
