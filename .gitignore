@@ -8,3 +8,4 @@ template.pdf
 __pycache__
 .venv
 node_modules
+.pytest_cache

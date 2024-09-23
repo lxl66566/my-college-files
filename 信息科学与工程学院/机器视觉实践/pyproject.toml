@@ -5,14 +5,14 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-
+  # "invisible-watermark>=0.2.0",
+  "matplotlib>=3.9.2",
   "numpy>=2.1.1",
-
   "opencv-python>=4.10.0.84",
-
   "pillow>=10.4.0",
-
   "pyconsolemenu2>=1.1.0",
-
   "scikit-image>=0.24.0",
 ]
+
+[tool.uv]
+dev-dependencies = ["pretty-assert>=0.1.1", "pytest>=8.3.3"]

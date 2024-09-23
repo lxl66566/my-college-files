@@ -1,129 +1,112 @@
+import logging as log
+import shutil
 from pathlib import Path
 
-import cv2
-import numpy as np
+from PyConsoleMenu2 import BaseMenu
 
 from ..utils import OpenOption, use_image
+from ..utils.convert import convert_jpg_to_png
+from ..utils.noise import (
+    add_gaussian_blur,
+    add_salt_and_pepper_noise,
+    apply_high_pass_filter,
+)
 
 
-def add_watermark(input_path: Path, output_path: Path, content: str):
-    # 读取图像并转换为浮点型
-    image = cv2.imread(str(input_path))
-    if image is None:
-        raise FileNotFoundError(f"Image not found at {input_path}")
-
-    # 转换为灰度图
-    img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY).astype(np.float32)
-
-    # 将图像转换到频域
-    dft = cv2.dft(img, flags=cv2.DFT_COMPLEX_OUTPUT)
-    dft_shift = np.fft.fftshift(dft)
-
-    # 创建水印
-    watermark = np.zeros(img.shape, np.uint8)
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    fontScale = 30
-    thickness = 5
-    text_size = cv2.getTextSize(content, font, fontScale, thickness)[0]
-    text_x = (watermark.shape[1] + text_size[0]) // 2
-    text_y = (watermark.shape[0] + text_size[1]) // 2
-    cv2.putText(
-        img=watermark,
-        text=content,
-        org=(text_x, text_y),
-        fontFace=font,
-        fontScale=fontScale,
-        color=(255, 255, 255),
-        thickness=thickness,
-    )
-
-    # 将水印添加到频域
-    watermark = watermark.astype(np.float32) / 255.0  # 归一化水印
-    strength = 50  # 水印强度
-    dft_shift[:, :, 0] += watermark * strength
-    dft_shift[:, :, 1] += watermark * strength
-
-    # 反变换回图像域
-    idft_shift = np.fft.ifftshift(dft_shift)
-    img_back = cv2.idft(idft_shift)
-    img_back = cv2.magnitude(img_back[:, :, 0], img_back[:, :, 1])
-
-    # 归一化并转换为8位图像
-    img_back = cv2.normalize(img_back, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-
-    # 保存结果
-    cv2.imwrite(str(output_path), img_back)
+def add_noise(input_path: Path, output_path: Path, noise: int = 0):
+    temp_dir = input_path.parent
+    match noise:
+        case 0:
+            # 不干
+            shutil.copy2(input_path, output_path)
+        case 1:
+            # 椒盐噪声
+            use_image(
+                lambda x, y: add_salt_and_pepper_noise(x, y),
+                tmpdir=temp_dir,
+                input_image=input_path,
+                output_image=output_path,
+                open_option=OpenOption.NONE,
+            )
+        case 2:
+            # 高斯噪声
+            use_image(
+                lambda x, y: add_gaussian_blur(x, y),
+                tmpdir=temp_dir,
+                input_image=input_path,
+                output_image=output_path,
+                open_option=OpenOption.NONE,
+            )
+        case 3:
+            # 高通滤波
+            use_image(
+                lambda x, y: apply_high_pass_filter(x, y, 3),
+                tmpdir=temp_dir,
+                input_image=input_path,
+                output_image=output_path,
+                open_option=OpenOption.NONE,
+            )
 
 
-# def get_watermark(input_path: Path, output_path: Path):
-#     # 读取图像并转换为浮点型
-#     image = cv2.imread(str(input_path))
-#     if image is None:
-#         raise FileNotFoundError(f"Image not found at {input_path}")
+def watermark_select(
+    input_path: Path, output_path: Path, mode: int = 0, noise: int = 0
+):
+    s = input("请输入水印内容：")
+    temp_dir = output_path.parent
+    png_path = (temp_dir / "png").with_suffix(".png")
+    noise_path = (temp_dir / "noise").with_suffix(png_path.suffix)
+    middle_path = (temp_dir / "middle").with_suffix(png_path.suffix)
 
-#     # 转换为灰度图
-#     img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY).astype(np.float32)
+    convert_jpg_to_png(input_path, png_path)
 
-#     # 将图像转换到频域
-#     dft = cv2.dft(img, flags=cv2.DFT_COMPLEX_OUTPUT)
-#     dft_shift = np.fft.fftshift(dft)
+    match mode:
+        case 0:
+            from .myfft import add_watermark, get_watermark
 
-#     # 提取水印
-#     magnitude = cv2.magnitude(dft_shift[:, :, 0], dft_shift[:, :, 1])
-#     magnitude = np.log1p(magnitude)  # 对数变换增强水印
-#     magnitude = cv2.normalize(magnitude, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+            add_watermark(png_path, middle_path, s)
+            add_noise(middle_path, noise_path, noise)
+            use_image(
+                get_watermark,
+                input_image=noise_path,
+                output_image=output_path,
+                tmpdir=temp_dir,
+                open_option=OpenOption.INPUT,
+            )
 
-#     # 保存水印图像
-#     cv2.imwrite(str(output_path), magnitude)
+        case 1:
+            from .external import add_watermark, get_watermark
 
+            add_watermark(png_path, middle_path, s)
+            add_noise(middle_path, output_path, noise)
+            print("获取水印：", get_watermark(output_path))
 
-def get_watermark(input_path: Path, output_path: Path):
-    # 读取图像并转换为浮点型
-    image = cv2.imread(str(input_path))
-    if image is None:
-        raise FileNotFoundError(f"Image not found at {input_path}")
+        case 2:
+            from .LSB import add_watermark, get_watermark
 
-    # 转换为灰度图
-    img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY).astype(np.float32)
+            add_watermark(png_path, middle_path, s)
+            add_noise(middle_path, output_path, noise)
+            log.info(f"add noise to {output_path}")
+            print("获取水印：", get_watermark(output_path))
 
-    # 将图像转换到频域
-    dft = cv2.dft(img, flags=cv2.DFT_COMPLEX_OUTPUT)
-    dft_shift = np.fft.fftshift(dft)
-
-    # 提取水印
-    magnitude = cv2.magnitude(dft_shift[:, :, 0], dft_shift[:, :, 1])
-    magnitude = np.log1p(magnitude)  # 对数变换增强水印
-    magnitude = cv2.normalize(magnitude, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
-
-    # 将频域水印转换回图像域
-    watermark_dft = np.zeros_like(dft_shift)
-    watermark_dft[:, :, 0] = magnitude * np.cos(
-        np.angle(dft_shift[:, :, 0] + 1j * dft_shift[:, :, 1])
-    )
-    watermark_dft[:, :, 1] = magnitude * np.sin(
-        np.angle(dft_shift[:, :, 0] + 1j * dft_shift[:, :, 1])
-    )
-
-    watermark_dft_shift = np.fft.ifftshift(watermark_dft)
-    watermark_img = cv2.idft(watermark_dft_shift)
-    watermark_img = cv2.magnitude(watermark_img[:, :, 0], watermark_img[:, :, 1])
-    watermark_img = cv2.normalize(watermark_img, None, 0, 255, cv2.NORM_MINMAX).astype(
-        np.uint8
-    )
-
-    # 保存转换后的图像
-    cv2.imwrite(str(output_path), watermark_img)
+        case _:
+            raise Exception("unimplemented")
 
 
 def watermark_main(input_path: Path, output_path: Path):
-    s = input("请输入水印内容：")
-    temp_dir = output_path.parent
-    middle_path = (temp_dir / "middle").with_suffix(input_path.suffix)
-    add_watermark(input_path, middle_path, s)
-    use_image(
-        get_watermark,
-        input_image=middle_path,
-        output_image=output_path,
-        tmpdir=temp_dir,
-        open_option=OpenOption.INPUT,
+    mode = (
+        BaseMenu("选择方法")
+        .add_options(
+            [
+                "频域直接添加",
+                "调库 DWT + DCT（需要在 pyproject.toml 里取消注释依赖）",
+                "LSB 最低有效位",
+            ]
+        )
+        .run()
     )
+    noise = (
+        BaseMenu("选择噪声")
+        .add_options(["无", "椒盐噪声", "高斯噪声", "高通滤波"])
+        .run()
+    )
+    watermark_select(input_path, output_path, mode, noise)
