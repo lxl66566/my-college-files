@@ -5,8 +5,9 @@ from pathlib import Path
 from PyConsoleMenu2 import BaseMenu
 
 from ..utils import OpenOption, use_image
-from ..utils.convert import convert_jpg_to_png
+from ..utils.convert import convert_jpg_to_png, convert_png_to_jpg
 from ..utils.noise import (
+    add_color_block,
     add_gaussian_blur,
     add_salt_and_pepper_noise,
     apply_high_pass_filter,
@@ -31,7 +32,7 @@ def add_noise(input_path: Path, output_path: Path, noise: int = 0):
         case 2:
             # 高斯噪声
             use_image(
-                lambda x, y: add_gaussian_blur(x, y),
+                lambda x, y: add_gaussian_blur(x, y, 4),
                 tmpdir=temp_dir,
                 input_image=input_path,
                 output_image=output_path,
@@ -41,6 +42,15 @@ def add_noise(input_path: Path, output_path: Path, noise: int = 0):
             # 高通滤波
             use_image(
                 lambda x, y: apply_high_pass_filter(x, y, 3),
+                tmpdir=temp_dir,
+                input_image=input_path,
+                output_image=output_path,
+                open_option=OpenOption.NONE,
+            )
+        case 4:
+            # 色块切割
+            use_image(
+                lambda x, y: add_color_block(x, y, (100, 100), (0, 0, 0)),
                 tmpdir=temp_dir,
                 input_image=input_path,
                 output_image=output_path,
@@ -83,10 +93,12 @@ def watermark_select(
         case 2:
             from .LSB import add_watermark, get_watermark
 
+            output_path_png = output_path.with_suffix(".png")
             add_watermark(png_path, middle_path, s)
-            add_noise(middle_path, output_path, noise)
-            log.info(f"add noise to {output_path}")
-            print("获取水印：", get_watermark(output_path))
+            add_noise(middle_path, output_path_png, noise)
+            log.info(f"add noise to {output_path_png}")
+            print("获取水印：", get_watermark(output_path_png))
+            convert_png_to_jpg(output_path_png, output_path)
 
         case _:
             raise Exception("unimplemented")
@@ -106,7 +118,7 @@ def watermark_main(input_path: Path, output_path: Path):
     )
     noise = (
         BaseMenu("选择噪声")
-        .add_options(["无", "椒盐噪声", "高斯噪声", "高通滤波"])
+        .add_options(["无", "椒盐噪声", "高斯噪声", "高通滤波", "色块切割"])
         .run()
     )
     watermark_select(input_path, output_path, mode, noise)

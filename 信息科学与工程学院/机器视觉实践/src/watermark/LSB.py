@@ -2,6 +2,7 @@ import logging as log
 import random
 import unittest
 from collections import Counter
+from copy import copy
 from math import ceil
 from pathlib import Path
 
@@ -9,16 +10,19 @@ import cv2
 import numpy as np
 from pretty_assert import assert_eq
 
+from ..utils import grouper
 
-def jump_positions(shape):
+
+def jump_positions(shape, seed=213, num=31):
     """
     jump store positions
 
     :param shape: 图像的形状
+    :param num: 生成坐标的数量
     :return: 跳跃的位置
     """
-    random.seed(213)
-    for _ in range(31):
+    random.seed(seed)
+    for _ in range(num):
         yield (random.randrange(0, shape[0] - 1), random.randrange(0, shape[1] - 9))
 
 
@@ -37,7 +41,7 @@ def calculate_jump(content_len: int, image: np.ndarray) -> int:
     return jump
 
 
-def write_jump_position(image: np.ndarray, position: tuple, jump: int):
+def write_jump_position(image: np.ndarray, jump: int):
     """
     将跳跃长度写入图像
 
@@ -45,12 +49,16 @@ def write_jump_position(image: np.ndarray, position: tuple, jump: int):
     :param position: 嵌入位置
     :param jump: 跳跃长度
     """
-    for j in range(8):
-        image[position[0]][position[1] + j] = jump & 1
-        jump >>= 1
+    positions = grouper(jump_positions(image.shape, num=31 * 8), 8)
+    for group in positions:
+        jump_cp = copy(jump)
+        for j in range(8):
+            position = group[j]
+            image[position[0]][position[1] + j] = jump_cp & 1
+            jump_cp >>= 1
 
 
-def read_jump_position(image: np.ndarray, position: tuple) -> int:
+def read_jump_position(image: np.ndarray) -> int:
     """
     根据嵌入位置获取 jump 值
 
@@ -58,11 +66,27 @@ def read_jump_position(image: np.ndarray, position: tuple) -> int:
     :param position: 嵌入位置
     :return: 跳跃长度
     """
-    x: int = 0
-    for i in range(7, -1, -1):
-        x |= int(image[position[0]][position[1] + i]) & 1
-        x <<= 1
-    return x >> 1
+    ret = []
+    positions = grouper(jump_positions(image.shape, num=31 * 8), 8)
+    for group in positions:
+        x: int = 0
+        for i in range(7, -1, -1):
+            position = group[i]
+            x |= int(image[position[0]][position[1] + i]) & 1
+            x <<= 1
+        ret.append(x >> 1)
+
+    jump_tuple = Counter(ret).most_common()[0]
+    if jump_tuple[1] < 10:
+        log.warning(
+            f"相同的 jump 不够多，可能有干扰，jump 为 {jump_tuple[0]}， 个数为 {jump_tuple[1]}"
+        )
+    else:
+        log.info(f"most common jump: {jump_tuple[0]}, 个数为 {jump_tuple[1]}")
+    jump = jump_tuple[0]
+    assert jump > 0 and jump <= image.shape[1], "jump 计算错误"
+
+    return jump
 
 
 def bits(byte_data: bytes):
@@ -104,8 +128,7 @@ def add_watermark(input_path: Path, output_path: Path, content: str):
 
     assert jump > 0 and jump <= b.shape[1], "jump 计算错误"
     # 分散储存 jump
-    for i in jump_positions(g.shape):
-        write_jump_position(g, i, jump)
+    write_jump_position(g, jump)
 
     i, j = 0, 0
     bitss = bits(binary_content)
@@ -145,16 +168,7 @@ def get_watermark(input_path: Path) -> str:
 
     log.info(f"got image shape : {b.shape}")
 
-    jumps = list(map(lambda x: read_jump_position(g, x), jump_positions(g.shape)))
-    jump_tuple = Counter(jumps).most_common()[0]
-    if jump_tuple[1] < 10:
-        log.warning(
-            f"相同的 jump 不够多，可能有干扰，jump 为 {jump_tuple[0]}， 个数为 {jump_tuple[1]}"
-        )
-    else:
-        log.info(f"most common jump: {jump_tuple}")
-    jump = jump_tuple[0]
-    assert jump > 0 and jump <= b.shape[1], "jump 计算错误"
+    jump = read_jump_position(g)
 
     i, j = 0, 0
     # 16 个 1 就结束，不要求 32 个是为了容错
@@ -188,8 +202,8 @@ class Test(unittest.TestCase):
     def test_write_jump_and_read(self):
         img = np.zeros((1920, 1080), dtype=np.uint8)
         jump = 123
-        write_jump_position(img, (311, 833), jump)
-        assert_eq(read_jump_position(img, (311, 833)), jump)
+        write_jump_position(img, jump)
+        assert_eq(read_jump_position(img), jump)
 
 
 if __name__ == "__main__":

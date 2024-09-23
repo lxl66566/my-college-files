@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import itertools
 import logging
 import shutil
 import tempfile
@@ -10,6 +11,7 @@ from pathlib import Path
 from typing import Callable
 
 from PIL import Image
+from pretty_assert import assert_eq
 
 
 class OpenOption(Enum):
@@ -79,8 +81,25 @@ def use_image(
         Image.open(output_image).show()
 
 
+def grouper(iterable, n, fillvalue=None):
+    "Collect data into fixed-length chunks or blocks"
+    args = [iter(iterable)] * n
+    return itertools.zip_longest(*args, fillvalue=fillvalue)
+
+
 class Test(unittest.TestCase):
     def test_open_option(self):
         assert OpenOption.BOTH.value & OpenOption.OUTPUT.value
         assert OpenOption.BOTH.value & OpenOption.INPUT.value
         assert not OpenOption.OUTPUT.value & OpenOption.INPUT.value
+
+    def test_grouper(self):
+        assert_eq(list(grouper(range(9), 3)), [(0, 1, 2), (3, 4, 5), (6, 7, 8)])
+        assert_eq(
+            list(grouper("ABCDEFG", 3, "x")),
+            [
+                ("A", "B", "C"),
+                ("D", "E", "F"),
+                ("G", "x", "x"),
+            ],
+        )

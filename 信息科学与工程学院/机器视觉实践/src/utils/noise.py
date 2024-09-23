@@ -2,7 +2,7 @@ import random
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image, ImageDraw, ImageFilter
 
 
 def add_salt_and_pepper_noise(
@@ -96,3 +96,27 @@ def apply_high_pass_filter(input_path: Path, output_path: Path, radius: int = 2)
 
     # 保存处理后的图像
     high_pass_image.save(output_path)
+
+
+def add_color_block(
+    input_path: Path, output_path: Path, size=(10, 10), color=(0, 0, 0)
+):
+    """
+    在图像随机位置绘制矩形色块
+    """
+    # 打开图像
+    image = Image.open(input_path)
+    draw = ImageDraw.Draw(image)
+
+    # 获取图像的宽度和高度
+    width, height = image.size
+
+    # 随机选择一个位置
+    x = random.randint(0, width - size[0])
+    y = random.randint(0, height - size[1])
+
+    # 绘制矩形色块
+    draw.rectangle([x, y, x + size[0], y + size[1]], fill=color)
+
+    # 保存修改后的图像
+    image.save(output_path)

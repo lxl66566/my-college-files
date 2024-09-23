@@ -10,7 +10,6 @@ from PIL import Image, ImageDraw, ImageFont
 def add_watermark(input_path: Path, output_path: Path, content: str):
     # 读取图像并转换为浮点型
     image = cv2.imread(str(input_path))
-
     b, g, r = cv2.split(image)
     b = b.astype(np.float32)
 
@@ -29,15 +28,9 @@ def add_watermark(input_path: Path, output_path: Path, content: str):
     text_y = max(0, (watermark.height - text_height - 100) // 2)
     draw.text((text_x, text_y), content, fill=255, font=font)
 
-    # 将PIL图像转换为NumPy数组
+    # 将水印图像转换为NumPy数组
     watermark_np = np.array(watermark, dtype=np.float32)
     watermark_np = watermark_np.astype(np.float32) / 255.0
-
-    # 显示水印
-    plt.figure()
-    plt.imshow(watermark_np, cmap="gray")
-    plt.title("Magnitude Spectrum with Watermark")
-    plt.show()
 
     # 挖掉文字区域
     for i in range(watermark_np.shape[0]):
@@ -64,8 +57,6 @@ def add_watermark(input_path: Path, output_path: Path, content: str):
     img_back = cv2.normalize(img_back, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
 
     processed_image = cv2.merge((img_back, g, r))
-
-    # 保存结果
     cv2.imwrite(str(output_path), processed_image)
 
 
