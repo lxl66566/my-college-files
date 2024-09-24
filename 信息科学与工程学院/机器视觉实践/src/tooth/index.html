@@ -103,18 +103,16 @@
 
               // 在人脸区域下半部分截取嘴巴区域
               const mouthROI = new cv.Rect(face.x + face.width / 3.5, face.y + (face.height / 3) * 2, face.width / 2.3, face.height / 3.9);
-              // const mouthROI = new cv.Rect(face.x, face.y, face.width, face.height);
               console.log(`mouth ROI: ${mouthROI.x}, ${mouthROI.y}, ${mouthROI.width}, ${mouthROI.height}`);
 
-              // 绘制检测结果
+              // 绘制区域检测结果
               ctx.beginPath();
               ctx.rect(mouthROI.x, mouthROI.y, mouthROI.width, mouthROI.height);
               ctx.lineWidth = 2;
               ctx.strokeStyle = "red";
               ctx.stroke();
 
-              // 逐像素处理
-
+              // 逐像素处理，为三种颜色选用系数因子
               const imageData = ctx.getImageData(mouthROI.x, mouthROI.y, mouthROI.width, mouthROI.height);
               const data = imageData.data;
               const r_factor = 1.4;
