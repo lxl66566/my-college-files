@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>人脸亮牙</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
     <style>
       canvas {
         border: 1px solid black;
@@ -14,39 +15,35 @@
   </head>
   <body>
     <div id="app">
-      <input type="file" @change="loadImageEvent" />
-      <canvas ref="canvas"></canvas>
-      <button @click="enhanceTeeth">亮牙</button>
+      <div class="container">
+        <input type="file" @change="loadImageEvent" />
+        <img-comparison-slider>
+          <img slot="first" :src="originalImage" alt="1" />
+          <img slot="second" :src="processedImage" alt="2" />
+        </img-comparison-slider>
+      </div>
     </div>
 
     <script src="https://docs.opencv.org/4.x/opencv.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script>
       const face_xml_path = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml";
-
-      new Vue({
+      let v = new Vue({
         el: "#app",
         data: {
-          imageSrc: null,
-          afterImageSrc: null,
+          originalImage: null,
+          processedImage: null,
         },
-        mounted() {
-          this.loadImage("/1.png");
-        },
+        mounted() {},
         methods: {
           loadImage(src) {
-            if (src) {
-              this.imageSrc = src;
-              const img = new Image();
-              img.src = this.imageSrc;
-              img.onload = () => {
-                const canvas = this.$refs.canvas;
-                const ctx = canvas.getContext("2d");
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-              };
-            }
+            this.originalImage = src;
+            const img = new Image();
+            img.src = this.originalImage;
+            img.onload = () => {
+              this.enhanceTeeth(img);
+            };
           },
           loadImageEvent(event) {
             const file = event.target.files[0];
@@ -79,10 +76,16 @@
             };
             request.send();
           },
-          enhanceTeeth() {
-            const canvas = this.$refs.canvas;
+
+          enhanceTeeth(img) {
+            // const canvas = this.$refs.canvas;
+            const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
             const src = cv.imread(canvas);
+
             const gray = new cv.Mat();
             cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
 
@@ -98,8 +101,8 @@
               console.log(`faces num: ${faces.size()}`);
               const face = faces.get(0);
 
-              // 在人脸区域下半部分检测嘴巴
-              const mouthROI = new cv.Rect(face.x + face.width / 4, face.y + (face.height / 3) * 2, face.width / 2, face.height / 3);
+              // 在人脸区域下半部分截取嘴巴区域
+              const mouthROI = new cv.Rect(face.x + face.width / 3.5, face.y + (face.height / 3) * 2, face.width / 2.3, face.height / 3.9);
               // const mouthROI = new cv.Rect(face.x, face.y, face.width, face.height);
               console.log(`mouth ROI: ${mouthROI.x}, ${mouthROI.y}, ${mouthROI.width}, ${mouthROI.height}`);
 
@@ -110,28 +113,42 @@
               ctx.strokeStyle = "red";
               ctx.stroke();
 
-              // const mouthRegion = src.roi(mouthROI);
+              // 逐像素处理
 
-              // // 提升牙齿区域的亮度
-              // const teethMask = new cv.Mat();
-              // cv.inRange(mouthRegion, new cv.Scalar(200, 200, 200), new cv.Scalar(255, 255, 255), teethMask);
-              // const brightnessFactor = 1.5;
-              // const enhancedTeeth = new cv.Mat();
-              // cv.multiply(mouthRegion, new cv.Scalar(brightnessFactor, brightnessFactor, brightnessFactor, 1), enhancedTeeth, 1, cv.CV_8UC4);
-              // enhancedTeeth.copyTo(mouthRegion, teethMask);
+              const imageData = ctx.getImageData(mouthROI.x, mouthROI.y, mouthROI.width, mouthROI.height);
+              const data = imageData.data;
+              const r_factor = 1.4;
+              const g_factor = 1.5;
+              const b_factor = 1.5;
 
-              // 释放内存
-              teethMask.delete();
-              enhancedTeeth.delete();
-
-              cv.imshow(canvas, src);
-              src.delete();
-              gray.delete();
+              // 遍历像素数据
+              for (let i = 0; i < data.length; i += 4) {
+                const red = data[i];
+                const green = data[i + 1];
+                const blue = data[i + 2];
+                if (this.isToothColor(red, green, blue)) {
+                  data[i] = red * r_factor;
+                  data[i + 1] = green * g_factor;
+                  data[i + 2] = blue * b_factor;
+                }
+              }
+              ctx.putImageData(imageData, mouthROI.x, mouthROI.y);
+              this.processedImage = canvas.toDataURL();
               faces.delete();
             });
           },
+          isToothColor(red, green, blue) {
+            const maxn = Math.max(red, green, blue);
+            const minn = Math.min(red, green, blue);
+            return minn >= 13 && maxn - minn <= 60 && maxn < 120;
+          },
         },
       });
+
+      // solve TypeError: cv.Mat is not a constructor
+      window.onload = function () {
+        v.loadImage("/1.png");
+      };
     </script>
   </body>
 </html>

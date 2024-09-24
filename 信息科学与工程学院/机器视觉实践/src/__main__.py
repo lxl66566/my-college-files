@@ -1,3 +1,4 @@
+import logging as log
 from pathlib import Path
 
 from PyConsoleMenu2 import BaseMenu
@@ -44,6 +45,9 @@ def main():
         case 4:
             use_image(watermark_main)
         case 5:
+            log.info(
+                "请确保当前网络环境可以连接到 raw.githubusercontent.com（需要挂梯子）"
+            )
             serve(root=Path(__file__).parent / "tooth")
 
 
