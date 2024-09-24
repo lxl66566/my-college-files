@@ -1,13 +1,22 @@
+from pathlib import Path
+
 from PyConsoleMenu2 import BaseMenu
 
-from .brightness import serve
 from .mole import remove_mole
 from .mosaic import draw_mosaic
 from .scratch import scratch
 from .utils import use_image
+from .utils.http_server import serve
 from .watermark import watermark_main
 
-options = ["图像划痕处理", "绘制马赛克", "人脸去痣", "亮度调整", "水印添加与提取"]
+options = [
+    "图像划痕处理",
+    "绘制马赛克",
+    "人脸去痣",
+    "亮度调整",
+    "水印添加与提取",
+    "人脸亮牙",
+]
 
 
 def main():
@@ -31,9 +40,11 @@ def main():
             )
             remove_mole(menu_entry_index)
         case 3:
-            serve()
+            serve(root=Path(__file__).parent / "brightness")
         case 4:
             use_image(watermark_main)
+        case 5:
+            serve(root=Path(__file__).parent / "tooth")
 
 
 if __name__ == "__main__":
