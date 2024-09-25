@@ -2,17 +2,19 @@
 
 信工大四上课程，持续两周。我真的不知道为什么实践课要在秋招 + 实习最忙的时间展开。
 
-写完以后发现自己大部分时间都花在写前端和用户交互上了。。真正涉及图像处理的事情反而不算多。
+发现自己大部分时间都花在写前端和用户交互上了。。真正涉及图像处理的事情反而不算多。
 
 ## 运行代码
 
-正常情况下，`uv run python -m src` 即可，uv 会自动安装依赖。代码会进入一个 TUI 导航面板，可以自由选择运行的程序。顺带一提 [uv](https://github.com/astral-sh/uv) 是一个还不错的 python 包管理器。
+正常情况下，`uv run python -m src` 即可，uv 会自动安装依赖。代码会进入一个 TUI 导航面板，可以选择要运行的程序。
+
+顺带一提 [uv](https://github.com/astral-sh/uv) 是一个还不错的 python 包管理器。本次实验依赖安装体积有 1.5G，主要是有个要用 pytorch 的实验占了很大体积，如果没代理嫌慢可以设一下 [UV_PYPY_INSTALL_MIRROR](https://docs.astral.sh/uv/configuration/environment/)。
 
 但是像我这种用 NixOS 的倒霉鬼无法 `import _tk`，于是只能自己写 `shell.nix` 了。
 
 ```sh
 nix-shell
-steam-run .venv/bin/python -m src
+steam-run uv run python -m src
 ```
 
 ## 杂
@@ -45,3 +47,28 @@ steam-run .venv/bin/python -m src
 图像补光与界面设计。我一开始做的是全局加亮度，直接调 PIL 库就行了。后来发现不太对，要求看起来还挺复杂的。至于那个 image compare 的玩意，我最后还是选择直接用前端。折腾 vue 折腾了一会儿不会用，只会写 SFC，碰到项目管理直接抓瞎。
 
 然后刚好刷到一个 [img-comparison-slider](https://github.com/sneas/img-comparison-slider)，支持 html `<script>` 标签引入，完美解决我的需求。
+
+## 5
+
+图像水印添加与提取
+
+我一开始还真做成水印，字面意义上的那种。。后面一细看，这玩意叫隐写！！
+
+然后琢磨了一点方法，频域法做出来但是感觉不太行，不过交上去老师也认可了。然后回到寝室，LSB 自己设计了一个，就是纯粹心血来潮玩一玩。没想到一做就是一晚上，踩了不少坑，python 的 bytes/bytearray，jpg 和 png……
+
+## 6
+
+人脸亮牙。学校真没活了整抽象的了。
+
+感觉不用大模型有点难做。分离牙齿和嘴唇好难。我那代码非常局限，换一张图估计就完全行不通了。
+
+选择用前端做，刚好可以用之前补光的 image comparison 组件，结果踩了好多 opencv.js 的坑。
+
+## 7
+
+息肉检测。
+
+- [Polyp-Localization](https://github.com/shivangi-aneja/Polyp-Localization)：需要自行训练；已经 archive。
+- [kaggle - Automatic Polyp Detection in Colonoscopic Frames](https://www.kaggle.com/code/balraj98/automatic-polyp-detection-in-colonoscopic-frames/notebook)：有训练源码但是没有使用教程，要会用 torch
+
+我用 kaggle 的模型，GPT 多问问，也就跑起来了。

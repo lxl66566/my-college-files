@@ -2,6 +2,7 @@
 
 import itertools
 import logging
+import os
 import shutil
 import tempfile
 import unittest
@@ -12,6 +13,18 @@ from typing import Callable
 
 from PIL import Image
 from pretty_assert import assert_eq
+
+
+def to_normal_path(path: Path) -> Path:
+    """
+    为了防止 origin_image 的路径含有中文，在 windows 上可能会炸掉 cv2 的读取
+    """
+    fd, p = tempfile.mkstemp(suffix=path.suffix)
+    os.close(fd)
+    p = Path(p)
+    with suppress(shutil.SameFileError):
+        shutil.copy2(path, p)
+    return p
 
 
 class OpenOption(Enum):
@@ -58,19 +71,13 @@ def use_image(
 
     assert tmpdir and tmpdir.is_dir()
 
-    thisfile = Path(__file__)
-
     if isinstance(input_image, str):
-        input_image = thisfile.parent.parent.parent / "assets" / input_image
-    tmp_image = (tmpdir / "tmp_origin").with_suffix(input_image.suffix)
+        input_image = assets() / input_image
+    tmp_image = to_normal_path(input_image)
     output_image = output_image or (tmpdir / "result").with_suffix(input_image.suffix)
 
     logging.info(f"Origin image: {input_image.absolute()}")
     logging.info(f"Output image: {output_image.absolute()}")
-
-    # 为了防止 origin_image 的路径含有中文，在 windows 上可能会炸掉 cv2 的读取
-    with suppress(shutil.SameFileError):
-        shutil.copy2(input_image, tmp_image)
 
     process(tmp_image, output_image)
 
@@ -85,6 +92,10 @@ def grouper(iterable, n, fillvalue=None):
     "Collect data into fixed-length chunks or blocks"
     args = [iter(iterable)] * n
     return itertools.zip_longest(*args, fillvalue=fillvalue)
+
+
+def assets():
+    return Path(__file__).parent.parent.parent / "assets"
 
 
 class Test(unittest.TestCase):

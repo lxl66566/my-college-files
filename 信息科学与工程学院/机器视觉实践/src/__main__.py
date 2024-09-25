@@ -5,6 +5,7 @@ from PyConsoleMenu2 import BaseMenu
 
 from .mole import remove_mole
 from .mosaic import draw_mosaic
+from .polyp import polyp_show
 from .scratch import scratch
 from .utils import use_image
 from .utils.http_server import serve
@@ -17,6 +18,7 @@ options = [
     "亮度调整",
     "水印添加与提取",
     "人脸亮牙",
+    "息肉检测",
 ]
 
 
@@ -49,6 +51,8 @@ def main():
                 "请确保当前网络环境可以连接到 raw.githubusercontent.com（需要挂梯子）"
             )
             serve(root=Path(__file__).parent / "tooth")
+        case 6:
+            polyp_show()
 
 
 if __name__ == "__main__":
