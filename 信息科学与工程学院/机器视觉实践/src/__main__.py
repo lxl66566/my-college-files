@@ -3,11 +3,12 @@ from pathlib import Path
 
 from PyConsoleMenu2 import BaseMenu
 
+from .merge import merge_main
 from .mole import remove_mole
 from .mosaic import draw_mosaic
 from .polyp import polyp_show
 from .scratch import scratch
-from .utils import use_image
+from .utils import OpenOption, use_image
 from .utils.http_server import serve
 from .watermark import watermark_main
 
@@ -19,6 +20,7 @@ options = [
     "水印添加与提取",
     "人脸亮牙",
     "息肉检测",
+    "特征检测拼接",
 ]
 
 
@@ -53,6 +55,8 @@ def main():
             serve(root=Path(__file__).parent / "tooth")
         case 6:
             polyp_show()
+        case 7:
+            use_image(merge_main, open_option=OpenOption.NONE)
 
 
 if __name__ == "__main__":
