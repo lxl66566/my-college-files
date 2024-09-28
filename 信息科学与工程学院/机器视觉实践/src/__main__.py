@@ -8,6 +8,7 @@ from .mole import remove_mole
 from .mosaic import draw_mosaic
 from .polyp import polyp_show
 from .scratch import scratch
+from .split import watershed_split
 from .utils import OpenOption, use_image
 from .utils.http_server import serve
 from .watermark import watermark_main
@@ -21,6 +22,7 @@ options = [
     "人脸亮牙",
     "息肉检测",
     "特征检测拼接",
+    "分水岭图像分割",
 ]
 
 
@@ -57,6 +59,9 @@ def main():
             polyp_show()
         case 7:
             use_image(merge_main, open_option=OpenOption.NONE)
+        case 8:
+            # use_image(watershed_split, input_image="coins.jpg")
+            use_image(watershed_split)
 
 
 if __name__ == "__main__":

@@ -22,8 +22,8 @@
 
 #let 字体 = (
   仿宋: ("Times New Roman", "FangSong"),
-  宋体: ("Times New Roman", "Songti SC", "Songti TC", "SimSun"),
-  黑体: ("Times New Roman", "SimHei"),
+  宋体: ("Times New Roman", "Noto Sans CJK SC", "Songti SC", "SimSun", "FangSong"),
+  黑体: ("Times New Roman", "SimHei", "Noto Sans CJK SC"),
   楷体: ("Times New Roman", "KaiTi"),
   代码: ("Fira Code", "Consolas", "monospace", "WenQuanYi Zen Hei Mono", "FangSong"),
 )
@@ -101,7 +101,7 @@
   // heading，一级标题换页且不显示数字，首行居中
   set heading(numbering: "1.1")
   show heading: it => {
-    set text(font: 字体.黑体)
+    set text(font: 字体.黑体, weight: "bold")
     if it.level == 1 {
       pagebreak(weak: true)
       align(center)[#text(size: 字号.小二, it.body)]
