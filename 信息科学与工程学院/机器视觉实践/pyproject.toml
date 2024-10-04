@@ -7,7 +7,6 @@ requires-python = ">=3.10"
 dependencies = [
   # "invisible-watermark>=0.2.0",
   "albumentations>=1.4.16",
-  # "invisible-watermark>=0.2.0",
   "matplotlib>=3.9.2",
   "numpy>=2.1.1",
   "opencv-python>=4.10.0.84",
