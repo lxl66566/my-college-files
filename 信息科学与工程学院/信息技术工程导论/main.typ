@@ -19,10 +19,10 @@
 === 协议对比
 
 // https://learn.microsoft.com/en-us/windows-hardware/drivers/hid/
-- Human Interface Devices (HID) 是第一个支持游戏手柄输入的协议标准，在此之前 PC 标准只支持 PS/2 键盘和鼠标。1996 年 USB-IF 通过了 HID over USB 规范。HID 设备使用报告描述符来定义数据格式，如按键事件、鼠标运动等，所有现代系统都内置支持 HID 协议。
+- Human Interface Devices (HID) 是第一个通用的支持游戏手柄+键盘、鼠标等输入设备的协议标准。在此之前，需要通过游戏端口（D-sub）和专有协议支持游戏输入设备。1996 年 USB-IF 通过了 HID over USB 规范。HID 设备使用报告描述符来定义数据格式，如按键事件、鼠标运动等，所有现代系统都内置支持 HID 协议。
 
 // https://en.wikipedia.org/wiki/DirectInput
-- DirectInput 是一个旧版 Microsoft API，是 DirectX 库的一部分，基本兼容 DirectX 8（2001–2002）之后的所有 DirectX 游戏版本。// 从手柄驱动的向前兼容性出发，兼容 DirectInput 是很有必要的。
+- DirectInput 是一个旧版 Microsoft API，是 DirectX 库的一部分，基本兼容 DirectX 8（2001-2002）之后的所有 DirectX 游戏版本。 DirectInput 支持多种类的输入设备和自定义功能，尤其是飞行杆、力反馈设备和自定义按键。
 
 // https://en.wikipedia.org/wiki/DirectInput#XInput
 // https://learn.microsoft.com/en-us/windows/win32/xinput/xinput-and-directinput
@@ -109,3 +109,20 @@ Driver Verifier 可以使 Windows 驱动程序承受各种压力和测试，以�
 === 兼容性测试
 
 使用 Windows, Linux, Macos, Android 及其他系统进行测试。
+
+#pagebreak(weak: true)
+
+= 演讲部分
+
+- HID 协议：需要讲 Linux 的仅支持
+- XBOX 兼容性问题：
+  - 部分功能会出现问题：左/右 trigger 会被视为同一个；振动效果不可用
+  - 一些较早发布的PC游戏只适配 DirectInput，而不适配 XInput。例如 Microsoft Flight Simulator 微软模拟飞行，Richard Burns Rally 赛车拉力
+  - 现代手柄在兼容性上作出的努力：
+    - 许多第三方游戏手柄提供两种模式，可以通过硬件开关或特定的按键组合在两者之间切换。例如：罗技、雷蛇等品牌的手柄。
+    - Xbox 360 和 Xbox One 只支持 XInput 模式。
+- 本公司：优先支持 HID 和 XInput，钱到位了再支持 DirectInput。
+- 对比单片机：自由度高很多，社区完善
+- 图片解释： I2C 的时序示意图，上面是写，下面是读。
+  - HID 的初始化需要设备先发出写指令，告诉设备要读哪个寄存器。然后才将自身设为读模式。
+  - 游戏控制器使用定时轮询中断，因为摇杆等模拟输入设备的状态是连续的，需要不断采样位置数据，以保证游戏的流畅性。鼠标、键盘是事件中断。
