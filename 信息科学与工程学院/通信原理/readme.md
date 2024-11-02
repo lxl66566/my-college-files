@@ -4,7 +4,7 @@
 
 ## 个人资料
 
-[我的博客](https://absx.pages.dev/farraginous/learning/PoC.html)里有通信原理的笔记。
+[我的博客](https://absx.pages.dev/learning/PoC.html)里有通信原理的笔记。
 
 ## 2024 考题回忆版
 

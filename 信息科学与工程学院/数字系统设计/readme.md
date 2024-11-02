@@ -3,7 +3,7 @@
 - 信工专业，木昌洪的课。讲得一言难尽，建议翘课自学。平时分挺高，几个舍友都 90+ 了。
 - 理论与实践是两门学科，分数分开算的。
 - [课件](./resources.md)
-- [一点学习笔记](https://absx.pages.dev/farraginous/learning/dsp.html)
+- [一点学习笔记](https://absx.pages.dev/learning/dsp.html)
 - ~~甚至可以在[这里](https://github.com/lxl66566/my-college-files/tree/main/信息科学与工程学院/数字系统设计/作业)找到手写作业~~
 
 ## 实践
