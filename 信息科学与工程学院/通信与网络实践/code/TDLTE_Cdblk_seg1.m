@@ -10,7 +10,7 @@
 %C:  the number of size  Kp+Km sequence
 
 function [Cp, Kp, Cm, Km, F, Out_data, C] = TDLTE_Cdblk_seg1(Info_data)
-    %  Cdblk_seg´úÂë¿é¶ÎºÍCRC¸½¼Ó
+    %  Cdblk_seg 代码块分割和CRC附加
 
     K = [40 48 56 64 72 80 88 96 104 112 120 128 136 144 152 ...
             160 168 176 184 192 200 208 216 224 232 240 248 256 ...
@@ -30,18 +30,17 @@ function [Cp, Kp, Cm, Km, F, Out_data, C] = TDLTE_Cdblk_seg1(Info_data)
             5184 5248 5312 5376 5440 5504 5568 5632 5696 5760 ...
             5824 5888 5952 6016 6080 6144];
 
-    Z = 6144;
-    Info_len = length(Info_data);
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Student code %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    Z = 6144; % 最大码块长度
+    Info_len = length(Info_data); % 输入数据的长度
 
     if (Info_len <= Z)
-        L = 0; % CRC add length euqal to 0, No CRC should be add
-        C = 1; % only one code block;
-        Bt = Info_len; % the length is equal to the input length after code block segment function
+        L = 0; % CRC附加长度为0，不需要添加CRC
+        C = 1; % 只有一个码块
+        Bt = Info_len; % 码块分割后的长度等于输入长度
     else
-        L = 24; %CRC add lenth equal to 24 CRC should be added
-        C = ceil(Info_len / (Z - L)); % code block number after code block segment
-        Bt = Info_len + C * L; % the total length after code block segment
+        L = 24; % CRC附加长度为24，需要添加CRC
+        C = ceil(Info_len / (Z - L)); % 码块分割后的码块数量
+        Bt = Info_len + C * L; % 码块分割后的总长度
     end
 
     i = 1;
@@ -50,23 +49,23 @@ function [Cp, Kp, Cm, Km, F, Out_data, C] = TDLTE_Cdblk_seg1(Info_data)
         i = i + 1;
     end
 
-    Kp = K(i);
+    Kp = K(i); % 较长的码块长度
 
-    if (C == 1)% only one block
+    if (C == 1)% 只有一个码块
         Cp = 1;
         Km = 0;
         Cm = 0;
-    else % more than one block, should be divided into two kinds of length.
-        Km = K(i - 1);
+    else % 多于一个码块，需要分成两种长度
+        Km = K(i - 1); % 较短的码块长度。
         deltaK = Kp - Km;
-        Cm = floor((C * Kp - Bt) / deltaK);
-        Cp = C - Cm;
+        Cm = floor((C * Kp - Bt) / deltaK); % 较短码块的数量
+        Cp = C - Cm; % 较长码块的数量
     end
 
-    F = Cp * Kp + Cm * Km - Bt;
-    Out_data = zeros(C, Kp);
+    F = Cp * Kp + Cm * Km - Bt; % 填充比特的数量
+    Out_data = zeros(C, Kp); % 初始化输出数据矩阵
 
-    if (C == 1)% only one block, total block length is K+, no CRC add.
+    if (C == 1)% 只有一个码块，总码块长度为Kp，不添加CRC
         Out_data(1, F + 1:Kp) = Info_data;
     else
         k = F + 1;
@@ -75,9 +74,9 @@ function [Cp, Kp, Cm, Km, F, Out_data, C] = TDLTE_Cdblk_seg1(Info_data)
         for r = 1:C
 
             if (r < Cm + 1)
-                Kr = Km - L;
+                Kr = Km - L; % 较短码块的长度（不包括CRC）
             else
-                Kr = Kp - L;
+                Kr = Kp - L; % 较长码块的长度（不包括CRC）
             end
 
             while k < Kr + 1
@@ -87,12 +86,11 @@ function [Cp, Kp, Cm, Km, F, Out_data, C] = TDLTE_Cdblk_seg1(Info_data)
             end
 
             k = 1;
-            Out_data(r, 1:Kr + L) = CRC_attach(Out_data(r, 1:Kr), 24, 1);
+            Out_data(r, 1:Kr + L) = CRC_attach(Out_data(r, 1:Kr), 24, 1); % 添加CRC
         end
 
     end
 
-    C = Cp + Cm;
+    C = Cp + Cm; % 总码块数量
 
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
