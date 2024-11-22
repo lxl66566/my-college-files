@@ -12,7 +12,7 @@ function [crc_data] = TDLTE_add_crc(info_data)
     for i = 1:lenD
         % 遍历信息数据的每一位
         if DataCRC1(i) == 1
-            % 如果当前位为1，则进行异或运算
+            % 如果当前位为1，则进行一次二进制除法
             for j = (1:length(G))
                 % 对生成多项式的每一位进行异或运算
                 DataCRC1(i + j - 1) = bitxor(DataCRC1(i + j - 1), G(j));
