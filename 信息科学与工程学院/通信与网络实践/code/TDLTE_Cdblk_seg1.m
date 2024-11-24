@@ -1,13 +1,11 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%function Cdblk_seg code block segment and CRC attach
-%Cp: the number of size Kp sequence
-%Kp: longer size sequence after code block segment (including CRC bits)
-%Cm: the number of size Km sequence
-%Km: shorter size sequence after code block segment (including CRC bits)
-%F:  Fill bits number
-%Out_data: output data of function codeblock segment
-%Info_data: input data of function codeblock segment
-%C:  the number of size  Kp+Km sequence
+% Cp：大小为 Kp 的序列数
+% Kp：代码段后较长的序列（包括 CRC 位）
+% Cm：大小 Km 序列的编号
+% Km：代码段（包括 CRC 位）后尺寸较短的序列
+% F：填充位数
+% Out_data：功能代码段的输出数据
+% Info_data：功能代码段的输入数据
+% C：大小为 Kp+Km 序列的编号
 
 function [Cp, Kp, Cm, Km, F, Out_data, C] = TDLTE_Cdblk_seg1(Info_data)
     %  Cdblk_seg 代码块分割和CRC附加
