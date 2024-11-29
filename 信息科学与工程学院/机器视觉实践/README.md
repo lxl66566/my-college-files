@@ -10,6 +10,9 @@
 
 顺带一提 [uv](https://github.com/astral-sh/uv) 是一个还不错的 python 包管理器。本次实验依赖安装体积有 1.5G，主要是有个要用 pytorch 的实验占了很大体积，如果没代理嫌慢可以设一下 [UV_PYPY_INSTALL_MIRROR](https://docs.astral.sh/uv/configuration/environment/)。
 
+> [!WARNING]  
+> 我试了下，uv 似乎无法在 windows 处理 torch 依赖（[track issue](https://github.com/astral-sh/uv/issues/7202)），因此建议在 linux 上跑，否则自行解决依赖问题。
+
 但是像我这种用 NixOS 的倒霉鬼无法 `import _tk`，于是只能自己写 `shell.nix` 了。
 
 ```sh
