@@ -1,30 +1,23 @@
 # my college files
 
-[Github 地址](https://github.com/lxl66566/my-college-files) | [Gitee 镜像](https://gitee.com/lxl66566/my-college-files)，如果能帮到您的话请到 Github 地址点个 Star ⭐，谢谢！
+[Github 地址](https://github.com/lxl66566/my-college-files) | [Gitee 镜像](https://gitee.com/lxl66566/my-college-files)，如果能帮到你的话，请到 Github 地址点个 Star ⭐，谢谢！
 
-记录我（和大家？）大学生涯中的一些文件（华东理工大学信息工程专业资料全收集）
+记录我大学本科生涯中的所有文件，~~属于遗产性质~~。本校学生若需要其他专业的更全面的文件，请移步 [ecust-CourseShare](https://github.com/tianyilt/ecust-CourseShare)。
 
-本校学生若需要其他更全面的文件，请移步 [ecust-CourseShare](https://github.com/tianyilt/ecust-CourseShare)。
+> 除了此处的课件，我也写了一点没啥用的[学习笔记](https://absx.pages.dev/learning/)。
 
-> 当然，除了此处的课件，我也写了一点没啥用的[学习笔记](https://absx.pages.dev/learning/)。
+## 仓库构成与使用方法
 
-将 url 中的 `github` 改为 `gitee` 即为镜像，方便国内访问。镜像有可能落后几个 commit。
+1. 作业 | 答案、实验报告、论文。我的作业**不保证正确率**，但可以打印后当成自己的交。（我自己就是打印交，很难看出非手写）
+2. 考试真题（原题 / 回忆版），都是我带出来/记出来的。
+3. 少量小体积课件。
+4. 本人的私人文件与含有足够信息量的军机文件。（重要隐私文件已作出 >20 位符号混合加密）
 
-## 仓库构成
+大学中期开始，我的大部分报告使用 [typst](https://github.com/typst/typst) 写成，所有 `.typ` 文件均为 typst 源码文件。typst 是一个对标 latex 的排版工具，它可以将 `.typ` 源码编译导出为 pdf，而仓库中很可能只上传了源码而没有成品 pdf，需要[自己编译](https://absx.pages.dev/learning/typst.html#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE)（对信工同学来说应该非常简单）。编译可能需要下载 `.typ` 源码中 include 的其他文件，例如图片，代码，模板等。建议直接 clone 整个仓库/下载整仓库 zip 后再编译，可以省去很多麻烦。
 
-1. 作业 | 答案、实验报告、论文。我的作业**不保证正确率**，~~但可以打印后当成自己的交~~。（我自己就是打印交，很难看出非手写）
-2. 少量小体积课件。
-3. 部分考试原题。
-4. 含有足够信息量的军机文件。（重要隐私文件已作出 >20 位符号混合加密）
-5. 本人的私人文件。（也进行了加密）
-
-所有 `.typ` 文件均为 [typst](https://github.com/typst/typst) 文件。typst 是一个对标 latex 的排版工具，可以将 `.typ` 编译导出为 pdf。仓库中很可能只有源码而没有成品 pdf，有需要的可以[自己编译](https://absx.pages.dev/learning/typst.html#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE)（对信工同学来说应该非常简单）。编译可能需要下载 `.typ` 源码中 include 的其他文件，例如图片，代码，模板等。建议直接 clone 整个仓库/下载整仓库 zip，可以省去很多麻烦，~~反正 600M 的大小比起 ecust-CourseShare 13G 还不够塞牙缝~~。
-
-所有 `.enc`, `.zst.enc` 文件均为加密文件，使用 [git-simple-encrypt](https://github.com/lxl66566/git-simple-encrypt)（本人写的加密软件）进行加密。
+所有 `.enc`, `.zst.enc` 文件均为加密文件，使用 [git-simple-encrypt](https://github.com/lxl66566/git-simple-encrypt)（git 仓库加密软件）进行加密。
 
 ## 贡献规则
-
-~~会不会有人来贡献呢，会不会呢？不会吧~~
 
 0. 本人拥有对贡献的最终决定权。
    > 题外话：[ecust-CourseShare](https://github.com/tianyilt/ecust-CourseShare) 初期（包括现在）并没有定下贡献规则，随意接受 pr 导致该仓库大小超 10G，内容混乱。因此在此制定严格的贡献规则。  
@@ -53,7 +46,7 @@
 
 ## 日志
 
-本仓库还有多次的销毁重传经历。实际上 ecust-CourseShare 也有过销毁重传的经历（wu2305 重构目录结构），奈何重传后一阵子又成了屎山。
+本仓库还有多次的销毁重传经历。实际上 ecust-CourseShare 也有过多次销毁重传的经历，毕竟大量文件确实很难编排整理。不过本仓库比较好的一点就是由我自己进行内容物的价值判断，尽可能保证**内容的高质量**。
 
 - 20240628：将以往的大体积作业放到 release，重传
 - 20230330：重构目录重传。

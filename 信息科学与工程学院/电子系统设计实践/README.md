@@ -1,6 +1,6 @@
 # 电子设计实践
 
-本次实践我全程使用 linux，因此这是一份不太一样的折腾记录；并且用的不是常见发行版（NixOS），可以说可复现度非常低。不过代码是平台兼容的，并且我敢保证代码质量**绝对不低**：高度模块化 + 提供了易用的用户接口 + 注释完善。
+本次实践我全程使用 linux，因此这是一份不太一样的折腾记录；并且用的不是常见发行版（NixOS），可以说可复现度非常低。不过代码是平台兼容的，并且我敢保证代码质量绝对不低：高度模块化 + 提供了易用的用户接口 + 注释完善。
 
 在 linux 上主要考虑编译和烧录两部分。
 
@@ -25,7 +25,7 @@ linux 烧录使用 [stcgal](https://github.com/grigorig/stcgal) 即可，它是 
    - 每次 `nix develop` 都需要执行一次；并重启 clangd。否则可以直接把 sdcc 装到 user 上。
 3. 对代码进行额外处理。
    - 所有的 `#include <REG52.H>` 改为 `#include <reg52.h>`。
-   - 所有的类似 `sbit Motor = P1 ^ 2;` 都需要改为 `#define Motor P1_2`。原因是 sdcc 用 `sbit` 而不是 `sbit` 并且只接受常量，不接受异或运算。而 `8051.h` 里定义了 `P1_0` 等地址。如果不希望用 define，也可以 `sbit __at 0x92 MOTOR;`。bit 类似。
+   - 所有的类似 `sbit Motor = P1 ^ 2;` 都需要改为 `#define Motor P1_2`。原因是 ~~sdcc 用 `sbit` 而不是 `sbit`~~ 并且只接受常量，不接受异或运算。而 `8051.h` 里定义了 `P1_0` 等地址。如果不希望用 define，也可以 `sbit __at 0x92 MOTOR;`。bit 类似。
    - 所有的中断（`void xxx(void) interrupt 1`）改为`void xxx(void) __interrupt(1)`。
    - 所有的 `_nop_();` 换成 `__asm__("nop");`
    - 去掉所有的 `code` 关键字
@@ -45,7 +45,7 @@ linux 烧录使用 [stcgal](https://github.com/grigorig/stcgal) 即可，它是 
 - [电子系统设计实践学生资料 2024.rar](https://cs.e.ecust.edu.cn/download/1d6453ca711af86c0b6a265c9d6416f4)
 - [keil 安装包](https://cs.e.ecust.edu.cn/download/a92b89ce8b058019c770c905c0dfe2aa)
 
-解压安装包，使用 wine 安装 `c51v954a.exe`（不安装 `MDK535.exe`！）。我用的 wine GUI 是 bottles，只要鼠标点点点就行了。安装好后，在 keil 里 _File - License Management_ 复制 CID 放到破解软件里破解。这里就不多说，网上都有教程。如果不破解，写程序时可能以代码超出长度为由终止编译。
+解压安装包，使用 wine 安装 `c51v954a.exe`（不安装 `MDK535.exe`！）。我用的 wine GUI 是 bottles，只要鼠标点点点就行了。安装好后，在 keil 里 _File - License Management_ 复制 CID 放到破解软件里破解。这里就不多说，网上都有教程。如果不破解，写程序时可能以代码超出长度为由终止编译(?)。
 
 新建一个项目，Device 选 Atmel 下的 AT89C52。如果安装时装的是 `MDK535.exe`，这里可能没有 Atmel 的选项。在 Target 里把 Xtal 晶振频率改成 11.0592。OUtput 里打开 _Create HEX file_。建好项目，导入一个 .c 文件，随便写个初始程序：
 
@@ -143,7 +143,7 @@ PPT 上给的 DS18B20_DQ 的定义是 `sbit DS18B20_DQ = P1 ^ 4;`，但是实际
 
 ## 最终检查
 
-作品提交前一天才发现还有篇几千字的报告没写，压力上满了。答辩就是走个过场，只看了温度和 PID，其他的一个都没看。
+作品提交前一天才发现还有篇几千字的报告没写，压力上满了。答辩就是走个过场，只看了温度和 PID，其他的一个都没看，太水了。
 
 ## 一些想说的
 
