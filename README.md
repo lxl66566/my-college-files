@@ -4,7 +4,12 @@
 
 记录我大学本科生涯中的所有文件，~~属于遗产性质~~。本校学生若需要其他专业的更全面的文件，请移步 [ecust-CourseShare](https://github.com/tianyilt/ecust-CourseShare)。
 
-> 除了此处的课件，我也写了一点没啥用的[学习笔记](https://absx.pages.dev/learning/)。
+Support:
+
+- [ecust-electricity-statistics](https://github.com/lxl66566/ecust-electricity-statistics)：电费统计
+- [ECUST-typst-template](https://github.com/lxl66566/ECUST-typst-template)：本科论文 typst 模板
+- [ecustbook](https://github.com/lxl66566/ecustbook)：“回忆录”
+- [学习笔记](https://absx.pages.dev/learning/)，虽然没什么用
 
 ## 仓库构成与使用方法
 
