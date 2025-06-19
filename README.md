@@ -6,6 +6,8 @@
 
 记录我大学本科生涯中的所有文件，~~属于遗产性质~~。本校学生若需要其他专业的更全面的文件，请移步 [ecust-CourseShare](https://github.com/tianyilt/ecust-CourseShare)。
 
+本人已毕业，内容可能过期，欢迎 issue / PR。
+
 Support:
 
 - [ecust-electricity-statistics](https://github.com/lxl66566/ecust-electricity-statistics)：电费统计

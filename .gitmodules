@@ -1,0 +1,3 @@
+[submodule "ECUST-typst-template"]
+	path = ECUST-typst-template
+	url = git@github.com:lxl66566/ECUST-typst-template.git

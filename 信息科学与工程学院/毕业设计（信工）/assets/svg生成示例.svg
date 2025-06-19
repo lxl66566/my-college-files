@@ -1,0 +1,105 @@
+<svg width="500" height="350" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+  <!-- Defs for arrowhead marker -->
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5"
+        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="black" />
+    </marker>
+  </defs>
+
+  <!-- Styles -->
+  <style>
+    .wire { stroke: black; stroke-width: 2; fill: none; }
+    .resistor { stroke: black; stroke-width: 2; fill: white; }
+    .label { font-size: 16px; text-anchor: middle; }
+    .node-label { font-size: 14px; text-anchor: middle; fill: blue; }
+    .current-label { font-size: 14px; text-anchor: middle; fill: green; }
+    .component-label { font-size: 16px; text-anchor: middle; }
+    .source-label { font-size: 16px; text-anchor: middle; }
+    .node-dot { fill: black; }
+  </style>
+
+  <!-- Main circuit elements and wires -->
+  <!-- Power Source V -->
+  <circle cx="50" cy="175" r="20" class="wire" />
+  <text x="50" y="175" dy="-25" class="source-label">V</text>
+  <text x="50" y="170" dy=".3em" class="label" style="font-size:18px;">+</text>
+  <text x="50" y="184" dy=".3em" class="label" style="font-size:22px;">-</text>
+  
+  <!-- Wire from V+ to R1 -->
+  <line x1="50" y1="155" x2="50" y2="75" class="wire" />
+  <line x1="50" y1="75" x2="100" y2="75" class="wire" />
+
+  <!-- Resistor R1 -->
+  <rect x="100" y="62.5" width="60" height="25" class="resistor" />
+  <text x="130" y="55" class="component-label">R1</text>
+  
+  <!-- Wire from R1 to Node A -->
+  <line x1="160" y1="75" x2="200" y2="75" class="wire" />
+  
+  <!-- Node A -->
+  <circle cx="200" cy="75" r="4" class="node-dot" />
+  <text x="200" y="65" class="node-label">A</text>
+
+  <!-- Branch for R2 (Upper) -->
+  <line x1="200" y1="75" x2="200" y2="40" class="wire" />
+  <line x1="200" y1="40" x2="250" y2="40" class="wire" />
+  <rect x="250" y="27.5" width="60" height="25" class="resistor" />
+  <text x="280" y="20" class="component-label">R2</text>
+  <line x1="310" y1="40" x2="360" y2="40" class="wire" />
+  <line x1="360" y1="40" x2="360" y2="75" class="wire" />
+  
+  <!-- Branch for R3 (Lower) -->
+  <line x1="200" y1="75" x2="200" y2="110" class="wire" />
+  <line x1="200" y1="110" x2="250" y2="110" class="wire" />
+  <rect x="250" y="97.5" width="60" height="25" class="resistor" />
+  <text x="280" y="90" class="component-label">R3</text>
+  <line x1="310" y1="110" x2="360" y2="110" class="wire" />
+  <line x1="360" y1="110" x2="360" y2="75" class="wire" />
+
+  <!-- Node B -->
+  <circle cx="360" cy="75" r="4" class="node-dot" />
+  <text x="360" y="65" class="node-label">B</text>
+  
+  <!-- Wire from Node B back to V- -->
+  <line x1="360" y1="75" x2="410" y2="75" class="wire" />
+  <line x1="410" y1="75" x2="410" y2="275" class="wire" /> <!-- Adjusted for more space for return current label -->
+  <line x1="410" y1="275" x2="50" y2="275" class="wire" />
+  <line x1="50" y1="275" x2="50" y2="195" class="wire" />
+
+  <!-- Current Arrows and Labels -->
+  <!-- I_total from V -->
+  <line x1="70" y1="75" x2="90" y2="75" class="wire" marker-end="url(#arrow)" />
+  <text x="80" y="70" class="current-label">I<tspan baseline-shift="sub" font-size="0.8em">total</tspan></text>
+
+  <!-- I2 through R2 -->
+  <line x1="220" y1="40" x2="240" y2="40" class="wire" marker-end="url(#arrow)" />
+  <text x="230" y="35" class="current-label">I<tspan baseline-shift="sub" font-size="0.8em">2</tspan></text>
+  
+  <!-- I3 through R3 -->
+  <line x1="220" y1="110" x2="240" y2="110" class="wire" marker-end="url(#arrow)" />
+  <text x="230" y="125" class="current-label">I<tspan baseline-shift="sub" font-size="0.8em">3</tspan></text>
+
+  <!-- I_total returning to V -->
+  <line x1="390" y1="275" x2="370" y2="275" class="wire" marker-end="url(#arrow)" />
+  <text x="380" y="270" class="current-label">I<tspan baseline-shift="sub" font-size="0.8em">total</tspan></text>
+
+  <!-- Kirchhoff's Law annotations (optional, but good for teaching) -->
+  <text x="205" y="145" fill="purple" font-size="12px" text-anchor="start">
+    KCL at Node A: I<tspan baseline-shift="sub">total</tspan> = I<tspan baseline-shift="sub">2</tspan> + I<tspan baseline-shift="sub">3</tspan>
+  </text>
+  <text x="205" y="165" fill="purple" font-size="12px" text-anchor="start">
+    KCL at Node B: I<tspan baseline-shift="sub">2</tspan> + I<tspan baseline-shift="sub">3</tspan> = I<tspan baseline-shift="sub">total</tspan>
+  </text>
+  
+  <text x="20" y="310" fill="purple" font-size="12px" text-anchor="start">
+    KVL Loop 1 (V-R1-R2): V - V<tspan baseline-shift="sub">R1</tspan> - V<tspan baseline-shift="sub">R2</tspan> = 0
+  </text>
+  <text x="20" y="330" fill="purple" font-size="12px" text-anchor="start">
+    KVL Loop 2 (V-R1-R3): V - V<tspan baseline-shift="sub">R1</tspan> - V<tspan baseline-shift="sub">R3</tspan> = 0
+  </text>
+  <text x="205" y="185" fill="purple" font-size="12px" text-anchor="start">
+    KVL Loop 3 (R2-R3): V<tspan baseline-shift="sub">R2</tspan> - V<tspan baseline-shift="sub">R3</tspan> = 0  (or V<tspan baseline-shift="sub">R2</tspan> = V<tspan baseline-shift="sub">R3</tspan>)
+  </text>
+
+</svg>
