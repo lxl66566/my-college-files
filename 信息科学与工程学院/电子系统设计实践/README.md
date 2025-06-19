@@ -8,7 +8,7 @@
 
 ### 烧录教程
 
-linux 烧录使用 [stcgal](https://github.com/grigorig/stcgal) 即可，它是 python3 的库，用 python 包管理器就能安装。如果你使用 nix，可以通过 `nix develop && poetry install` 轻松搭好环境。至于其他环境也不难，`pip install stcgal` 一下，再随便找个 hex2bin 的软件或者让 GPT 写一个就行了。
+linux 烧录使用 [stcgal](https://github.com/grigorig/stcgal) 即可，它是 python3 的库，用 python 包管理器就能安装。如果你使用 nix，可以通过 `nix develop && poetry install --no-root` 轻松搭好环境。至于其他环境也不难，`pip install stcgal` 一下，再随便找个 hex2bin 的软件或者让 GPT 写一个就行了。
 
 我还尝试过 gSTC-ISP，它需要自己 make，在 nixos 上不好搞放弃了；另一个是 python2 的老库，也放弃了。linux 上烧录真的很香，不需要考虑驱动安装问题，硬写 `/dev/ttyUSB0` 就行，~~其他人用 windows 装 2012 年的驱动要考虑的就多了~~，有个同学 windows 服务里禁用了 Device Manager，结果驱动一整天装不上，蓝屏几十次（）
 

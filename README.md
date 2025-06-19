@@ -1,5 +1,7 @@
 # my college files
 
+![GitHub repo size](https://img.shields.io/github/repo-size/lxl66566/my-college-files)
+
 [Github 地址](https://github.com/lxl66566/my-college-files) | [Gitee 镜像](https://gitee.com/lxl66566/my-college-files)，如果能帮到你的话，请到 Github 地址点个 Star ⭐，谢谢！
 
 记录我大学本科生涯中的所有文件，~~属于遗产性质~~。本校学生若需要其他专业的更全面的文件，请移步 [ecust-CourseShare](https://github.com/tianyilt/ecust-CourseShare)。
@@ -18,7 +20,7 @@ Support:
 3. 少量小体积课件。
 4. 本人的私人文件与含有足够信息量的军机文件。（重要隐私文件已作出 >20 位符号混合加密）
 
-大学中期开始，我的大部分报告使用 [typst](https://github.com/typst/typst) 写成，所有 `.typ` 文件均为 typst 源码文件。typst 是一个对标 latex 的排版工具，它可以将 `.typ` 源码编译导出为 pdf，而仓库中很可能只上传了源码而没有成品 pdf，需要[自己编译](https://absx.pages.dev/learning/typst.html#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE)（对信工同学来说应该非常简单）。编译可能需要下载 `.typ` 源码中 include 的其他文件，例如图片，代码，模板等。建议直接 clone 整个仓库/下载整仓库 zip 后再编译，可以省去很多麻烦。
+大学中期开始，我的大部分报告使用 [typst](https://github.com/typst/typst) 写成，所有 `.typ` 文件均为 typst 源码文件。typst 是一个对标 latex 的排版工具，它可以将 `.typ` 源码编译导出为 pdf，而仓库中很可能只上传了源码而没有成品 pdf，需要[自己编译](https://absx.pages.dev/learning/typst.html#%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE)（对信工同学来说应该非常简单）（部分早期文件在 typst 0.13 及以上无法编译。你可能需要下载 0.11-0.12）。编译可能需要下载 `.typ` 源码中 include 的其他文件，例如图片，代码，模板等。建议直接 clone 整个仓库/下载整仓库 zip 后再编译，可以省去很多麻烦。
 
 所有 `.enc`, `.zst.enc` 文件均为加密文件，使用 [git-simple-encrypt](https://github.com/lxl66566/git-simple-encrypt)（git 仓库加密软件）进行加密。
 
